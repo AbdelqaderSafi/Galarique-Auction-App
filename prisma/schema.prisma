@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// schema.prisma
+
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+  APPLE
+}
+
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String         @id @default(uuid())
+  fullName      String
+  email         String         @unique
+  password      String?        
+  provider      AuthProvider   @default(LOCAL)
+  providerId    String?        
+  
+  // تحويل الدور إلى مصفوفة، والوضع الافتراضي يكون المشتري
+  roles         Role[]         @default([BUYER]) 
+  
+  sellerProfile SellerProfile? 
+  wallet        Wallet?        
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+// جدول منفصل تماماً للتوثيق فقط
+model SellerProfile {
+  id              String             @id @default(uuid())
+  userId          String             @unique
+  user            User               @relation(fields: [userId], references: [id])
+  
+  idNumber        String   
+  idImageUrl      String   
+  phoneNumber     String
+  address         String
+  
+  status          VerificationStatus @default(PENDING)
+  
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+// جدول المحفظة الموحدة للمستخدم
+model Wallet {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+
+  // يُفضل استخدام Float أو Decimal للتعامل مع الأموال
+  balance         Float    @default(0.0) // الرصيد الكلي المتاح للسحب أو الاستخدام
+  lockedBalance   Float    @default(0.0) // الرصيد المعلق/المجمد بسبب مزايدات قائمة لم تنتهِ بعد
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

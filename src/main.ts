@@ -1,4 +1,3 @@
-import 'tsconfig-paths/register';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './swagger/swagger.setup';

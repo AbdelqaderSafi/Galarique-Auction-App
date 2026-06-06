@@ -13,7 +13,9 @@ datasource db {
   provider = "postgresql"
 }
 
-// schema.prisma
+// =====================================================================
+//  ENUMS
+// =====================================================================
 
 enum AuthProvider {
   LOCAL
@@ -33,51 +35,336 @@ enum VerificationStatus {
   REJECTED
 }
 
-model User {
-  id            String         @id @default(uuid())
-  fullName      String
-  email         String         @unique
-  password      String?        
-  provider      AuthProvider   @default(LOCAL)
-  providerId    String?        
-  
-  // تحويل الدور إلى مصفوفة، والوضع الافتراضي يكون المشتري
-  roles         Role[]         @default([BUYER]) 
-  
-  sellerProfile SellerProfile? 
-  wallet        Wallet?        
+// حالة القطعة الفنية (كيان دائم)
+enum ObjectStatus {
+  DRAFT // تحت الإنشاء (wizard لم يكتمل)
+  AVAILABLE // متاحة (غير معروضة بمزاد)
+  IN_AUCTION // معروضة بمزاد قائم
+  SOLD // بِيعت
+}
 
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+// حالة المزاد
+enum AuctionStatus {
+  DRAFT // مسوّدة
+  SCHEDULED // مجدول (لم يبدأ)
+  LIVE // قائم
+  ENDED // انتهى الوقت (قيد الحسم)
+  SOLD // بِيع ودُفع
+  UNSOLD // لم يُبَع (لا مزايدات / أقل من الاحتياطي / تخلّف الجميع)
+  CANCELLED // ملغى
+}
+
+// حالة العربون ($50)
+enum DepositStatus {
+  HELD // محجوز
+  RELEASED // أُرجِع
+  FORFEITED // صودِر (تخلّف عن الدفع)
+}
+
+// حالة الطلب (الدفع)
+enum OrderStatus {
+  AWAITING_PAYMENT // بانتظار الدفع (مهلة 72 ساعة) = Unpaid
+  PAID // مدفوع
+  DEFAULTED // تخلّف الفائز عن الدفع
+  CANCELLED // ملغى
+}
+
+// حالة الشحن (بعد الدفع) — من شاشة Sales
+enum FulfillmentStatus {
+  READY_TO_SHIP
+  SHIPPED
+  PICKED_UP
+  RETURNED
+}
+
+// نوع حركة المحفظة
+enum WalletTxnType {
+  TOPUP // شحن (عبر البوابة)
+  WITHDRAW // سحب
+  DEPOSIT_HOLD // حجز عربون $50
+  DEPOSIT_RELEASE // إرجاع العربون
+  DEPOSIT_FORFEIT // مصادرة العربون
+  PAYMENT // دفع قيمة القطعة الفائز بها
+  REFUND // استرجاع
+}
+
+// =====================================================================
+//  USERS / PROFILE / WALLET
+// =====================================================================
+
+model User {
+  id         String       @id @default(uuid())
+  fullName   String
+  email      String       @unique
+  password   String?
+  provider   AuthProvider @default(LOCAL)
+  providerId String?
+
+  // الدور كمصفوفة، والافتراضي مشتري
+  roles Role[] @default([BUYER])
+
+  sellerProfile SellerProfile?
+  wallet        Wallet?
+
+  // العلاقات الجديدة
+  objects          Object[]          @relation("OwnerObjects") // القطع التي يملكها (بائع)
+  bids             Bid[] // مزايداته
+  deposits         AuctionDeposit[] // عرابينه
+  wonAuctions      Auction[]         @relation("AuctionWinner") // المزادات التي يتصدّرها/فاز بها حالياً
+  buyerOrders      Order[]           @relation("BuyerOrders") // طلباته كمشتري
+  sellerOrders     Order[]           @relation("SellerOrders") // طلباته كبائع
+  favoriteObjects  FavoriteObject[] // مفضّلة القطع
+  favoriteAuctions FavoriteAuction[] // مفضّلة المزادات
+  following        Follow[]          @relation("Following") // الباعة الذين يتابعهم
+  followers        Follow[]          @relation("Followers") // متابعوه كبائع
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // جدول منفصل تماماً للتوثيق فقط
 model SellerProfile {
-  id              String             @id @default(uuid())
-  userId          String             @unique
-  user            User               @relation(fields: [userId], references: [id])
-  
-  idNumber        String   
-  idImageUrl      String   
-  phoneNumber     String
-  address         String
-  
-  status          VerificationStatus @default(PENDING)
-  
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  idNumber    String
+  idImageUrl  String
+  phoneNumber String
+  address     String
+
+  status VerificationStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-// جدول المحفظة الموحدة للمستخدم
+// المحفظة الموحّدة للمستخدم
 model Wallet {
-  id              String   @id @default(uuid())
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id])
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 
-  // يُفضل استخدام Float أو Decimal للتعامل مع الأموال
-  balance         Float    @default(0.0) // الرصيد الكلي المتاح للسحب أو الاستخدام
-  lockedBalance   Float    @default(0.0) // الرصيد المعلق/المجمد بسبب مزايدات قائمة لم تنتهِ بعد
+  // Decimal للدقة المالية
+  balance       Decimal @default(0) @db.Decimal(12, 2) // المتاح للسحب/الاستخدام
+  lockedBalance Decimal @default(0) @db.Decimal(12, 2) // المعلّق (عرابين مزادات قائمة)
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  transactions WalletTransaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WalletTransaction {
+  id       String        @id @default(uuid())
+  wallet   Wallet        @relation(fields: [walletId], references: [id])
+  walletId String
+  type     WalletTxnType
+  amount   Decimal       @db.Decimal(12, 2)
+  refId    String? // مرجع (auctionId / orderId)
+  note     String?
+
+  createdAt DateTime @default(now())
+
+  @@index([walletId, createdAt])
+}
+
+// =====================================================================
+//  CATALOG: CATEGORY / OBJECT
+// =====================================================================
+
+model Category {
+  id      String  @id @default(uuid())
+  name    String  @unique // Art, Watches, Jewelry...
+  iconUrl String?
+
+  objects Object[]
+}
+
+// القطعة الفنية — كيان دائم يمكن أن يُعرض بأكثر من مزاد
+model Object {
+  id      String @id @default(uuid())
+  owner   User   @relation("OwnerObjects", fields: [ownerId], references: [id])
+  ownerId String
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  title       String
+  description String
+  images      ObjectImage[]
+
+  // تفاصيل القطعة (من Create › Details + Product)
+  era          String? // مثل 18th Century
+  condition    String?
+  originality  String?
+  authenticity String?
+  country      String?
+  heightCm     Decimal? @db.Decimal(8, 2)
+  widthCm      Decimal? @db.Decimal(8, 2)
+  depthCm      Decimal? @db.Decimal(8, 2)
+
+  status ObjectStatus @default(DRAFT)
+
+  auctions  Auction[]
+  favorites FavoriteObject[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  @@index([categoryId])
+}
+
+model ObjectImage {
+  id       String @id @default(uuid())
+  object   Object @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  objectId String
+  url      String
+  position Int    @default(0)
+}
+
+// =====================================================================
+//  AUCTION / BID / DEPOSIT
+// =====================================================================
+
+model Auction {
+  id       String @id @default(uuid())
+  object   Object @relation(fields: [objectId], references: [id])
+  objectId String
+
+  // التسعير (من Set Value + ثغرات نضيفها بالباك اند)
+  startingPrice   Decimal  @db.Decimal(12, 2) // سعر الافتتاح
+  reservePrice    Decimal? @db.Decimal(12, 2) // السعر الاحتياطي (اختياري)
+  estimatedValue  Decimal? @db.Decimal(12, 2) // تقديري خاص (لا يراه المشتري)
+  minBidIncrement Decimal  @default(50) @db.Decimal(12, 2) // الحد الأدنى للزيادة
+  currentPrice    Decimal  @default(0) @db.Decimal(12, 2) // أعلى مزايدة حالياً
+
+  currentWinner   User?   @relation("AuctionWinner", fields: [currentWinnerId], references: [id])
+  currentWinnerId String?
+
+  // التوقيت + التمديد التلقائي (anti-snipe)
+  startTime        DateTime
+  endTime          DateTime
+  antiSnipeSeconds Int      @default(60) // لو جت مزايدة بآخر X ثانية
+  extendBySeconds  Int      @default(60) // مدّد X ثانية
+
+  viewsCount Int           @default(0)
+  status     AuctionStatus @default(SCHEDULED)
+
+  bids      Bid[]
+  deposits  AuctionDeposit[]
+  orders    Order[] // أكثر من طلب ممكن (second-chance)
+  favorites FavoriteAuction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, endTime])
+  @@index([objectId])
+}
+
+model Bid {
+  id        String  @id @default(uuid())
+  auction   Auction @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  auctionId String
+  bidder    User    @relation(fields: [bidderId], references: [id])
+  bidderId  String
+  amount    Decimal @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+
+  @@index([auctionId, amount]) // لترتيب المزايدات وإيجاد الأعلى
+  @@index([bidderId])
+}
+
+// عربون $50 لكل مزايد بمزاد — يُحجز عند أول مزايدة
+model AuctionDeposit {
+  id        String        @id @default(uuid())
+  auction   Auction       @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  auctionId String
+  user      User          @relation(fields: [userId], references: [id])
+  userId    String
+  amount    Decimal       @default(50) @db.Decimal(12, 2)
+  status    DepositStatus @default(HELD)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([auctionId, userId]) // عربون واحد لكل مزايد بالمزاد
+}
+
+// =====================================================================
+//  ORDER (يُنشأ عند الفوز) — يدعم second-chance
+// =====================================================================
+
+model Order {
+  id        String  @id @default(uuid())
+  auction   Auction @relation(fields: [auctionId], references: [id])
+  auctionId String
+
+  buyer    User   @relation("BuyerOrders", fields: [buyerId], references: [id])
+  buyerId  String
+  seller   User   @relation("SellerOrders", fields: [sellerId], references: [id])
+  sellerId String
+
+  amount         Decimal @db.Decimal(12, 2) // السعر النهائي
+  depositApplied Decimal @default(50) @db.Decimal(12, 2) // العربون المُحتسب
+  amountDue      Decimal @db.Decimal(12, 2) // amount - depositApplied
+  offerRank      Int     @default(1) // 1=الفائز، 2=ثاني أعلى... (second-chance)
+
+  status            OrderStatus       @default(AWAITING_PAYMENT)
+  fulfillmentStatus FulfillmentStatus @default(READY_TO_SHIP)
+
+  paymentDeadline DateTime // الآن + 72 ساعة
+  paidAt          DateTime?
+  shippingAddress String?
+  trackingNumber  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([auctionId])
+  @@index([buyerId, status])
+  @@index([sellerId, status])
+}
+
+// =====================================================================
+//  FAVORITES / FOLLOW
+// =====================================================================
+
+model FavoriteObject {
+  id       String @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  object   Object @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  objectId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, objectId])
+}
+
+model FavoriteAuction {
+  id        String  @id @default(uuid())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  auction   Auction @relation(fields: [auctionId], references: [id], onDelete: Cascade)
+  auctionId String
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, auctionId])
+}
+
+// متابعة بائع (= Fav Sellers)
+model Follow {
+  follower   User   @relation("Following", fields: [followerId], references: [id])
+  followerId String
+  seller     User   @relation("Followers", fields: [sellerId], references: [id])
+  sellerId   String
+
+  createdAt DateTime @default(now())
+
+  @@id([followerId, sellerId])
 }

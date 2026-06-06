@@ -61,20 +61,23 @@ enum DepositStatus {
   FORFEITED // صودِر (تخلّف عن الدفع)
 }
 
-// حالة الطلب (الدفع)
+// حالة الطلب — دورة Escrow الكاملة (تقابل تبويبات شاشة Sales)
 enum OrderStatus {
-  AWAITING_PAYMENT // بانتظار الدفع (مهلة 72 ساعة) = Unpaid
-  PAID // مدفوع
-  DEFAULTED // تخلّف الفائز عن الدفع
+  AWAITING_PAYMENT // بانتظار دفع الفائز (مهلة 72 ساعة) = Unpaid
+  PAID_IN_ESCROW // دُفع والمال في الحجز؛ على البائع الشحن خلال 3 أيام ≈ Ready to Ship
+  SHIPPED // شُحِن (بدأ عدّاد 14 يوم) ≈ Shipped
+  COMPLETED // المشتري أكّد الاستلام أو تحرّر تلقائياً ≈ Picked Up
+  DISPUTED // بلاغ نزاع — المال مجمّد بانتظار الإدارة
+  REFUNDED // أُعيد المال للمشتري ≈ Returned
+  DEFAULTED // تخلّف الفائز عن الدفع (→ second-chance)
   CANCELLED // ملغى
 }
 
-// حالة الشحن (بعد الدفع) — من شاشة Sales
-enum FulfillmentStatus {
-  READY_TO_SHIP
-  SHIPPED
-  PICKED_UP
-  RETURNED
+// حالة النزاع
+enum DisputeStatus {
+  OPEN // مفتوح — بانتظار الإدارة
+  RESOLVED_BUYER // حُسِم لصالح المشتري (استرداد)
+  RESOLVED_SELLER // حُسِم لصالح البائع (تحرير)
 }
 
 // نوع حركة المحفظة
@@ -84,8 +87,9 @@ enum WalletTxnType {
   DEPOSIT_HOLD // حجز عربون $50
   DEPOSIT_RELEASE // إرجاع العربون
   DEPOSIT_FORFEIT // مصادرة العربون
-  PAYMENT // دفع قيمة القطعة الفائز بها
-  REFUND // استرجاع
+  ESCROW_IN // دفع المشتري → الحجز
+  ESCROW_RELEASE // الحجز → محفظة البائع (بعد الاستلام/التحرير التلقائي)
+  REFUND // استرجاع للمشتري
 }
 
 // =====================================================================
@@ -113,6 +117,7 @@ model User {
   wonAuctions      Auction[]         @relation("AuctionWinner") // المزادات التي يتصدّرها/فاز بها حالياً
   buyerOrders      Order[]           @relation("BuyerOrders") // طلباته كمشتري
   sellerOrders     Order[]           @relation("SellerOrders") // طلباته كبائع
+  disputes         Dispute[] // النزاعات التي رفعها
   favoriteObjects  FavoriteObject[] // مفضّلة القطع
   favoriteAuctions FavoriteAuction[] // مفضّلة المزادات
   following        Follow[]          @relation("Following") // الباعة الذين يتابعهم
@@ -308,18 +313,29 @@ model Order {
   seller   User   @relation("SellerOrders", fields: [sellerId], references: [id])
   sellerId String
 
-  amount         Decimal @db.Decimal(12, 2) // السعر النهائي
+  amount         Decimal @db.Decimal(12, 2) // السعر النهائي (يُحرَّر للبائع)
   depositApplied Decimal @default(50) @db.Decimal(12, 2) // العربون المُحتسب
-  amountDue      Decimal @db.Decimal(12, 2) // amount - depositApplied
+  amountDue      Decimal @db.Decimal(12, 2) // amount - depositApplied (يدفعه المشتري)
   offerRank      Int     @default(1) // 1=الفائز، 2=ثاني أعلى... (second-chance)
 
-  status            OrderStatus       @default(AWAITING_PAYMENT)
-  fulfillmentStatus FulfillmentStatus @default(READY_TO_SHIP)
+  status OrderStatus @default(AWAITING_PAYMENT)
 
-  paymentDeadline DateTime // الآن + 72 ساعة
-  paidAt          DateTime?
+  // الدفع (Escrow)
+  paymentDeadline DateTime // الآن + 72 ساعة لدفع الفائز
+  paidAt          DateTime? // وقت الدفع ودخول المال للحجز
+
+  // الشحن اللامركزي (البائع يختار الناقل)
+  shipDeadline    DateTime? // paidAt + 3 أيام (لو ما شحن → استرداد)
+  shippedAt       DateTime? // بدء عدّاد التحرير التلقائي
+  carrier         String? // شركة الشحن (Aramex...)
+  trackingNumber  String? // رقم التتبّع (المشتري يتتبّع خارجياً)
   shippingAddress String?
-  trackingNumber  String?
+
+  // التحرير
+  autoReleaseAt DateTime? // shippedAt + 14 يوم عمل → تحرير تلقائي
+  completedAt   DateTime? // وقت تأكيد الاستلام/التحرير
+
+  dispute Dispute?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -327,6 +343,22 @@ model Order {
   @@index([auctionId])
   @@index([buyerId, status])
   @@index([sellerId, status])
+  @@index([status, autoReleaseAt]) // لمهمة التحرير التلقائي
+}
+
+// نزاع على طلب (بلاغ عدم وصول) — تحسمه الإدارة
+model Dispute {
+  id         String        @id @default(uuid())
+  order      Order         @relation(fields: [orderId], references: [id])
+  orderId    String        @unique
+  raisedBy   User          @relation(fields: [raisedById], references: [id])
+  raisedById String
+  reason     String
+  status     DisputeStatus @default(OPEN)
+  adminNote  String?
+
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
 }
 
 // =====================================================================

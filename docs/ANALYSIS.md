@@ -61,8 +61,9 @@ GalleryQ تطبيق **مزادات** للقطع الفنية والتحف. ال�
 | **Auction** | الحدث المؤقّت: السعر الافتتاحي/الاحتياطي/التقديري + `minBidIncrement` + `currentPrice` + التوقيت + إعدادات anti-snipe + الحالة |
 | **Bid** | مزايدة: المزاد + المزايد + المبلغ + الوقت |
 | **AuctionDeposit** | عربون $50 لكل مزايد بمزاد (HELD/RELEASED/FORFEITED) |
-| **Order** | يُنشأ عند الفوز: الفائز/البائع/السعر النهائي + حالة الدفع + حالة الشحن + مهلة 72h + عنوان الشحن/التتبّع |
-| **WalletTransaction** | سجل حركات: TOPUP/WITHDRAW/DEPOSIT_HOLD/DEPOSIT_RELEASE/DEPOSIT_FORFEIT/PAYMENT/REFUND |
+| **Order** | يُنشأ عند الفوز: الفائز/البائع/السعر + دورة Escrow (دفع→حجز→شحن→استلام→تحرير) + مهل (72h دفع، 3 أيام شحن، 14 يوم تحرير) + `carrier`/`trackingNumber` |
+| **Dispute** | بلاغ نزاع على طلب (عدم وصول) — تحسمه الإدارة (ADMIN) |
+| **WalletTransaction** | سجل حركات: TOPUP/WITHDRAW/DEPOSIT_HOLD/DEPOSIT_RELEASE/DEPOSIT_FORFEIT/ESCROW_IN/ESCROW_RELEASE/REFUND |
 | **FavoriteObject** | مفضّلة قطعة (userId + objectId) |
 | **FavoriteAuction** | مفضّلة مزاد (userId + auctionId) |
 | **Follow** | متابعة بائع (followerId + sellerId) = Fav Sellers |
@@ -97,15 +98,42 @@ SCHEDULED ──(startTime)──► LIVE ──(endTime)──► ENDED ──�
 ```
 عند الحسم النهائي: عرابين المزايدين غير المتخلّفين → **RELEASED**.
 
-### الشحن (بعد PAID) — من شاشة Sales
-`READY_TO_SHIP → SHIPPED → PICKED_UP` (أو `RETURNED`)
+---
+
+## 6.1 نظام التحصيل المالي (Escrow) + الشحن
+
+> مبني على الملحق «نظام التحصيل المالي والتتبع الذكي» — نموذج Catawiki مبسّط. **التطبيق هو الضامن المالي الوحيد.**
+
+### حالات رصيد المحفظة (3)
+- **المتاح (Available)** = `balance` (قابل للسحب)
+- **المعلّق (Pending)** = `lockedBalance` (عرابين $50 لمزادات قائمة)
+- **المحجوز (In-Escrow)** = مبالغ طلبات مدفوعة بانتظار تأكيد الاستلام (تُحسب من الطلبات)
+
+### دورة المال بعد الدفع (Escrow)
+```
+الدفع → المال يدخل الحجز (ESCROW_IN)  [Order: PAID_IN_ESCROW]
+  ├─ البائع يشحن خلال 3 أيام (يحدّث carrier + trackingNumber)  [SHIPPED]
+  │     ├─ المشتري يؤكّد الاستلام → تحرير للبائع (ESCROW_RELEASE)  [COMPLETED]
+  │     ├─ مرّ 14 يوم عمل بلا نزاع → تحرير تلقائي (Cron)          [COMPLETED]
+  │     └─ المشتري يرفع «بلاغ عدم وصول» → تجميد + مراجعة ADMIN     [DISPUTED]
+  │            └─ الإدارة: تحرير للبائع أو استرداد للمشتري
+  └─ البائع ما شحن خلال 3 أيام → زر «طلب استرداد» → REFUND للمشتري  [REFUNDED]
+```
+- **الشحن لامركزي:** البائع يختار شركة الشحن ويزوّد `trackingNumber` + `carrier`؛ المشتري يتتبّع عبر موقع الناقل (لا تتبّع داخلي).
+- **التواصل:** بريد إلكتروني (`mailto:`) فقط — **لا حاجة لـ module دردشة**.
 
 ---
 
 ## 7. الوحدات (Modules)
 
 موجودة: `auth` · `user` · `database`
-جديدة: `categories` · `objects` · `auctions` · `bids` · `orders` · `wallet` (+ payment gateway) · `favorites` · `follows` · `uploads` · `scheduler`
+جديدة: `categories` · `objects` · `auctions` · `bids` · `orders` (+ escrow/شحن) · `disputes` · `wallet` (+ payment gateway) · `favorites` · `follows` · `uploads` · `scheduler`
+
+### مهام الـ Scheduler (Cron)
+1. إغلاق المزادات المنتهية + حسم النتيجة.
+2. فحص مهلة الدفع 72h → مصادرة العربون + second-chance.
+3. فحص مهلة الشحن 3 أيام → تفعيل الاسترداد للمشتري.
+4. فحص التحرير التلقائي 14 يوم عمل من الشحن (بلا نزاع) → تحرير المال للبائع.
 
 ---
 

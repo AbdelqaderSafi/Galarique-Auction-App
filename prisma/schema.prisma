@@ -61,14 +61,13 @@ enum DepositStatus {
   FORFEITED // صودِر (تخلّف عن الدفع)
 }
 
-// حالة الطلب — دورة Escrow الكاملة (تقابل تبويبات شاشة Sales)
+// حالة الطلب — دورة Escrow مبسّطة (بدون شحن)
 enum OrderStatus {
   AWAITING_PAYMENT // بانتظار دفع الفائز (مهلة 72 ساعة) = Unpaid
-  PAID_IN_ESCROW // دُفع والمال في الحجز؛ على البائع الشحن خلال 3 أيام ≈ Ready to Ship
-  SHIPPED // شُحِن (بدأ عدّاد 14 يوم) ≈ Shipped
-  COMPLETED // المشتري أكّد الاستلام أو تحرّر تلقائياً ≈ Picked Up
+  PAID_IN_ESCROW // دُفع والمال في الحجز بانتظار تأكيد الاستلام = Paid
+  COMPLETED // المشتري أكّد الاستلام أو تحرّر تلقائياً → المال للبائع
   DISPUTED // بلاغ نزاع — المال مجمّد بانتظار الإدارة
-  REFUNDED // أُعيد المال للمشتري ≈ Returned
+  REFUNDED // أُعيد المال للمشتري
   DEFAULTED // تخلّف الفائز عن الدفع (→ second-chance)
   CANCELLED // ملغى
 }
@@ -320,19 +319,12 @@ model Order {
 
   status OrderStatus @default(AWAITING_PAYMENT)
 
-  // الدفع (Escrow)
+  // الدفع (Escrow) — بدون شحن
   paymentDeadline DateTime // الآن + 72 ساعة لدفع الفائز
   paidAt          DateTime? // وقت الدفع ودخول المال للحجز
 
-  // الشحن اللامركزي (البائع يختار الناقل)
-  shipDeadline    DateTime? // paidAt + 3 أيام (لو ما شحن → استرداد)
-  shippedAt       DateTime? // بدء عدّاد التحرير التلقائي
-  carrier         String? // شركة الشحن (Aramex...)
-  trackingNumber  String? // رقم التتبّع (المشتري يتتبّع خارجياً)
-  shippingAddress String?
-
   // التحرير
-  autoReleaseAt DateTime? // shippedAt + 14 يوم عمل → تحرير تلقائي
+  autoReleaseAt DateTime? // paidAt + مدّة → تحرير تلقائي إن لم يؤكّد المشتري ولا رفع نزاع
   completedAt   DateTime? // وقت تأكيد الاستلام/التحرير
 
   dispute Dispute?
@@ -346,7 +338,7 @@ model Order {
   @@index([status, autoReleaseAt]) // لمهمة التحرير التلقائي
 }
 
-// نزاع على طلب (بلاغ عدم وصول) — تحسمه الإدارة
+// نزاع على طلب — تحسمه الإدارة (تحرير للبائع أو استرداد للمشتري)
 model Dispute {
   id         String        @id @default(uuid())
   order      Order         @relation(fields: [orderId], references: [id])

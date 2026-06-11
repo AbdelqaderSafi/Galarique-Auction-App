@@ -10,7 +10,7 @@
 GalleryQ تطبيق **مزادات** للقطع الفنية والتحف. المستخدم الواحد ممكن يكون **مشتري وبائع** بنفس الوقت (`roles[]`).
 المزاد **مؤقّت بوقت محدد** مع **تمديد تلقائي** عند المزايدة بآخر لحظة (anti-sniping)، والدفع عبر **محفظة + بوابة دفع**.
 
-مصدر التحليل: ملف Figma «app gallery Q» (صفحات: Reg, buyer flow AI, seller flow AI, Components, User Flows...).
+مصدر التحليل: ملف Figma «app gallery Q». **النطاق المعتمد: صفحة `buyer flow AI` فقط** (تحوي شاشات المشتري والبائع معاً) — `seller flow AI` متجاهَلة. **الشحن خارج النطاق** (لا شاشات/منطق شحن).
 
 ---
 
@@ -19,7 +19,7 @@ GalleryQ تطبيق **مزادات** للقطع الفنية والتحف. ال�
 | القرار | التفصيل |
 |--------|---------|
 | نوع المزاد | مؤقّت بوقت محدّد + **تمديد تلقائي** (anti-snipe) |
-| الدفع | محفظة (`balance` + `lockedBalance`) + بوابة دفع للشحن |
+| الدفع | محفظة (`balance` + `lockedBalance`) + بوابة دفع لشحن المحفظة |
 | مبلغ المزايدة | **حر** بشرط ≥ السعر الحالي + `minBidIncrement` |
 | العربون | **$50 ثابت** لكل مزايد، يُحجز عند **أول مزايدة** بالمزاد |
 | الزائر (Guest) | **تصفّح فقط** — المزايدة/المتابعة/المفضّلة تتطلب تسجيل |
@@ -33,16 +33,17 @@ GalleryQ تطبيق **مزادات** للقطع الفنية والتحف. ال�
 - **Reg:** Splash/Onboarding · إنشاء حساب · تسجيل دخول (Local + Google + Apple) · Continue as Guest
 - **Explore / Search:** بحث «models, brands» + تصنيفات + chips فلترة (~10 شاشات/حالات)
 - **Favorites:** ‏Fav **Auctions** · Fav **Sellers** (= Follow) · Fav **Objects**
+- **Product (المشتري):** صورة + تاج `art auction` + العنوان + الوصف + **Current bid** + عدّاد تنازلي + زر **Place Bid**
+- **Bid pop-up:** أزرار زيادة سريعة ($20/$30/$50/$60) أو مبلغ حر + «You'll pay only if you win» + زر Continue + **Bid history** (المزايدون + العدد + التوقيت)
 - **Product (عرض البائع):** بطاقة القطعة + Details (Condition/Originality/Authenticity/Country) + `follow` + `bidders list`
 - **Create (wizard 4 خطوات):** 1) Category 2) Images 3) Item Details (Era, Condition, Dimensions H/W/D) 4) Set Value (Estimated Selling Price «خاص للخبراء» + Reserve Price اختياري)
 - **Dashboard (بائع):** إحصائيات + زر Create Auction
-- **Sales (طلبات البائع):** تبويب Paid/Unpaid + فلتر شحن: Ready to Ship → Shipped → Picked Up / Returned
-- **Wallet:** الرصيد + الشحن + مكوّنات الدفع
+- **Sales (طلبات البائع):** تبويب Paid/Unpaid (تبويبات الشحن خارج النطاق)
+- **Wallet:** الرصيد + شحن المحفظة + مكوّنات الدفع
 - **Profile**
 
 ### ثغرات في التصميم (نُعالجها بالباك اند)
-1. **شاشة مزايدة المشتري** (السعر الحالي + زر Bid + العدّاد) — غير مصمّمة بعد. الباك اند يوفّر الـ API.
-2. **سعر الافتتاح + مدة المزاد** — غير ظاهرين بشاشة Create. نضيفهم بالموديل/الـ DTO من الآن.
+1. **سعر الافتتاح + مدة المزاد** — غير ظاهرين بشاشة Create. نضيفهم بالموديل/الـ DTO من الآن.
 
 ---
 
@@ -61,8 +62,8 @@ GalleryQ تطبيق **مزادات** للقطع الفنية والتحف. ال�
 | **Auction** | الحدث المؤقّت: السعر الافتتاحي/الاحتياطي/التقديري + `minBidIncrement` + `currentPrice` + التوقيت + إعدادات anti-snipe + الحالة |
 | **Bid** | مزايدة: المزاد + المزايد + المبلغ + الوقت |
 | **AuctionDeposit** | عربون $50 لكل مزايد بمزاد (HELD/RELEASED/FORFEITED) |
-| **Order** | يُنشأ عند الفوز: الفائز/البائع/السعر + دورة Escrow (دفع→حجز→شحن→استلام→تحرير) + مهل (72h دفع، 3 أيام شحن، 14 يوم تحرير) + `carrier`/`trackingNumber` |
-| **Dispute** | بلاغ نزاع على طلب (عدم وصول) — تحسمه الإدارة (ADMIN) |
+| **Order** | يُنشأ عند الفوز: الفائز/البائع/السعر + دورة Escrow مبسّطة (دفع→حجز→تأكيد استلام/تحرير تلقائي) + مهلة دفع 72h + `autoReleaseAt` |
+| **Dispute** | نزاع على طلب — تحسمه الإدارة (ADMIN): تحرير للبائع أو استرداد للمشتري |
 | **WalletTransaction** | سجل حركات: TOPUP/WITHDRAW/DEPOSIT_HOLD/DEPOSIT_RELEASE/DEPOSIT_FORFEIT/ESCROW_IN/ESCROW_RELEASE/REFUND |
 | **FavoriteObject** | مفضّلة قطعة (userId + objectId) |
 | **FavoriteAuction** | مفضّلة مزاد (userId + auctionId) |
@@ -91,7 +92,7 @@ SCHEDULED ──(startTime)──► LIVE ──(endTime)──► ENDED ──�
  ├─ لا  → UNSOLD، Object → AVAILABLE
  └─ نعم → الفائز = أعلى مزايد → Order (UNPAID, deadline = الآن + 72h)
           amountDue = finalPrice − 50  (العربون يُطبّق ضمن السعر)
-          ├─ رصيد المحفظة يكفي / دُفع خلال 72h → PAID → Object SOLD → يبدأ الشحن
+          ├─ رصيد المحفظة يكفي / دُفع خلال 72h → PAID_IN_ESCROW → Object SOLD (راجع 6.1)
           └─ تخلّف 72h → DEPOSIT_FORFEIT ($50 يُخصم نهائياً)
                          └─► عرض لثاني أعلى مزايد → Order جديد (72h) → ... تسلسل
                              └─ خلصت المزايدات → UNSOLD، Object → AVAILABLE
@@ -100,26 +101,23 @@ SCHEDULED ──(startTime)──► LIVE ──(endTime)──► ENDED ──�
 
 ---
 
-## 6.1 نظام التحصيل المالي (Escrow) + الشحن
+## 6.1 نظام التحصيل المالي (Escrow) — مبسّط بدون شحن
 
-> مبني على الملحق «نظام التحصيل المالي والتتبع الذكي» — نموذج Catawiki مبسّط. **التطبيق هو الضامن المالي الوحيد.**
+> نموذج Catawiki مبسّط. **التطبيق هو الضامن المالي.** (الشحن خارج النطاق — لا تتبّع/ناقل/حالات شحن.)
 
 ### حالات رصيد المحفظة (3)
 - **المتاح (Available)** = `balance` (قابل للسحب)
 - **المعلّق (Pending)** = `lockedBalance` (عرابين $50 لمزادات قائمة)
-- **المحجوز (In-Escrow)** = مبالغ طلبات مدفوعة بانتظار تأكيد الاستلام (تُحسب من الطلبات)
+- **المحجوز (In-Escrow)** = مبالغ طلبات مدفوعة بانتظار التحرير (تُحسب من الطلبات)
 
 ### دورة المال بعد الدفع (Escrow)
 ```
 الدفع → المال يدخل الحجز (ESCROW_IN)  [Order: PAID_IN_ESCROW]
-  ├─ البائع يشحن خلال 3 أيام (يحدّث carrier + trackingNumber)  [SHIPPED]
-  │     ├─ المشتري يؤكّد الاستلام → تحرير للبائع (ESCROW_RELEASE)  [COMPLETED]
-  │     ├─ مرّ 14 يوم عمل بلا نزاع → تحرير تلقائي (Cron)          [COMPLETED]
-  │     └─ المشتري يرفع «بلاغ عدم وصول» → تجميد + مراجعة ADMIN     [DISPUTED]
-  │            └─ الإدارة: تحرير للبائع أو استرداد للمشتري
-  └─ البائع ما شحن خلال 3 أيام → زر «طلب استرداد» → REFUND للمشتري  [REFUNDED]
+  ├─ المشتري يؤكّد الاستلام → تحرير للبائع (ESCROW_RELEASE)        [COMPLETED]
+  ├─ مرّ N يوم من الدفع بلا نزاع → تحرير تلقائي (Cron)            [COMPLETED]
+  └─ المشتري يرفع نزاعاً → تجميد + مراجعة ADMIN                   [DISPUTED]
+         └─ الإدارة: تحرير للبائع (RESOLVED_SELLER) أو استرداد (RESOLVED_BUYER → REFUNDED)
 ```
-- **الشحن لامركزي:** البائع يختار شركة الشحن ويزوّد `trackingNumber` + `carrier`؛ المشتري يتتبّع عبر موقع الناقل (لا تتبّع داخلي).
 - **التواصل:** بريد إلكتروني (`mailto:`) فقط — **لا حاجة لـ module دردشة**.
 
 ---
@@ -127,13 +125,12 @@ SCHEDULED ──(startTime)──► LIVE ──(endTime)──► ENDED ──�
 ## 7. الوحدات (Modules)
 
 موجودة: `auth` · `user` · `database`
-جديدة: `categories` · `objects` · `auctions` · `bids` · `orders` (+ escrow/شحن) · `disputes` · `wallet` (+ payment gateway) · `favorites` · `follows` · `uploads` · `scheduler`
+جديدة: `categories` · `objects` · `auctions` · `bids` · `orders` (+ escrow) · `disputes` · `wallet` (+ payment gateway) · `favorites` · `follows` · `uploads` · `scheduler`
 
 ### مهام الـ Scheduler (Cron)
 1. إغلاق المزادات المنتهية + حسم النتيجة.
 2. فحص مهلة الدفع 72h → مصادرة العربون + second-chance.
-3. فحص مهلة الشحن 3 أيام → تفعيل الاسترداد للمشتري.
-4. فحص التحرير التلقائي 14 يوم عمل من الشحن (بلا نزاع) → تحرير المال للبائع.
+3. فحص التحرير التلقائي (بعد مدة من الدفع، بلا نزاع) → تحرير المال للبائع.
 
 ---
 
@@ -142,9 +139,9 @@ SCHEDULED ──(startTime)──► LIVE ──(endTime)──► ENDED ──�
 - **Auctions:** قائمة/تفاصيل (عام للزوّار) · إنشاء (بائع موثّق) · مزايدة (مشتري مسجّل)
 - **Bids:** مزايدة + سجل المزايدين لكل مزاد
 - **Wallet:** الرصيد · شحن (gateway) · سحب · سجل الحركات
-- **Orders:** طلبات المشتري · طلبات البائع (Paid/Unpaid + حالات الشحن) · دفع طلب
+- **Orders:** طلبات المشتري · طلبات البائع (Paid/Unpaid) · دفع طلب · تأكيد الاستلام (تحرير) · رفع نزاع
 - **Favorites/Follows:** إضافة/حذف · قوائم
-- **Scheduler:** إغلاق المزادات المنتهية · فحص مهلة 72h · تشغيل second-chance
+- **Scheduler:** إغلاق المزادات المنتهية · فحص مهلة 72h + second-chance · التحرير التلقائي للحجز
 
 ---
 

@@ -54,3 +54,63 @@ export type SellerProfile = Prisma.SellerProfileModel
  * 
  */
 export type Wallet = Prisma.WalletModel
+/**
+ * Model WalletTransaction
+ * 
+ */
+export type WalletTransaction = Prisma.WalletTransactionModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Object
+ * 
+ */
+export type Object = Prisma.ObjectModel
+/**
+ * Model ObjectImage
+ * 
+ */
+export type ObjectImage = Prisma.ObjectImageModel
+/**
+ * Model Auction
+ * 
+ */
+export type Auction = Prisma.AuctionModel
+/**
+ * Model Bid
+ * 
+ */
+export type Bid = Prisma.BidModel
+/**
+ * Model AuctionDeposit
+ * 
+ */
+export type AuctionDeposit = Prisma.AuctionDepositModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model Dispute
+ * 
+ */
+export type Dispute = Prisma.DisputeModel
+/**
+ * Model FavoriteObject
+ * 
+ */
+export type FavoriteObject = Prisma.FavoriteObjectModel
+/**
+ * Model FavoriteAuction
+ * 
+ */
+export type FavoriteAuction = Prisma.FavoriteAuctionModel
+/**
+ * Model Follow
+ * 
+ */
+export type Follow = Prisma.FollowModel

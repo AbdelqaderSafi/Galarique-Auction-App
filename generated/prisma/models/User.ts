@@ -212,6 +212,17 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sellerProfile?: Prisma.XOR<Prisma.SellerProfileNullableScalarRelationFilter, Prisma.SellerProfileWhereInput> | null
   wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
+  objects?: Prisma.ObjectListRelationFilter
+  bids?: Prisma.BidListRelationFilter
+  deposits?: Prisma.AuctionDepositListRelationFilter
+  wonAuctions?: Prisma.AuctionListRelationFilter
+  buyerOrders?: Prisma.OrderListRelationFilter
+  sellerOrders?: Prisma.OrderListRelationFilter
+  disputes?: Prisma.DisputeListRelationFilter
+  favoriteObjects?: Prisma.FavoriteObjectListRelationFilter
+  favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
+  following?: Prisma.FollowListRelationFilter
+  followers?: Prisma.FollowListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -226,6 +237,17 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   sellerProfile?: Prisma.SellerProfileOrderByWithRelationInput
   wallet?: Prisma.WalletOrderByWithRelationInput
+  objects?: Prisma.ObjectOrderByRelationAggregateInput
+  bids?: Prisma.BidOrderByRelationAggregateInput
+  deposits?: Prisma.AuctionDepositOrderByRelationAggregateInput
+  wonAuctions?: Prisma.AuctionOrderByRelationAggregateInput
+  buyerOrders?: Prisma.OrderOrderByRelationAggregateInput
+  sellerOrders?: Prisma.OrderOrderByRelationAggregateInput
+  disputes?: Prisma.DisputeOrderByRelationAggregateInput
+  favoriteObjects?: Prisma.FavoriteObjectOrderByRelationAggregateInput
+  favoriteAuctions?: Prisma.FavoriteAuctionOrderByRelationAggregateInput
+  following?: Prisma.FollowOrderByRelationAggregateInput
+  followers?: Prisma.FollowOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -243,6 +265,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sellerProfile?: Prisma.XOR<Prisma.SellerProfileNullableScalarRelationFilter, Prisma.SellerProfileWhereInput> | null
   wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
+  objects?: Prisma.ObjectListRelationFilter
+  bids?: Prisma.BidListRelationFilter
+  deposits?: Prisma.AuctionDepositListRelationFilter
+  wonAuctions?: Prisma.AuctionListRelationFilter
+  buyerOrders?: Prisma.OrderListRelationFilter
+  sellerOrders?: Prisma.OrderListRelationFilter
+  disputes?: Prisma.DisputeListRelationFilter
+  favoriteObjects?: Prisma.FavoriteObjectListRelationFilter
+  favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
+  following?: Prisma.FollowListRelationFilter
+  followers?: Prisma.FollowListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -287,6 +320,17 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -301,6 +345,17 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
   wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type UserUpdateInput = {
@@ -315,6 +370,17 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -329,6 +395,17 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
   wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -414,6 +491,11 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type UserCreaterolesInput = {
   set: $Enums.Role[]
 }
@@ -467,6 +549,162 @@ export type UserUpdateOneRequiredWithoutWalletNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWalletInput, Prisma.UserUpdateWithoutWalletInput>, Prisma.UserUncheckedUpdateWithoutWalletInput>
 }
 
+export type UserCreateNestedOneWithoutObjectsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutObjectsInput, Prisma.UserUncheckedCreateWithoutObjectsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutObjectsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutObjectsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutObjectsInput, Prisma.UserUncheckedCreateWithoutObjectsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutObjectsInput
+  upsert?: Prisma.UserUpsertWithoutObjectsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutObjectsInput, Prisma.UserUpdateWithoutObjectsInput>, Prisma.UserUncheckedUpdateWithoutObjectsInput>
+}
+
+export type UserCreateNestedOneWithoutWonAuctionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWonAuctionsInput, Prisma.UserUncheckedCreateWithoutWonAuctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWonAuctionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutWonAuctionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWonAuctionsInput, Prisma.UserUncheckedCreateWithoutWonAuctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWonAuctionsInput
+  upsert?: Prisma.UserUpsertWithoutWonAuctionsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWonAuctionsInput, Prisma.UserUpdateWithoutWonAuctionsInput>, Prisma.UserUncheckedUpdateWithoutWonAuctionsInput>
+}
+
+export type UserCreateNestedOneWithoutBidsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBidsInput, Prisma.UserUncheckedCreateWithoutBidsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBidsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBidsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBidsInput, Prisma.UserUncheckedCreateWithoutBidsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBidsInput
+  upsert?: Prisma.UserUpsertWithoutBidsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBidsInput, Prisma.UserUpdateWithoutBidsInput>, Prisma.UserUncheckedUpdateWithoutBidsInput>
+}
+
+export type UserCreateNestedOneWithoutDepositsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepositsInput, Prisma.UserUncheckedCreateWithoutDepositsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepositsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDepositsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDepositsInput, Prisma.UserUncheckedCreateWithoutDepositsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDepositsInput
+  upsert?: Prisma.UserUpsertWithoutDepositsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDepositsInput, Prisma.UserUpdateWithoutDepositsInput>, Prisma.UserUncheckedUpdateWithoutDepositsInput>
+}
+
+export type UserCreateNestedOneWithoutBuyerOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBuyerOrdersInput, Prisma.UserUncheckedCreateWithoutBuyerOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBuyerOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutSellerOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSellerOrdersInput, Prisma.UserUncheckedCreateWithoutSellerOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSellerOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBuyerOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBuyerOrdersInput, Prisma.UserUncheckedCreateWithoutBuyerOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBuyerOrdersInput
+  upsert?: Prisma.UserUpsertWithoutBuyerOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBuyerOrdersInput, Prisma.UserUpdateWithoutBuyerOrdersInput>, Prisma.UserUncheckedUpdateWithoutBuyerOrdersInput>
+}
+
+export type UserUpdateOneRequiredWithoutSellerOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSellerOrdersInput, Prisma.UserUncheckedCreateWithoutSellerOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSellerOrdersInput
+  upsert?: Prisma.UserUpsertWithoutSellerOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSellerOrdersInput, Prisma.UserUpdateWithoutSellerOrdersInput>, Prisma.UserUncheckedUpdateWithoutSellerOrdersInput>
+}
+
+export type UserCreateNestedOneWithoutDisputesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDisputesInput, Prisma.UserUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDisputesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDisputesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDisputesInput, Prisma.UserUncheckedCreateWithoutDisputesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDisputesInput
+  upsert?: Prisma.UserUpsertWithoutDisputesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDisputesInput, Prisma.UserUpdateWithoutDisputesInput>, Prisma.UserUncheckedUpdateWithoutDisputesInput>
+}
+
+export type UserCreateNestedOneWithoutFavoriteObjectsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoriteObjectsInput, Prisma.UserUncheckedCreateWithoutFavoriteObjectsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoriteObjectsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFavoriteObjectsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoriteObjectsInput, Prisma.UserUncheckedCreateWithoutFavoriteObjectsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoriteObjectsInput
+  upsert?: Prisma.UserUpsertWithoutFavoriteObjectsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFavoriteObjectsInput, Prisma.UserUpdateWithoutFavoriteObjectsInput>, Prisma.UserUncheckedUpdateWithoutFavoriteObjectsInput>
+}
+
+export type UserCreateNestedOneWithoutFavoriteAuctionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoriteAuctionsInput, Prisma.UserUncheckedCreateWithoutFavoriteAuctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoriteAuctionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFavoriteAuctionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFavoriteAuctionsInput, Prisma.UserUncheckedCreateWithoutFavoriteAuctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFavoriteAuctionsInput
+  upsert?: Prisma.UserUpsertWithoutFavoriteAuctionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFavoriteAuctionsInput, Prisma.UserUpdateWithoutFavoriteAuctionsInput>, Prisma.UserUncheckedUpdateWithoutFavoriteAuctionsInput>
+}
+
+export type UserCreateNestedOneWithoutFollowingInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutFollowersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFollowingNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowingInput
+  upsert?: Prisma.UserUpsertWithoutFollowingInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFollowingInput, Prisma.UserUpdateWithoutFollowingInput>, Prisma.UserUncheckedUpdateWithoutFollowingInput>
+}
+
+export type UserUpdateOneRequiredWithoutFollowersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFollowersInput
+  upsert?: Prisma.UserUpsertWithoutFollowersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFollowersInput, Prisma.UserUpdateWithoutFollowersInput>, Prisma.UserUncheckedUpdateWithoutFollowersInput>
+}
+
 export type UserCreateWithoutSellerProfileInput = {
   id?: string
   fullName: string
@@ -478,6 +716,17 @@ export type UserCreateWithoutSellerProfileInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
 }
 
 export type UserUncheckedCreateWithoutSellerProfileInput = {
@@ -491,6 +740,17 @@ export type UserUncheckedCreateWithoutSellerProfileInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type UserCreateOrConnectWithoutSellerProfileInput = {
@@ -520,6 +780,17 @@ export type UserUpdateWithoutSellerProfileInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSellerProfileInput = {
@@ -533,6 +804,17 @@ export type UserUncheckedUpdateWithoutSellerProfileInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -546,6 +828,17 @@ export type UserCreateWithoutWalletInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -559,6 +852,17 @@ export type UserUncheckedCreateWithoutWalletInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -588,6 +892,17 @@ export type UserUpdateWithoutWalletInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -601,8 +916,1370 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
 }
 
+export type UserCreateWithoutObjectsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutObjectsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutObjectsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutObjectsInput, Prisma.UserUncheckedCreateWithoutObjectsInput>
+}
+
+export type UserUpsertWithoutObjectsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutObjectsInput, Prisma.UserUncheckedUpdateWithoutObjectsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutObjectsInput, Prisma.UserUncheckedCreateWithoutObjectsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutObjectsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutObjectsInput, Prisma.UserUncheckedUpdateWithoutObjectsInput>
+}
+
+export type UserUpdateWithoutObjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutObjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutWonAuctionsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutWonAuctionsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutWonAuctionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWonAuctionsInput, Prisma.UserUncheckedCreateWithoutWonAuctionsInput>
+}
+
+export type UserUpsertWithoutWonAuctionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWonAuctionsInput, Prisma.UserUncheckedUpdateWithoutWonAuctionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWonAuctionsInput, Prisma.UserUncheckedCreateWithoutWonAuctionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWonAuctionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWonAuctionsInput, Prisma.UserUncheckedUpdateWithoutWonAuctionsInput>
+}
+
+export type UserUpdateWithoutWonAuctionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWonAuctionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutBidsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutBidsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutBidsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBidsInput, Prisma.UserUncheckedCreateWithoutBidsInput>
+}
+
+export type UserUpsertWithoutBidsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBidsInput, Prisma.UserUncheckedUpdateWithoutBidsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBidsInput, Prisma.UserUncheckedCreateWithoutBidsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBidsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBidsInput, Prisma.UserUncheckedUpdateWithoutBidsInput>
+}
+
+export type UserUpdateWithoutBidsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBidsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutDepositsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutDepositsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutDepositsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepositsInput, Prisma.UserUncheckedCreateWithoutDepositsInput>
+}
+
+export type UserUpsertWithoutDepositsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDepositsInput, Prisma.UserUncheckedUpdateWithoutDepositsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDepositsInput, Prisma.UserUncheckedCreateWithoutDepositsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDepositsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDepositsInput, Prisma.UserUncheckedUpdateWithoutDepositsInput>
+}
+
+export type UserUpdateWithoutDepositsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDepositsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutBuyerOrdersInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutBuyerOrdersInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutBuyerOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBuyerOrdersInput, Prisma.UserUncheckedCreateWithoutBuyerOrdersInput>
+}
+
+export type UserCreateWithoutSellerOrdersInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutSellerOrdersInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutSellerOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSellerOrdersInput, Prisma.UserUncheckedCreateWithoutSellerOrdersInput>
+}
+
+export type UserUpsertWithoutBuyerOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBuyerOrdersInput, Prisma.UserUncheckedUpdateWithoutBuyerOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBuyerOrdersInput, Prisma.UserUncheckedCreateWithoutBuyerOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBuyerOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBuyerOrdersInput, Prisma.UserUncheckedUpdateWithoutBuyerOrdersInput>
+}
+
+export type UserUpdateWithoutBuyerOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBuyerOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUpsertWithoutSellerOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSellerOrdersInput, Prisma.UserUncheckedUpdateWithoutSellerOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSellerOrdersInput, Prisma.UserUncheckedCreateWithoutSellerOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSellerOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSellerOrdersInput, Prisma.UserUncheckedUpdateWithoutSellerOrdersInput>
+}
+
+export type UserUpdateWithoutSellerOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSellerOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutDisputesInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutDisputesInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutDisputesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDisputesInput, Prisma.UserUncheckedCreateWithoutDisputesInput>
+}
+
+export type UserUpsertWithoutDisputesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDisputesInput, Prisma.UserUncheckedUpdateWithoutDisputesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDisputesInput, Prisma.UserUncheckedCreateWithoutDisputesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDisputesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDisputesInput, Prisma.UserUncheckedUpdateWithoutDisputesInput>
+}
+
+export type UserUpdateWithoutDisputesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDisputesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutFavoriteObjectsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutFavoriteObjectsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutFavoriteObjectsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoriteObjectsInput, Prisma.UserUncheckedCreateWithoutFavoriteObjectsInput>
+}
+
+export type UserUpsertWithoutFavoriteObjectsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFavoriteObjectsInput, Prisma.UserUncheckedUpdateWithoutFavoriteObjectsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoriteObjectsInput, Prisma.UserUncheckedCreateWithoutFavoriteObjectsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFavoriteObjectsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFavoriteObjectsInput, Prisma.UserUncheckedUpdateWithoutFavoriteObjectsInput>
+}
+
+export type UserUpdateWithoutFavoriteObjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFavoriteObjectsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutFavoriteAuctionsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutFavoriteAuctionsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutFavoriteAuctionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoriteAuctionsInput, Prisma.UserUncheckedCreateWithoutFavoriteAuctionsInput>
+}
+
+export type UserUpsertWithoutFavoriteAuctionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFavoriteAuctionsInput, Prisma.UserUncheckedUpdateWithoutFavoriteAuctionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFavoriteAuctionsInput, Prisma.UserUncheckedCreateWithoutFavoriteAuctionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFavoriteAuctionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFavoriteAuctionsInput, Prisma.UserUncheckedUpdateWithoutFavoriteAuctionsInput>
+}
+
+export type UserUpdateWithoutFavoriteAuctionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFavoriteAuctionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutFollowingInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutFollowingInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutFollowingInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+}
+
+export type UserCreateWithoutFollowersInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+}
+
+export type UserUncheckedCreateWithoutFollowersInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+}
+
+export type UserCreateOrConnectWithoutFollowersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+}
+
+export type UserUpsertWithoutFollowingInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFollowingInput, Prisma.UserUncheckedUpdateWithoutFollowingInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowingInput, Prisma.UserUncheckedCreateWithoutFollowingInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFollowingInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFollowingInput, Prisma.UserUncheckedUpdateWithoutFollowingInput>
+}
+
+export type UserUpdateWithoutFollowingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFollowingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUpsertWithoutFollowersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFollowersInput, Prisma.UserUncheckedUpdateWithoutFollowersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFollowersInput, Prisma.UserUncheckedCreateWithoutFollowersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFollowersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFollowersInput, Prisma.UserUncheckedUpdateWithoutFollowersInput>
+}
+
+export type UserUpdateWithoutFollowersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFollowersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  objects: number
+  bids: number
+  deposits: number
+  wonAuctions: number
+  buyerOrders: number
+  sellerOrders: number
+  disputes: number
+  favoriteObjects: number
+  favoriteAuctions: number
+  following: number
+  followers: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  objects?: boolean | UserCountOutputTypeCountObjectsArgs
+  bids?: boolean | UserCountOutputTypeCountBidsArgs
+  deposits?: boolean | UserCountOutputTypeCountDepositsArgs
+  wonAuctions?: boolean | UserCountOutputTypeCountWonAuctionsArgs
+  buyerOrders?: boolean | UserCountOutputTypeCountBuyerOrdersArgs
+  sellerOrders?: boolean | UserCountOutputTypeCountSellerOrdersArgs
+  disputes?: boolean | UserCountOutputTypeCountDisputesArgs
+  favoriteObjects?: boolean | UserCountOutputTypeCountFavoriteObjectsArgs
+  favoriteAuctions?: boolean | UserCountOutputTypeCountFavoriteAuctionsArgs
+  following?: boolean | UserCountOutputTypeCountFollowingArgs
+  followers?: boolean | UserCountOutputTypeCountFollowersArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountObjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ObjectWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBidsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BidWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDepositsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuctionDepositWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWonAuctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuctionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBuyerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSellerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDisputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DisputeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFavoriteObjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoriteObjectWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFavoriteAuctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FavoriteAuctionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFollowingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FollowWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFollowersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FollowWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -617,6 +2294,18 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
+  objects?: boolean | Prisma.User$objectsArgs<ExtArgs>
+  bids?: boolean | Prisma.User$bidsArgs<ExtArgs>
+  deposits?: boolean | Prisma.User$depositsArgs<ExtArgs>
+  wonAuctions?: boolean | Prisma.User$wonAuctionsArgs<ExtArgs>
+  buyerOrders?: boolean | Prisma.User$buyerOrdersArgs<ExtArgs>
+  sellerOrders?: boolean | Prisma.User$sellerOrdersArgs<ExtArgs>
+  disputes?: boolean | Prisma.User$disputesArgs<ExtArgs>
+  favoriteObjects?: boolean | Prisma.User$favoriteObjectsArgs<ExtArgs>
+  favoriteAuctions?: boolean | Prisma.User$favoriteAuctionsArgs<ExtArgs>
+  following?: boolean | Prisma.User$followingArgs<ExtArgs>
+  followers?: boolean | Prisma.User$followersArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -659,6 +2348,18 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
+  objects?: boolean | Prisma.User$objectsArgs<ExtArgs>
+  bids?: boolean | Prisma.User$bidsArgs<ExtArgs>
+  deposits?: boolean | Prisma.User$depositsArgs<ExtArgs>
+  wonAuctions?: boolean | Prisma.User$wonAuctionsArgs<ExtArgs>
+  buyerOrders?: boolean | Prisma.User$buyerOrdersArgs<ExtArgs>
+  sellerOrders?: boolean | Prisma.User$sellerOrdersArgs<ExtArgs>
+  disputes?: boolean | Prisma.User$disputesArgs<ExtArgs>
+  favoriteObjects?: boolean | Prisma.User$favoriteObjectsArgs<ExtArgs>
+  favoriteAuctions?: boolean | Prisma.User$favoriteAuctionsArgs<ExtArgs>
+  following?: boolean | Prisma.User$followingArgs<ExtArgs>
+  followers?: boolean | Prisma.User$followersArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -668,6 +2369,17 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     sellerProfile: Prisma.$SellerProfilePayload<ExtArgs> | null
     wallet: Prisma.$WalletPayload<ExtArgs> | null
+    objects: Prisma.$ObjectPayload<ExtArgs>[]
+    bids: Prisma.$BidPayload<ExtArgs>[]
+    deposits: Prisma.$AuctionDepositPayload<ExtArgs>[]
+    wonAuctions: Prisma.$AuctionPayload<ExtArgs>[]
+    buyerOrders: Prisma.$OrderPayload<ExtArgs>[]
+    sellerOrders: Prisma.$OrderPayload<ExtArgs>[]
+    disputes: Prisma.$DisputePayload<ExtArgs>[]
+    favoriteObjects: Prisma.$FavoriteObjectPayload<ExtArgs>[]
+    favoriteAuctions: Prisma.$FavoriteAuctionPayload<ExtArgs>[]
+    following: Prisma.$FollowPayload<ExtArgs>[]
+    followers: Prisma.$FollowPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1075,6 +2787,17 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sellerProfile<T extends Prisma.User$sellerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sellerProfileArgs<ExtArgs>>): Prisma.Prisma__SellerProfileClient<runtime.Types.Result.GetResult<Prisma.$SellerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   wallet<T extends Prisma.User$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletArgs<ExtArgs>>): Prisma.Prisma__WalletClient<runtime.Types.Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  objects<T extends Prisma.User$objectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$objectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bids<T extends Prisma.User$bidsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bidsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BidPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  deposits<T extends Prisma.User$depositsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$depositsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  wonAuctions<T extends Prisma.User$wonAuctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wonAuctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  buyerOrders<T extends Prisma.User$buyerOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$buyerOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sellerOrders<T extends Prisma.User$sellerOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sellerOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  disputes<T extends Prisma.User$disputesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$disputesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisputePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoriteObjects<T extends Prisma.User$favoriteObjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteObjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  favoriteAuctions<T extends Prisma.User$favoriteAuctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteAuctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteAuctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  following<T extends Prisma.User$followingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  followers<T extends Prisma.User$followersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1541,6 +3264,270 @@ export type User$walletArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.WalletInclude<ExtArgs> | null
   where?: Prisma.WalletWhereInput
+}
+
+/**
+ * User.objects
+ */
+export type User$objectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Object
+   */
+  select?: Prisma.ObjectSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Object
+   */
+  omit?: Prisma.ObjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ObjectInclude<ExtArgs> | null
+  where?: Prisma.ObjectWhereInput
+  orderBy?: Prisma.ObjectOrderByWithRelationInput | Prisma.ObjectOrderByWithRelationInput[]
+  cursor?: Prisma.ObjectWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ObjectScalarFieldEnum | Prisma.ObjectScalarFieldEnum[]
+}
+
+/**
+ * User.bids
+ */
+export type User$bidsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Bid
+   */
+  select?: Prisma.BidSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Bid
+   */
+  omit?: Prisma.BidOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BidInclude<ExtArgs> | null
+  where?: Prisma.BidWhereInput
+  orderBy?: Prisma.BidOrderByWithRelationInput | Prisma.BidOrderByWithRelationInput[]
+  cursor?: Prisma.BidWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BidScalarFieldEnum | Prisma.BidScalarFieldEnum[]
+}
+
+/**
+ * User.deposits
+ */
+export type User$depositsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuctionDeposit
+   */
+  select?: Prisma.AuctionDepositSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuctionDeposit
+   */
+  omit?: Prisma.AuctionDepositOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuctionDepositInclude<ExtArgs> | null
+  where?: Prisma.AuctionDepositWhereInput
+  orderBy?: Prisma.AuctionDepositOrderByWithRelationInput | Prisma.AuctionDepositOrderByWithRelationInput[]
+  cursor?: Prisma.AuctionDepositWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuctionDepositScalarFieldEnum | Prisma.AuctionDepositScalarFieldEnum[]
+}
+
+/**
+ * User.wonAuctions
+ */
+export type User$wonAuctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Auction
+   */
+  select?: Prisma.AuctionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Auction
+   */
+  omit?: Prisma.AuctionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuctionInclude<ExtArgs> | null
+  where?: Prisma.AuctionWhereInput
+  orderBy?: Prisma.AuctionOrderByWithRelationInput | Prisma.AuctionOrderByWithRelationInput[]
+  cursor?: Prisma.AuctionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuctionScalarFieldEnum | Prisma.AuctionScalarFieldEnum[]
+}
+
+/**
+ * User.buyerOrders
+ */
+export type User$buyerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * User.sellerOrders
+ */
+export type User$sellerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * User.disputes
+ */
+export type User$disputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Dispute
+   */
+  select?: Prisma.DisputeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Dispute
+   */
+  omit?: Prisma.DisputeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DisputeInclude<ExtArgs> | null
+  where?: Prisma.DisputeWhereInput
+  orderBy?: Prisma.DisputeOrderByWithRelationInput | Prisma.DisputeOrderByWithRelationInput[]
+  cursor?: Prisma.DisputeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DisputeScalarFieldEnum | Prisma.DisputeScalarFieldEnum[]
+}
+
+/**
+ * User.favoriteObjects
+ */
+export type User$favoriteObjectsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FavoriteObject
+   */
+  select?: Prisma.FavoriteObjectSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FavoriteObject
+   */
+  omit?: Prisma.FavoriteObjectOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoriteObjectInclude<ExtArgs> | null
+  where?: Prisma.FavoriteObjectWhereInput
+  orderBy?: Prisma.FavoriteObjectOrderByWithRelationInput | Prisma.FavoriteObjectOrderByWithRelationInput[]
+  cursor?: Prisma.FavoriteObjectWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoriteObjectScalarFieldEnum | Prisma.FavoriteObjectScalarFieldEnum[]
+}
+
+/**
+ * User.favoriteAuctions
+ */
+export type User$favoriteAuctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FavoriteAuction
+   */
+  select?: Prisma.FavoriteAuctionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FavoriteAuction
+   */
+  omit?: Prisma.FavoriteAuctionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FavoriteAuctionInclude<ExtArgs> | null
+  where?: Prisma.FavoriteAuctionWhereInput
+  orderBy?: Prisma.FavoriteAuctionOrderByWithRelationInput | Prisma.FavoriteAuctionOrderByWithRelationInput[]
+  cursor?: Prisma.FavoriteAuctionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FavoriteAuctionScalarFieldEnum | Prisma.FavoriteAuctionScalarFieldEnum[]
+}
+
+/**
+ * User.following
+ */
+export type User$followingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Follow
+   */
+  select?: Prisma.FollowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Follow
+   */
+  omit?: Prisma.FollowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowInclude<ExtArgs> | null
+  where?: Prisma.FollowWhereInput
+  orderBy?: Prisma.FollowOrderByWithRelationInput | Prisma.FollowOrderByWithRelationInput[]
+  cursor?: Prisma.FollowWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
+}
+
+/**
+ * User.followers
+ */
+export type User$followersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Follow
+   */
+  select?: Prisma.FollowSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Follow
+   */
+  omit?: Prisma.FollowOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FollowInclude<ExtArgs> | null
+  where?: Prisma.FollowWhereInput
+  orderBy?: Prisma.FollowOrderByWithRelationInput | Prisma.FollowOrderByWithRelationInput[]
+  cursor?: Prisma.FollowWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FollowScalarFieldEnum | Prisma.FollowScalarFieldEnum[]
 }
 
 /**

@@ -34,3 +34,71 @@ export const VerificationStatus = {
 } as const
 
 export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus]
+
+
+export const ObjectStatus = {
+  DRAFT: 'DRAFT',
+  AVAILABLE: 'AVAILABLE',
+  IN_AUCTION: 'IN_AUCTION',
+  SOLD: 'SOLD'
+} as const
+
+export type ObjectStatus = (typeof ObjectStatus)[keyof typeof ObjectStatus]
+
+
+export const AuctionStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  LIVE: 'LIVE',
+  ENDED: 'ENDED',
+  SOLD: 'SOLD',
+  UNSOLD: 'UNSOLD',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type AuctionStatus = (typeof AuctionStatus)[keyof typeof AuctionStatus]
+
+
+export const DepositStatus = {
+  HELD: 'HELD',
+  RELEASED: 'RELEASED',
+  FORFEITED: 'FORFEITED'
+} as const
+
+export type DepositStatus = (typeof DepositStatus)[keyof typeof DepositStatus]
+
+
+export const OrderStatus = {
+  AWAITING_PAYMENT: 'AWAITING_PAYMENT',
+  PAID_IN_ESCROW: 'PAID_IN_ESCROW',
+  COMPLETED: 'COMPLETED',
+  DISPUTED: 'DISPUTED',
+  REFUNDED: 'REFUNDED',
+  DEFAULTED: 'DEFAULTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const DisputeStatus = {
+  OPEN: 'OPEN',
+  RESOLVED_BUYER: 'RESOLVED_BUYER',
+  RESOLVED_SELLER: 'RESOLVED_SELLER'
+} as const
+
+export type DisputeStatus = (typeof DisputeStatus)[keyof typeof DisputeStatus]
+
+
+export const WalletTxnType = {
+  TOPUP: 'TOPUP',
+  WITHDRAW: 'WITHDRAW',
+  DEPOSIT_HOLD: 'DEPOSIT_HOLD',
+  DEPOSIT_RELEASE: 'DEPOSIT_RELEASE',
+  DEPOSIT_FORFEIT: 'DEPOSIT_FORFEIT',
+  ESCROW_IN: 'ESCROW_IN',
+  ESCROW_RELEASE: 'ESCROW_RELEASE',
+  REFUND: 'REFUND'
+} as const
+
+export type WalletTxnType = (typeof WalletTxnType)[keyof typeof WalletTxnType]

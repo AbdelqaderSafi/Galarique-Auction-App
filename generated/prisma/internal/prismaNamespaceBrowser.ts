@@ -53,7 +53,19 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   SellerProfile: 'SellerProfile',
-  Wallet: 'Wallet'
+  Wallet: 'Wallet',
+  WalletTransaction: 'WalletTransaction',
+  Category: 'Category',
+  Object: 'Object',
+  ObjectImage: 'ObjectImage',
+  Auction: 'Auction',
+  Bid: 'Bid',
+  AuctionDeposit: 'AuctionDeposit',
+  Order: 'Order',
+  Dispute: 'Dispute',
+  FavoriteObject: 'FavoriteObject',
+  FavoriteAuction: 'FavoriteAuction',
+  Follow: 'Follow'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -112,6 +124,170 @@ export const WalletScalarFieldEnum = {
 } as const
 
 export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
+
+
+export const WalletTransactionScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  type: 'type',
+  amount: 'amount',
+  refId: 'refId',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
+
+
+export const CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  iconUrl: 'iconUrl'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const ObjectScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  categoryId: 'categoryId',
+  title: 'title',
+  description: 'description',
+  era: 'era',
+  condition: 'condition',
+  originality: 'originality',
+  authenticity: 'authenticity',
+  country: 'country',
+  heightCm: 'heightCm',
+  widthCm: 'widthCm',
+  depthCm: 'depthCm',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ObjectScalarFieldEnum = (typeof ObjectScalarFieldEnum)[keyof typeof ObjectScalarFieldEnum]
+
+
+export const ObjectImageScalarFieldEnum = {
+  id: 'id',
+  objectId: 'objectId',
+  url: 'url',
+  position: 'position'
+} as const
+
+export type ObjectImageScalarFieldEnum = (typeof ObjectImageScalarFieldEnum)[keyof typeof ObjectImageScalarFieldEnum]
+
+
+export const AuctionScalarFieldEnum = {
+  id: 'id',
+  objectId: 'objectId',
+  startingPrice: 'startingPrice',
+  reservePrice: 'reservePrice',
+  estimatedValue: 'estimatedValue',
+  minBidIncrement: 'minBidIncrement',
+  currentPrice: 'currentPrice',
+  currentWinnerId: 'currentWinnerId',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  antiSnipeSeconds: 'antiSnipeSeconds',
+  extendBySeconds: 'extendBySeconds',
+  viewsCount: 'viewsCount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuctionScalarFieldEnum = (typeof AuctionScalarFieldEnum)[keyof typeof AuctionScalarFieldEnum]
+
+
+export const BidScalarFieldEnum = {
+  id: 'id',
+  auctionId: 'auctionId',
+  bidderId: 'bidderId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type BidScalarFieldEnum = (typeof BidScalarFieldEnum)[keyof typeof BidScalarFieldEnum]
+
+
+export const AuctionDepositScalarFieldEnum = {
+  id: 'id',
+  auctionId: 'auctionId',
+  userId: 'userId',
+  amount: 'amount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AuctionDepositScalarFieldEnum = (typeof AuctionDepositScalarFieldEnum)[keyof typeof AuctionDepositScalarFieldEnum]
+
+
+export const OrderScalarFieldEnum = {
+  id: 'id',
+  auctionId: 'auctionId',
+  buyerId: 'buyerId',
+  sellerId: 'sellerId',
+  amount: 'amount',
+  depositApplied: 'depositApplied',
+  amountDue: 'amountDue',
+  offerRank: 'offerRank',
+  status: 'status',
+  paymentDeadline: 'paymentDeadline',
+  paidAt: 'paidAt',
+  autoReleaseAt: 'autoReleaseAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const DisputeScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  raisedById: 'raisedById',
+  reason: 'reason',
+  status: 'status',
+  adminNote: 'adminNote',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+} as const
+
+export type DisputeScalarFieldEnum = (typeof DisputeScalarFieldEnum)[keyof typeof DisputeScalarFieldEnum]
+
+
+export const FavoriteObjectScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  objectId: 'objectId',
+  createdAt: 'createdAt'
+} as const
+
+export type FavoriteObjectScalarFieldEnum = (typeof FavoriteObjectScalarFieldEnum)[keyof typeof FavoriteObjectScalarFieldEnum]
+
+
+export const FavoriteAuctionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  auctionId: 'auctionId',
+  createdAt: 'createdAt'
+} as const
+
+export type FavoriteAuctionScalarFieldEnum = (typeof FavoriteAuctionScalarFieldEnum)[keyof typeof FavoriteAuctionScalarFieldEnum]
+
+
+export const FollowScalarFieldEnum = {
+  followerId: 'followerId',
+  sellerId: 'sellerId',
+  createdAt: 'createdAt'
+} as const
+
+export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum]
 
 
 export const SortOrder = {

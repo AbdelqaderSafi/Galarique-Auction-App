@@ -27,15 +27,6 @@ export const Role = {
 export type Role = (typeof Role)[keyof typeof Role]
 
 
-export const VerificationStatus = {
-  PENDING: 'PENDING',
-  APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
-} as const
-
-export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus]
-
-
 export const ObjectStatus = {
   DRAFT: 'DRAFT',
   AVAILABLE: 'AVAILABLE',
@@ -48,7 +39,8 @@ export type ObjectStatus = (typeof ObjectStatus)[keyof typeof ObjectStatus]
 
 export const AuctionStatus = {
   DRAFT: 'DRAFT',
-  SCHEDULED: 'SCHEDULED',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  REJECTED: 'REJECTED',
   LIVE: 'LIVE',
   ENDED: 'ENDED',
   SOLD: 'SOLD',
@@ -88,6 +80,15 @@ export const DisputeStatus = {
 } as const
 
 export type DisputeStatus = (typeof DisputeStatus)[keyof typeof DisputeStatus]
+
+
+export const WithdrawalStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  FAILED: 'FAILED'
+} as const
+
+export type WithdrawalStatus = (typeof WithdrawalStatus)[keyof typeof WithdrawalStatus]
 
 
 export const WalletTxnType = {

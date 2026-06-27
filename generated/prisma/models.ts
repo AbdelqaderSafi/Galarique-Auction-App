@@ -10,8 +10,10 @@
  */
 export type * from './models/User.js'
 export type * from './models/SellerProfile.js'
+export type * from './models/PhoneVerification.js'
 export type * from './models/Wallet.js'
 export type * from './models/WalletTransaction.js'
+export type * from './models/Withdrawal.js'
 export type * from './models/Category.js'
 export type * from './models/Object.js'
 export type * from './models/ObjectImage.js'

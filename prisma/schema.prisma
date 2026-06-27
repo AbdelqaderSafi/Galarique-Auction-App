@@ -29,12 +29,6 @@ enum Role {
   ADMIN
 }
 
-enum VerificationStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 // حالة القطعة الفنية (كيان دائم)
 enum ObjectStatus {
   DRAFT // تحت الإنشاء (wizard لم يكتمل)
@@ -45,9 +39,10 @@ enum ObjectStatus {
 
 // حالة المزاد
 enum AuctionStatus {
-  DRAFT // مسوّدة
-  SCHEDULED // مجدول (لم يبدأ)
-  LIVE // قائم
+  DRAFT // مسوّدة (البائع يبني)
+  PENDING_REVIEW // أُرسِل — بانتظار موافقة الأدمن
+  REJECTED // رفضه الأدمن (مع سبب)
+  LIVE // قائم (بدأ لحظة الموافقة)
   ENDED // انتهى الوقت (قيد الحسم)
   SOLD // بِيع ودُفع
   UNSOLD // لم يُبَع (لا مزايدات / أقل من الاحتياطي / تخلّف الجميع)
@@ -79,6 +74,13 @@ enum DisputeStatus {
   RESOLVED_SELLER // حُسِم لصالح البائع (تحرير)
 }
 
+// حالة طلب السحب (عبر Stripe Connect/Payouts)
+enum WithdrawalStatus {
+  PENDING // قيد المعالجة
+  PAID // حُوِّل بنجاح
+  FAILED // فشل
+}
+
 // نوع حركة المحفظة
 enum WalletTxnType {
   TOPUP // شحن (عبر البوابة)
@@ -106,41 +108,60 @@ model User {
   // الدور كمصفوفة، والافتراضي مشتري
   roles Role[] @default([BUYER])
 
+  // Stripe
+  stripeCustomerId String? @unique // لشحن المحفظة (PaymentIntent)
+  stripeConnectId  String? @unique // لحساب الـ payouts (Stripe Connect)
+
   sellerProfile SellerProfile?
   wallet        Wallet?
 
   // العلاقات الجديدة
-  objects          Object[]          @relation("OwnerObjects") // القطع التي يملكها (بائع)
-  bids             Bid[] // مزايداته
-  deposits         AuctionDeposit[] // عرابينه
-  wonAuctions      Auction[]         @relation("AuctionWinner") // المزادات التي يتصدّرها/فاز بها حالياً
-  buyerOrders      Order[]           @relation("BuyerOrders") // طلباته كمشتري
-  sellerOrders     Order[]           @relation("SellerOrders") // طلباته كبائع
-  disputes         Dispute[] // النزاعات التي رفعها
-  favoriteObjects  FavoriteObject[] // مفضّلة القطع
-  favoriteAuctions FavoriteAuction[] // مفضّلة المزادات
-  following        Follow[]          @relation("Following") // الباعة الذين يتابعهم
-  followers        Follow[]          @relation("Followers") // متابعوه كبائع
+  objects            Object[]            @relation("OwnerObjects") // القطع التي يملكها (بائع)
+  bids               Bid[] // مزايداته
+  deposits           AuctionDeposit[] // عرابينه
+  wonAuctions        Auction[]           @relation("AuctionWinner") // المزادات التي يتصدّرها/فاز بها حالياً
+  reviewedAuctions   Auction[]           @relation("AuctionReviewer") // المزادات التي راجعها كأدمن
+  buyerOrders        Order[]             @relation("BuyerOrders") // طلباته كمشتري
+  sellerOrders       Order[]             @relation("SellerOrders") // طلباته كبائع
+  disputes           Dispute[] // النزاعات التي رفعها
+  phoneVerifications PhoneVerification[] // أكواد تحقّق الهاتف
+  withdrawals        Withdrawal[] // طلبات السحب
+  favoriteObjects    FavoriteObject[] // مفضّلة القطع
+  favoriteAuctions   FavoriteAuction[] // مفضّلة المزادات
+  following          Follow[]            @relation("Following") // الباعة الذين يتابعهم
+  followers          Follow[]            @relation("Followers") // متابعوه كبائع
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// جدول منفصل تماماً للتوثيق فقط
+// سجل البائع الموثّق — يُنشأ عند نجاح تحقّق الهاتف (يمنح دور SELLER)
 model SellerProfile {
   id     String @id @default(uuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id])
 
-  idNumber    String
-  idImageUrl  String
-  phoneNumber String
-  address     String
-
-  status VerificationStatus @default(PENDING)
+  phoneNumber     String   @unique // رقم فلسطيني (+970/+972) موثّق
+  phoneVerifiedAt DateTime // وقت تأكيد الـ OTP
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// أكواد تحقّق الهاتف (OTP) — عابرة، تُستهلك عند التأكيد
+model PhoneVerification {
+  id         String    @id @default(uuid())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  phone      String // الرقم المُراد توثيقه (+970/+972)
+  codeHash   String // الكود مُجزّأ (لا يُخزّن صراحةً)
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  consumedAt DateTime? // وقت الاستخدام الناجح
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, phone])
 }
 
 // المحفظة الموحّدة للمستخدم
@@ -171,6 +192,21 @@ model WalletTransaction {
   createdAt DateTime @default(now())
 
   @@index([walletId, createdAt])
+}
+
+// طلب سحب رصيد — يُنفَّذ عبر Stripe Connect/Payouts
+model Withdrawal {
+  id             String           @id @default(uuid())
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String
+  amount         Decimal          @db.Decimal(12, 2)
+  status         WithdrawalStatus @default(PENDING)
+  stripePayoutId String? // مرجع التحويل من Stripe
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
 }
 
 // =====================================================================
@@ -248,13 +284,20 @@ model Auction {
   currentWinnerId String?
 
   // التوقيت + التمديد التلقائي (anti-snipe)
-  startTime        DateTime
-  endTime          DateTime
-  antiSnipeSeconds Int      @default(60) // لو جت مزايدة بآخر X ثانية
-  extendBySeconds  Int      @default(60) // مدّد X ثانية
+  durationDays     Int // المدة المختارة (3/5/7/10) — تبدأ عند الموافقة
+  startTime        DateTime? // تُضبط عند موافقة الأدمن
+  endTime          DateTime? // = startTime + durationDays
+  antiSnipeSeconds Int       @default(60) // لو جت مزايدة بآخر X ثانية
+  extendBySeconds  Int       @default(60) // مدّد X ثانية
+
+  // مراجعة الأدمن
+  reviewedBy      User?     @relation("AuctionReviewer", fields: [reviewedById], references: [id])
+  reviewedById    String?
+  reviewedAt      DateTime?
+  rejectionReason String?
 
   viewsCount Int           @default(0)
-  status     AuctionStatus @default(SCHEDULED)
+  status     AuctionStatus @default(DRAFT)
 
   bids      Bid[]
   deposits  AuctionDeposit[]

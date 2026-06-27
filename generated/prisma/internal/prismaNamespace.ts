@@ -386,8 +386,10 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   SellerProfile: 'SellerProfile',
+  PhoneVerification: 'PhoneVerification',
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',
+  Withdrawal: 'Withdrawal',
   Category: 'Category',
   Object: 'Object',
   ObjectImage: 'ObjectImage',
@@ -414,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "sellerProfile" | "wallet" | "walletTransaction" | "category" | "object" | "objectImage" | "auction" | "bid" | "auctionDeposit" | "order" | "dispute" | "favoriteObject" | "favoriteAuction" | "follow"
+    modelProps: "user" | "sellerProfile" | "phoneVerification" | "wallet" | "walletTransaction" | "withdrawal" | "category" | "object" | "objectImage" | "auction" | "bid" | "auctionDeposit" | "order" | "dispute" | "favoriteObject" | "favoriteAuction" | "follow"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -566,6 +568,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PhoneVerification: {
+      payload: Prisma.$PhoneVerificationPayload<ExtArgs>
+      fields: Prisma.PhoneVerificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PhoneVerificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PhoneVerificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>
+        }
+        findFirst: {
+          args: Prisma.PhoneVerificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PhoneVerificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>
+        }
+        findMany: {
+          args: Prisma.PhoneVerificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>[]
+        }
+        create: {
+          args: Prisma.PhoneVerificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>
+        }
+        createMany: {
+          args: Prisma.PhoneVerificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PhoneVerificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>[]
+        }
+        delete: {
+          args: Prisma.PhoneVerificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>
+        }
+        update: {
+          args: Prisma.PhoneVerificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.PhoneVerificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PhoneVerificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PhoneVerificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.PhoneVerificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PhoneVerificationPayload>
+        }
+        aggregate: {
+          args: Prisma.PhoneVerificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePhoneVerification>
+        }
+        groupBy: {
+          args: Prisma.PhoneVerificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PhoneVerificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PhoneVerificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PhoneVerificationCountAggregateOutputType> | number
+        }
+      }
+    }
     Wallet: {
       payload: Prisma.$WalletPayload<ExtArgs>
       fields: Prisma.WalletFieldRefs
@@ -711,6 +787,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.WalletTransactionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.WalletTransactionCountAggregateOutputType> | number
+        }
+      }
+    }
+    Withdrawal: {
+      payload: Prisma.$WithdrawalPayload<ExtArgs>
+      fields: Prisma.WithdrawalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WithdrawalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WithdrawalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>
+        }
+        findFirst: {
+          args: Prisma.WithdrawalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WithdrawalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>
+        }
+        findMany: {
+          args: Prisma.WithdrawalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>[]
+        }
+        create: {
+          args: Prisma.WithdrawalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>
+        }
+        createMany: {
+          args: Prisma.WithdrawalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.WithdrawalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>[]
+        }
+        delete: {
+          args: Prisma.WithdrawalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>
+        }
+        update: {
+          args: Prisma.WithdrawalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>
+        }
+        deleteMany: {
+          args: Prisma.WithdrawalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WithdrawalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.WithdrawalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>[]
+        }
+        upsert: {
+          args: Prisma.WithdrawalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WithdrawalPayload>
+        }
+        aggregate: {
+          args: Prisma.WithdrawalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWithdrawal>
+        }
+        groupBy: {
+          args: Prisma.WithdrawalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WithdrawalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WithdrawalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WithdrawalCountAggregateOutputType> | number
         }
       }
     }
@@ -1575,6 +1725,8 @@ export const UserScalarFieldEnum = {
   provider: 'provider',
   providerId: 'providerId',
   roles: 'roles',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeConnectId: 'stripeConnectId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1585,16 +1737,27 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const SellerProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  idNumber: 'idNumber',
-  idImageUrl: 'idImageUrl',
   phoneNumber: 'phoneNumber',
-  address: 'address',
-  status: 'status',
+  phoneVerifiedAt: 'phoneVerifiedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type SellerProfileScalarFieldEnum = (typeof SellerProfileScalarFieldEnum)[keyof typeof SellerProfileScalarFieldEnum]
+
+
+export const PhoneVerificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  phone: 'phone',
+  codeHash: 'codeHash',
+  expiresAt: 'expiresAt',
+  attempts: 'attempts',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PhoneVerificationScalarFieldEnum = (typeof PhoneVerificationScalarFieldEnum)[keyof typeof PhoneVerificationScalarFieldEnum]
 
 
 export const WalletScalarFieldEnum = {
@@ -1620,6 +1783,19 @@ export const WalletTransactionScalarFieldEnum = {
 } as const
 
 export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
+
+
+export const WithdrawalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  status: 'status',
+  stripePayoutId: 'stripePayoutId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WithdrawalScalarFieldEnum = (typeof WithdrawalScalarFieldEnum)[keyof typeof WithdrawalScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {
@@ -1672,10 +1848,14 @@ export const AuctionScalarFieldEnum = {
   minBidIncrement: 'minBidIncrement',
   currentPrice: 'currentPrice',
   currentWinnerId: 'currentWinnerId',
+  durationDays: 'durationDays',
   startTime: 'startTime',
   endTime: 'endTime',
   antiSnipeSeconds: 'antiSnipeSeconds',
   extendBySeconds: 'extendBySeconds',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  rejectionReason: 'rejectionReason',
   viewsCount: 'viewsCount',
   status: 'status',
   createdAt: 'createdAt',
@@ -1860,16 +2040,16 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'VerificationStatus'
+ * Reference to a field of type 'Int'
  */
-export type EnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'VerificationStatus[]'
+ * Reference to a field of type 'Int[]'
  */
-export type ListEnumVerificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationStatus[]'>
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1902,6 +2082,20 @@ export type ListEnumWalletTxnTypeFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'WithdrawalStatus'
+ */
+export type EnumWithdrawalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawalStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'WithdrawalStatus[]'
+ */
+export type ListEnumWithdrawalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawalStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'ObjectStatus'
  */
 export type EnumObjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ObjectStatus'>
@@ -1912,20 +2106,6 @@ export type EnumObjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'ObjectStatus[]'
  */
 export type ListEnumObjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ObjectStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -2110,8 +2290,10 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   sellerProfile?: Prisma.SellerProfileOmit
+  phoneVerification?: Prisma.PhoneVerificationOmit
   wallet?: Prisma.WalletOmit
   walletTransaction?: Prisma.WalletTransactionOmit
+  withdrawal?: Prisma.WithdrawalOmit
   category?: Prisma.CategoryOmit
   object?: Prisma.ObjectOmit
   objectImage?: Prisma.ObjectImageOmit

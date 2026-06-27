@@ -27,11 +27,8 @@ export type AggregateSellerProfile = {
 export type SellerProfileMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  idNumber: string | null
-  idImageUrl: string | null
   phoneNumber: string | null
-  address: string | null
-  status: $Enums.VerificationStatus | null
+  phoneVerifiedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -39,11 +36,8 @@ export type SellerProfileMinAggregateOutputType = {
 export type SellerProfileMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  idNumber: string | null
-  idImageUrl: string | null
   phoneNumber: string | null
-  address: string | null
-  status: $Enums.VerificationStatus | null
+  phoneVerifiedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -51,11 +45,8 @@ export type SellerProfileMaxAggregateOutputType = {
 export type SellerProfileCountAggregateOutputType = {
   id: number
   userId: number
-  idNumber: number
-  idImageUrl: number
   phoneNumber: number
-  address: number
-  status: number
+  phoneVerifiedAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -65,11 +56,8 @@ export type SellerProfileCountAggregateOutputType = {
 export type SellerProfileMinAggregateInputType = {
   id?: true
   userId?: true
-  idNumber?: true
-  idImageUrl?: true
   phoneNumber?: true
-  address?: true
-  status?: true
+  phoneVerifiedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,11 +65,8 @@ export type SellerProfileMinAggregateInputType = {
 export type SellerProfileMaxAggregateInputType = {
   id?: true
   userId?: true
-  idNumber?: true
-  idImageUrl?: true
   phoneNumber?: true
-  address?: true
-  status?: true
+  phoneVerifiedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -89,11 +74,8 @@ export type SellerProfileMaxAggregateInputType = {
 export type SellerProfileCountAggregateInputType = {
   id?: true
   userId?: true
-  idNumber?: true
-  idImageUrl?: true
   phoneNumber?: true
-  address?: true
-  status?: true
+  phoneVerifiedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -174,11 +156,8 @@ export type SellerProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type SellerProfileGroupByOutputType = {
   id: string
   userId: string
-  idNumber: string
-  idImageUrl: string
   phoneNumber: string
-  address: string
-  status: $Enums.VerificationStatus
+  phoneVerifiedAt: Date
   createdAt: Date
   updatedAt: Date
   _count: SellerProfileCountAggregateOutputType | null
@@ -207,11 +186,8 @@ export type SellerProfileWhereInput = {
   NOT?: Prisma.SellerProfileWhereInput | Prisma.SellerProfileWhereInput[]
   id?: Prisma.StringFilter<"SellerProfile"> | string
   userId?: Prisma.StringFilter<"SellerProfile"> | string
-  idNumber?: Prisma.StringFilter<"SellerProfile"> | string
-  idImageUrl?: Prisma.StringFilter<"SellerProfile"> | string
   phoneNumber?: Prisma.StringFilter<"SellerProfile"> | string
-  address?: Prisma.StringFilter<"SellerProfile"> | string
-  status?: Prisma.EnumVerificationStatusFilter<"SellerProfile"> | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFilter<"SellerProfile"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"SellerProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SellerProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -220,11 +196,8 @@ export type SellerProfileWhereInput = {
 export type SellerProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  idNumber?: Prisma.SortOrder
-  idImageUrl?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -233,27 +206,21 @@ export type SellerProfileOrderByWithRelationInput = {
 export type SellerProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
+  phoneNumber?: string
   AND?: Prisma.SellerProfileWhereInput | Prisma.SellerProfileWhereInput[]
   OR?: Prisma.SellerProfileWhereInput[]
   NOT?: Prisma.SellerProfileWhereInput | Prisma.SellerProfileWhereInput[]
-  idNumber?: Prisma.StringFilter<"SellerProfile"> | string
-  idImageUrl?: Prisma.StringFilter<"SellerProfile"> | string
-  phoneNumber?: Prisma.StringFilter<"SellerProfile"> | string
-  address?: Prisma.StringFilter<"SellerProfile"> | string
-  status?: Prisma.EnumVerificationStatusFilter<"SellerProfile"> | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFilter<"SellerProfile"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"SellerProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SellerProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "userId">
+}, "id" | "userId" | "phoneNumber">
 
 export type SellerProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  idNumber?: Prisma.SortOrder
-  idImageUrl?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SellerProfileCountOrderByAggregateInput
@@ -267,22 +234,16 @@ export type SellerProfileScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SellerProfileScalarWhereWithAggregatesInput | Prisma.SellerProfileScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SellerProfile"> | string
   userId?: Prisma.StringWithAggregatesFilter<"SellerProfile"> | string
-  idNumber?: Prisma.StringWithAggregatesFilter<"SellerProfile"> | string
-  idImageUrl?: Prisma.StringWithAggregatesFilter<"SellerProfile"> | string
   phoneNumber?: Prisma.StringWithAggregatesFilter<"SellerProfile"> | string
-  address?: Prisma.StringWithAggregatesFilter<"SellerProfile"> | string
-  status?: Prisma.EnumVerificationStatusWithAggregatesFilter<"SellerProfile"> | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeWithAggregatesFilter<"SellerProfile"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SellerProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"SellerProfile"> | Date | string
 }
 
 export type SellerProfileCreateInput = {
   id?: string
-  idNumber: string
-  idImageUrl: string
   phoneNumber: string
-  address: string
-  status?: $Enums.VerificationStatus
+  phoneVerifiedAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSellerProfileInput
@@ -291,22 +252,16 @@ export type SellerProfileCreateInput = {
 export type SellerProfileUncheckedCreateInput = {
   id?: string
   userId: string
-  idNumber: string
-  idImageUrl: string
   phoneNumber: string
-  address: string
-  status?: $Enums.VerificationStatus
+  phoneVerifiedAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type SellerProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  idNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  idImageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSellerProfileNestedInput
@@ -315,11 +270,8 @@ export type SellerProfileUpdateInput = {
 export type SellerProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  idNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  idImageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -327,22 +279,16 @@ export type SellerProfileUncheckedUpdateInput = {
 export type SellerProfileCreateManyInput = {
   id?: string
   userId: string
-  idNumber: string
-  idImageUrl: string
   phoneNumber: string
-  address: string
-  status?: $Enums.VerificationStatus
+  phoneVerifiedAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type SellerProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  idNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  idImageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -350,11 +296,8 @@ export type SellerProfileUpdateManyMutationInput = {
 export type SellerProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  idNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  idImageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -367,11 +310,8 @@ export type SellerProfileNullableScalarRelationFilter = {
 export type SellerProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  idNumber?: Prisma.SortOrder
-  idImageUrl?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -379,11 +319,8 @@ export type SellerProfileCountOrderByAggregateInput = {
 export type SellerProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  idNumber?: Prisma.SortOrder
-  idImageUrl?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -391,11 +328,8 @@ export type SellerProfileMaxOrderByAggregateInput = {
 export type SellerProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  idNumber?: Prisma.SortOrder
-  idImageUrl?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  phoneVerifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -432,28 +366,18 @@ export type SellerProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SellerProfileUpdateToOneWithWhereWithoutUserInput, Prisma.SellerProfileUpdateWithoutUserInput>, Prisma.SellerProfileUncheckedUpdateWithoutUserInput>
 }
 
-export type EnumVerificationStatusFieldUpdateOperationsInput = {
-  set?: $Enums.VerificationStatus
-}
-
 export type SellerProfileCreateWithoutUserInput = {
   id?: string
-  idNumber: string
-  idImageUrl: string
   phoneNumber: string
-  address: string
-  status?: $Enums.VerificationStatus
+  phoneVerifiedAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type SellerProfileUncheckedCreateWithoutUserInput = {
   id?: string
-  idNumber: string
-  idImageUrl: string
   phoneNumber: string
-  address: string
-  status?: $Enums.VerificationStatus
+  phoneVerifiedAt: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -476,22 +400,16 @@ export type SellerProfileUpdateToOneWithWhereWithoutUserInput = {
 
 export type SellerProfileUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  idNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  idImageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type SellerProfileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  idNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  idImageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.EnumVerificationStatusFieldUpdateOperationsInput | $Enums.VerificationStatus
+  phoneVerifiedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -501,11 +419,8 @@ export type SellerProfileUncheckedUpdateWithoutUserInput = {
 export type SellerProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  idNumber?: boolean
-  idImageUrl?: boolean
   phoneNumber?: boolean
-  address?: boolean
-  status?: boolean
+  phoneVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -514,11 +429,8 @@ export type SellerProfileSelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type SellerProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  idNumber?: boolean
-  idImageUrl?: boolean
   phoneNumber?: boolean
-  address?: boolean
-  status?: boolean
+  phoneVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -527,11 +439,8 @@ export type SellerProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types
 export type SellerProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  idNumber?: boolean
-  idImageUrl?: boolean
   phoneNumber?: boolean
-  address?: boolean
-  status?: boolean
+  phoneVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -540,16 +449,13 @@ export type SellerProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type SellerProfileSelectScalar = {
   id?: boolean
   userId?: boolean
-  idNumber?: boolean
-  idImageUrl?: boolean
   phoneNumber?: boolean
-  address?: boolean
-  status?: boolean
+  phoneVerifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SellerProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "idNumber" | "idImageUrl" | "phoneNumber" | "address" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["sellerProfile"]>
+export type SellerProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "phoneNumber" | "phoneVerifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["sellerProfile"]>
 export type SellerProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -568,11 +474,8 @@ export type $SellerProfilePayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    idNumber: string
-    idImageUrl: string
     phoneNumber: string
-    address: string
-    status: $Enums.VerificationStatus
+    phoneVerifiedAt: Date
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["sellerProfile"]>
@@ -1001,11 +904,8 @@ export interface Prisma__SellerProfileClient<T, Null = never, ExtArgs extends ru
 export interface SellerProfileFieldRefs {
   readonly id: Prisma.FieldRef<"SellerProfile", 'String'>
   readonly userId: Prisma.FieldRef<"SellerProfile", 'String'>
-  readonly idNumber: Prisma.FieldRef<"SellerProfile", 'String'>
-  readonly idImageUrl: Prisma.FieldRef<"SellerProfile", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"SellerProfile", 'String'>
-  readonly address: Prisma.FieldRef<"SellerProfile", 'String'>
-  readonly status: Prisma.FieldRef<"SellerProfile", 'VerificationStatus'>
+  readonly phoneVerifiedAt: Prisma.FieldRef<"SellerProfile", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"SellerProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"SellerProfile", 'DateTime'>
 }

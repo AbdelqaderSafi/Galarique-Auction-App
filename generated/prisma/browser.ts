@@ -28,6 +28,11 @@ export type User = Prisma.UserModel
  */
 export type SellerProfile = Prisma.SellerProfileModel
 /**
+ * Model PhoneVerification
+ * 
+ */
+export type PhoneVerification = Prisma.PhoneVerificationModel
+/**
  * Model Wallet
  * 
  */
@@ -37,6 +42,11 @@ export type Wallet = Prisma.WalletModel
  * 
  */
 export type WalletTransaction = Prisma.WalletTransactionModel
+/**
+ * Model Withdrawal
+ * 
+ */
+export type Withdrawal = Prisma.WithdrawalModel
 /**
  * Model Category
  * 

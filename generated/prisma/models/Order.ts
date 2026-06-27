@@ -745,10 +745,6 @@ export type EnumOrderStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrderStatus
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type OrderCreateNestedOneWithoutDisputeInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutDisputeInput, Prisma.OrderUncheckedCreateWithoutDisputeInput>
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutDisputeInput

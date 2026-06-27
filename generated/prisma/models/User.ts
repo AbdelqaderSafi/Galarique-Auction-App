@@ -31,6 +31,8 @@ export type UserMinAggregateOutputType = {
   password: string | null
   provider: $Enums.AuthProvider | null
   providerId: string | null
+  stripeCustomerId: string | null
+  stripeConnectId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +44,8 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   provider: $Enums.AuthProvider | null
   providerId: string | null
+  stripeCustomerId: string | null
+  stripeConnectId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +58,8 @@ export type UserCountAggregateOutputType = {
   provider: number
   providerId: number
   roles: number
+  stripeCustomerId: number
+  stripeConnectId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -67,6 +73,8 @@ export type UserMinAggregateInputType = {
   password?: true
   provider?: true
   providerId?: true
+  stripeCustomerId?: true
+  stripeConnectId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -78,6 +86,8 @@ export type UserMaxAggregateInputType = {
   password?: true
   provider?: true
   providerId?: true
+  stripeCustomerId?: true
+  stripeConnectId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -90,6 +100,8 @@ export type UserCountAggregateInputType = {
   provider?: true
   providerId?: true
   roles?: true
+  stripeCustomerId?: true
+  stripeConnectId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -175,6 +187,8 @@ export type UserGroupByOutputType = {
   provider: $Enums.AuthProvider
   providerId: string | null
   roles: $Enums.Role[]
+  stripeCustomerId: string | null
+  stripeConnectId: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -208,6 +222,8 @@ export type UserWhereInput = {
   provider?: Prisma.EnumAuthProviderFilter<"User"> | $Enums.AuthProvider
   providerId?: Prisma.StringNullableFilter<"User"> | string | null
   roles?: Prisma.EnumRoleNullableListFilter<"User">
+  stripeCustomerId?: Prisma.StringNullableFilter<"User"> | string | null
+  stripeConnectId?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sellerProfile?: Prisma.XOR<Prisma.SellerProfileNullableScalarRelationFilter, Prisma.SellerProfileWhereInput> | null
@@ -216,9 +232,12 @@ export type UserWhereInput = {
   bids?: Prisma.BidListRelationFilter
   deposits?: Prisma.AuctionDepositListRelationFilter
   wonAuctions?: Prisma.AuctionListRelationFilter
+  reviewedAuctions?: Prisma.AuctionListRelationFilter
   buyerOrders?: Prisma.OrderListRelationFilter
   sellerOrders?: Prisma.OrderListRelationFilter
   disputes?: Prisma.DisputeListRelationFilter
+  phoneVerifications?: Prisma.PhoneVerificationListRelationFilter
+  withdrawals?: Prisma.WithdrawalListRelationFilter
   favoriteObjects?: Prisma.FavoriteObjectListRelationFilter
   favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
   following?: Prisma.FollowListRelationFilter
@@ -233,6 +252,8 @@ export type UserOrderByWithRelationInput = {
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrderInput | Prisma.SortOrder
   roles?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sellerProfile?: Prisma.SellerProfileOrderByWithRelationInput
@@ -241,9 +262,12 @@ export type UserOrderByWithRelationInput = {
   bids?: Prisma.BidOrderByRelationAggregateInput
   deposits?: Prisma.AuctionDepositOrderByRelationAggregateInput
   wonAuctions?: Prisma.AuctionOrderByRelationAggregateInput
+  reviewedAuctions?: Prisma.AuctionOrderByRelationAggregateInput
   buyerOrders?: Prisma.OrderOrderByRelationAggregateInput
   sellerOrders?: Prisma.OrderOrderByRelationAggregateInput
   disputes?: Prisma.DisputeOrderByRelationAggregateInput
+  phoneVerifications?: Prisma.PhoneVerificationOrderByRelationAggregateInput
+  withdrawals?: Prisma.WithdrawalOrderByRelationAggregateInput
   favoriteObjects?: Prisma.FavoriteObjectOrderByRelationAggregateInput
   favoriteAuctions?: Prisma.FavoriteAuctionOrderByRelationAggregateInput
   following?: Prisma.FollowOrderByRelationAggregateInput
@@ -253,6 +277,8 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  stripeCustomerId?: string
+  stripeConnectId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -269,14 +295,17 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   bids?: Prisma.BidListRelationFilter
   deposits?: Prisma.AuctionDepositListRelationFilter
   wonAuctions?: Prisma.AuctionListRelationFilter
+  reviewedAuctions?: Prisma.AuctionListRelationFilter
   buyerOrders?: Prisma.OrderListRelationFilter
   sellerOrders?: Prisma.OrderListRelationFilter
   disputes?: Prisma.DisputeListRelationFilter
+  phoneVerifications?: Prisma.PhoneVerificationListRelationFilter
+  withdrawals?: Prisma.WithdrawalListRelationFilter
   favoriteObjects?: Prisma.FavoriteObjectListRelationFilter
   favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
   following?: Prisma.FollowListRelationFilter
   followers?: Prisma.FollowListRelationFilter
-}, "id" | "email">
+}, "id" | "email" | "stripeCustomerId" | "stripeConnectId">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -286,6 +315,8 @@ export type UserOrderByWithAggregationInput = {
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrderInput | Prisma.SortOrder
   roles?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -304,6 +335,8 @@ export type UserScalarWhereWithAggregatesInput = {
   provider?: Prisma.EnumAuthProviderWithAggregatesFilter<"User"> | $Enums.AuthProvider
   providerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   roles?: Prisma.EnumRoleNullableListFilter<"User">
+  stripeCustomerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  stripeConnectId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -316,6 +349,8 @@ export type UserCreateInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -324,9 +359,12 @@ export type UserCreateInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -341,6 +379,8 @@ export type UserUncheckedCreateInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -349,9 +389,12 @@ export type UserUncheckedCreateInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -366,6 +409,8 @@ export type UserUpdateInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -374,9 +419,12 @@ export type UserUpdateInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -391,6 +439,8 @@ export type UserUncheckedUpdateInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -399,9 +449,12 @@ export type UserUncheckedUpdateInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -416,6 +469,8 @@ export type UserCreateManyInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -428,6 +483,8 @@ export type UserUpdateManyMutationInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -440,6 +497,8 @@ export type UserUncheckedUpdateManyInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -460,6 +519,8 @@ export type UserCountOrderByAggregateInput = {
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
   roles?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
+  stripeConnectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -471,6 +532,8 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
+  stripeConnectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -482,6 +545,8 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
+  stripeConnectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -535,6 +600,20 @@ export type UserUpdateOneRequiredWithoutSellerProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSellerProfileInput, Prisma.UserUpdateWithoutSellerProfileInput>, Prisma.UserUncheckedUpdateWithoutSellerProfileInput>
 }
 
+export type UserCreateNestedOneWithoutPhoneVerificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPhoneVerificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPhoneVerificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPhoneVerificationsInput
+  upsert?: Prisma.UserUpsertWithoutPhoneVerificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPhoneVerificationsInput, Prisma.UserUpdateWithoutPhoneVerificationsInput>, Prisma.UserUncheckedUpdateWithoutPhoneVerificationsInput>
+}
+
 export type UserCreateNestedOneWithoutWalletInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutWalletInput, Prisma.UserUncheckedCreateWithoutWalletInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutWalletInput
@@ -547,6 +626,20 @@ export type UserUpdateOneRequiredWithoutWalletNestedInput = {
   upsert?: Prisma.UserUpsertWithoutWalletInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWalletInput, Prisma.UserUpdateWithoutWalletInput>, Prisma.UserUncheckedUpdateWithoutWalletInput>
+}
+
+export type UserCreateNestedOneWithoutWithdrawalsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWithdrawalsInput, Prisma.UserUncheckedCreateWithoutWithdrawalsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWithdrawalsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutWithdrawalsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutWithdrawalsInput, Prisma.UserUncheckedCreateWithoutWithdrawalsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutWithdrawalsInput
+  upsert?: Prisma.UserUpsertWithoutWithdrawalsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWithdrawalsInput, Prisma.UserUpdateWithoutWithdrawalsInput>, Prisma.UserUncheckedUpdateWithoutWithdrawalsInput>
 }
 
 export type UserCreateNestedOneWithoutObjectsInput = {
@@ -569,6 +662,12 @@ export type UserCreateNestedOneWithoutWonAuctionsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutReviewedAuctionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedAuctionsInput, Prisma.UserUncheckedCreateWithoutReviewedAuctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedAuctionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneWithoutWonAuctionsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutWonAuctionsInput, Prisma.UserUncheckedCreateWithoutWonAuctionsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutWonAuctionsInput
@@ -577,6 +676,16 @@ export type UserUpdateOneWithoutWonAuctionsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutWonAuctionsInput, Prisma.UserUpdateWithoutWonAuctionsInput>, Prisma.UserUncheckedUpdateWithoutWonAuctionsInput>
+}
+
+export type UserUpdateOneWithoutReviewedAuctionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedAuctionsInput, Prisma.UserUncheckedCreateWithoutReviewedAuctionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedAuctionsInput
+  upsert?: Prisma.UserUpsertWithoutReviewedAuctionsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedAuctionsInput, Prisma.UserUpdateWithoutReviewedAuctionsInput>, Prisma.UserUncheckedUpdateWithoutReviewedAuctionsInput>
 }
 
 export type UserCreateNestedOneWithoutBidsInput = {
@@ -713,6 +822,8 @@ export type UserCreateWithoutSellerProfileInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
@@ -720,9 +831,12 @@ export type UserCreateWithoutSellerProfileInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -737,6 +851,8 @@ export type UserUncheckedCreateWithoutSellerProfileInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
@@ -744,9 +860,12 @@ export type UserUncheckedCreateWithoutSellerProfileInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -777,6 +896,8 @@ export type UserUpdateWithoutSellerProfileInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
@@ -784,9 +905,12 @@ export type UserUpdateWithoutSellerProfileInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -801,6 +925,8 @@ export type UserUncheckedUpdateWithoutSellerProfileInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -808,9 +934,144 @@ export type UserUncheckedUpdateWithoutSellerProfileInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutPhoneVerificationsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutPhoneVerificationsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutPhoneVerificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
+}
+
+export type UserUpsertWithoutPhoneVerificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPhoneVerificationsInput, Prisma.UserUncheckedUpdateWithoutPhoneVerificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPhoneVerificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPhoneVerificationsInput, Prisma.UserUncheckedUpdateWithoutPhoneVerificationsInput>
+}
+
+export type UserUpdateWithoutPhoneVerificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPhoneVerificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -825,6 +1086,8 @@ export type UserCreateWithoutWalletInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -832,9 +1095,12 @@ export type UserCreateWithoutWalletInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -849,6 +1115,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -856,9 +1124,12 @@ export type UserUncheckedCreateWithoutWalletInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -889,6 +1160,8 @@ export type UserUpdateWithoutWalletInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -896,9 +1169,12 @@ export type UserUpdateWithoutWalletInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -913,6 +1189,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -920,9 +1198,144 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserCreateWithoutWithdrawalsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutWithdrawalsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutWithdrawalsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutWithdrawalsInput, Prisma.UserUncheckedCreateWithoutWithdrawalsInput>
+}
+
+export type UserUpsertWithoutWithdrawalsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutWithdrawalsInput, Prisma.UserUncheckedUpdateWithoutWithdrawalsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutWithdrawalsInput, Prisma.UserUncheckedCreateWithoutWithdrawalsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutWithdrawalsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutWithdrawalsInput, Prisma.UserUncheckedUpdateWithoutWithdrawalsInput>
+}
+
+export type UserUpdateWithoutWithdrawalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutWithdrawalsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -937,6 +1350,8 @@ export type UserCreateWithoutObjectsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -944,9 +1359,12 @@ export type UserCreateWithoutObjectsInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -961,6 +1379,8 @@ export type UserUncheckedCreateWithoutObjectsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -968,9 +1388,12 @@ export type UserUncheckedCreateWithoutObjectsInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1001,6 +1424,8 @@ export type UserUpdateWithoutObjectsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1008,9 +1433,12 @@ export type UserUpdateWithoutObjectsInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1025,6 +1453,8 @@ export type UserUncheckedUpdateWithoutObjectsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1032,9 +1462,12 @@ export type UserUncheckedUpdateWithoutObjectsInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1049,6 +1482,8 @@ export type UserCreateWithoutWonAuctionsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1056,9 +1491,12 @@ export type UserCreateWithoutWonAuctionsInput = {
   objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -1073,6 +1511,8 @@ export type UserUncheckedCreateWithoutWonAuctionsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1080,9 +1520,12 @@ export type UserUncheckedCreateWithoutWonAuctionsInput = {
   objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1092,6 +1535,69 @@ export type UserUncheckedCreateWithoutWonAuctionsInput = {
 export type UserCreateOrConnectWithoutWonAuctionsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutWonAuctionsInput, Prisma.UserUncheckedCreateWithoutWonAuctionsInput>
+}
+
+export type UserCreateWithoutReviewedAuctionsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
+  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
+}
+
+export type UserUncheckedCreateWithoutReviewedAuctionsInput = {
+  id?: string
+  fullName: string
+  email: string
+  password?: string | null
+  provider?: $Enums.AuthProvider
+  providerId?: string | null
+  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
+  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
+  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
+  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
+  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
+  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
+  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type UserCreateOrConnectWithoutReviewedAuctionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedAuctionsInput, Prisma.UserUncheckedCreateWithoutReviewedAuctionsInput>
 }
 
 export type UserUpsertWithoutWonAuctionsInput = {
@@ -1113,6 +1619,8 @@ export type UserUpdateWithoutWonAuctionsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1120,9 +1628,12 @@ export type UserUpdateWithoutWonAuctionsInput = {
   objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1137,6 +1648,8 @@ export type UserUncheckedUpdateWithoutWonAuctionsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1144,9 +1657,81 @@ export type UserUncheckedUpdateWithoutWonAuctionsInput = {
   objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUpsertWithoutReviewedAuctionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedAuctionsInput, Prisma.UserUncheckedUpdateWithoutReviewedAuctionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedAuctionsInput, Prisma.UserUncheckedCreateWithoutReviewedAuctionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewedAuctionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedAuctionsInput, Prisma.UserUncheckedUpdateWithoutReviewedAuctionsInput>
+}
+
+export type UserUpdateWithoutReviewedAuctionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
+  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
+  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
+  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
+  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewedAuctionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
+  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
+  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
+  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
+  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
+  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1161,6 +1746,8 @@ export type UserCreateWithoutBidsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1168,9 +1755,12 @@ export type UserCreateWithoutBidsInput = {
   objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -1185,6 +1775,8 @@ export type UserUncheckedCreateWithoutBidsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1192,9 +1784,12 @@ export type UserUncheckedCreateWithoutBidsInput = {
   objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1225,6 +1820,8 @@ export type UserUpdateWithoutBidsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1232,9 +1829,12 @@ export type UserUpdateWithoutBidsInput = {
   objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1249,6 +1849,8 @@ export type UserUncheckedUpdateWithoutBidsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1256,9 +1858,12 @@ export type UserUncheckedUpdateWithoutBidsInput = {
   objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1273,6 +1878,8 @@ export type UserCreateWithoutDepositsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1280,9 +1887,12 @@ export type UserCreateWithoutDepositsInput = {
   objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -1297,6 +1907,8 @@ export type UserUncheckedCreateWithoutDepositsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1304,9 +1916,12 @@ export type UserUncheckedCreateWithoutDepositsInput = {
   objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1337,6 +1952,8 @@ export type UserUpdateWithoutDepositsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1344,9 +1961,12 @@ export type UserUpdateWithoutDepositsInput = {
   objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1361,6 +1981,8 @@ export type UserUncheckedUpdateWithoutDepositsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1368,9 +1990,12 @@ export type UserUncheckedUpdateWithoutDepositsInput = {
   objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1385,6 +2010,8 @@ export type UserCreateWithoutBuyerOrdersInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1393,8 +2020,11 @@ export type UserCreateWithoutBuyerOrdersInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -1409,6 +2039,8 @@ export type UserUncheckedCreateWithoutBuyerOrdersInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1417,8 +2049,11 @@ export type UserUncheckedCreateWithoutBuyerOrdersInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1438,6 +2073,8 @@ export type UserCreateWithoutSellerOrdersInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1446,8 +2083,11 @@ export type UserCreateWithoutSellerOrdersInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -1462,6 +2102,8 @@ export type UserUncheckedCreateWithoutSellerOrdersInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1470,8 +2112,11 @@ export type UserUncheckedCreateWithoutSellerOrdersInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1502,6 +2147,8 @@ export type UserUpdateWithoutBuyerOrdersInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1510,8 +2157,11 @@ export type UserUpdateWithoutBuyerOrdersInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1526,6 +2176,8 @@ export type UserUncheckedUpdateWithoutBuyerOrdersInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1534,8 +2186,11 @@ export type UserUncheckedUpdateWithoutBuyerOrdersInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1561,6 +2216,8 @@ export type UserUpdateWithoutSellerOrdersInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1569,8 +2226,11 @@ export type UserUpdateWithoutSellerOrdersInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1585,6 +2245,8 @@ export type UserUncheckedUpdateWithoutSellerOrdersInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1593,8 +2255,11 @@ export type UserUncheckedUpdateWithoutSellerOrdersInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1609,6 +2274,8 @@ export type UserCreateWithoutDisputesInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1617,8 +2284,11 @@ export type UserCreateWithoutDisputesInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -1633,6 +2303,8 @@ export type UserUncheckedCreateWithoutDisputesInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1641,8 +2313,11 @@ export type UserUncheckedCreateWithoutDisputesInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1673,6 +2348,8 @@ export type UserUpdateWithoutDisputesInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1681,8 +2358,11 @@ export type UserUpdateWithoutDisputesInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1697,6 +2377,8 @@ export type UserUncheckedUpdateWithoutDisputesInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1705,8 +2387,11 @@ export type UserUncheckedUpdateWithoutDisputesInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1721,6 +2406,8 @@ export type UserCreateWithoutFavoriteObjectsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1729,9 +2416,12 @@ export type UserCreateWithoutFavoriteObjectsInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
@@ -1745,6 +2435,8 @@ export type UserUncheckedCreateWithoutFavoriteObjectsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1753,9 +2445,12 @@ export type UserUncheckedCreateWithoutFavoriteObjectsInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
@@ -1785,6 +2480,8 @@ export type UserUpdateWithoutFavoriteObjectsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1793,9 +2490,12 @@ export type UserUpdateWithoutFavoriteObjectsInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
@@ -1809,6 +2509,8 @@ export type UserUncheckedUpdateWithoutFavoriteObjectsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1817,9 +2519,12 @@ export type UserUncheckedUpdateWithoutFavoriteObjectsInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
@@ -1833,6 +2538,8 @@ export type UserCreateWithoutFavoriteAuctionsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1841,9 +2548,12 @@ export type UserCreateWithoutFavoriteAuctionsInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
@@ -1857,6 +2567,8 @@ export type UserUncheckedCreateWithoutFavoriteAuctionsInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1865,9 +2577,12 @@ export type UserUncheckedCreateWithoutFavoriteAuctionsInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
@@ -1897,6 +2612,8 @@ export type UserUpdateWithoutFavoriteAuctionsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1905,9 +2622,12 @@ export type UserUpdateWithoutFavoriteAuctionsInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
@@ -1921,6 +2641,8 @@ export type UserUncheckedUpdateWithoutFavoriteAuctionsInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1929,9 +2651,12 @@ export type UserUncheckedUpdateWithoutFavoriteAuctionsInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
@@ -1945,6 +2670,8 @@ export type UserCreateWithoutFollowingInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1953,9 +2680,12 @@ export type UserCreateWithoutFollowingInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
@@ -1969,6 +2699,8 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1977,9 +2709,12 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
@@ -1998,6 +2733,8 @@ export type UserCreateWithoutFollowersInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2006,9 +2743,12 @@ export type UserCreateWithoutFollowersInput = {
   bids?: Prisma.BidCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -2022,6 +2762,8 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   provider?: $Enums.AuthProvider
   providerId?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
+  stripeCustomerId?: string | null
+  stripeConnectId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2030,9 +2772,12 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
   deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
   wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
+  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
+  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -2062,6 +2807,8 @@ export type UserUpdateWithoutFollowingInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2070,9 +2817,12 @@ export type UserUpdateWithoutFollowingInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
@@ -2086,6 +2836,8 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2094,9 +2846,12 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
@@ -2121,6 +2876,8 @@ export type UserUpdateWithoutFollowersInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2129,9 +2886,12 @@ export type UserUpdateWithoutFollowersInput = {
   bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -2145,6 +2905,8 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2153,9 +2915,12 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
   deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
   wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
+  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
+  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
+  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -2171,9 +2936,12 @@ export type UserCountOutputType = {
   bids: number
   deposits: number
   wonAuctions: number
+  reviewedAuctions: number
   buyerOrders: number
   sellerOrders: number
   disputes: number
+  phoneVerifications: number
+  withdrawals: number
   favoriteObjects: number
   favoriteAuctions: number
   following: number
@@ -2185,9 +2953,12 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   bids?: boolean | UserCountOutputTypeCountBidsArgs
   deposits?: boolean | UserCountOutputTypeCountDepositsArgs
   wonAuctions?: boolean | UserCountOutputTypeCountWonAuctionsArgs
+  reviewedAuctions?: boolean | UserCountOutputTypeCountReviewedAuctionsArgs
   buyerOrders?: boolean | UserCountOutputTypeCountBuyerOrdersArgs
   sellerOrders?: boolean | UserCountOutputTypeCountSellerOrdersArgs
   disputes?: boolean | UserCountOutputTypeCountDisputesArgs
+  phoneVerifications?: boolean | UserCountOutputTypeCountPhoneVerificationsArgs
+  withdrawals?: boolean | UserCountOutputTypeCountWithdrawalsArgs
   favoriteObjects?: boolean | UserCountOutputTypeCountFavoriteObjectsArgs
   favoriteAuctions?: boolean | UserCountOutputTypeCountFavoriteAuctionsArgs
   following?: boolean | UserCountOutputTypeCountFollowingArgs
@@ -2235,6 +3006,13 @@ export type UserCountOutputTypeCountWonAuctionsArgs<ExtArgs extends runtime.Type
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountReviewedAuctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuctionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountBuyerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OrderWhereInput
 }
@@ -2251,6 +3029,20 @@ export type UserCountOutputTypeCountSellerOrdersArgs<ExtArgs extends runtime.Typ
  */
 export type UserCountOutputTypeCountDisputesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DisputeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPhoneVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PhoneVerificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountWithdrawalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WithdrawalWhereInput
 }
 
 /**
@@ -2290,6 +3082,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   provider?: boolean
   providerId?: boolean
   roles?: boolean
+  stripeCustomerId?: boolean
+  stripeConnectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
@@ -2298,9 +3092,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   bids?: boolean | Prisma.User$bidsArgs<ExtArgs>
   deposits?: boolean | Prisma.User$depositsArgs<ExtArgs>
   wonAuctions?: boolean | Prisma.User$wonAuctionsArgs<ExtArgs>
+  reviewedAuctions?: boolean | Prisma.User$reviewedAuctionsArgs<ExtArgs>
   buyerOrders?: boolean | Prisma.User$buyerOrdersArgs<ExtArgs>
   sellerOrders?: boolean | Prisma.User$sellerOrdersArgs<ExtArgs>
   disputes?: boolean | Prisma.User$disputesArgs<ExtArgs>
+  phoneVerifications?: boolean | Prisma.User$phoneVerificationsArgs<ExtArgs>
+  withdrawals?: boolean | Prisma.User$withdrawalsArgs<ExtArgs>
   favoriteObjects?: boolean | Prisma.User$favoriteObjectsArgs<ExtArgs>
   favoriteAuctions?: boolean | Prisma.User$favoriteAuctionsArgs<ExtArgs>
   following?: boolean | Prisma.User$followingArgs<ExtArgs>
@@ -2316,6 +3113,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   provider?: boolean
   providerId?: boolean
   roles?: boolean
+  stripeCustomerId?: boolean
+  stripeConnectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2328,6 +3127,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   provider?: boolean
   providerId?: boolean
   roles?: boolean
+  stripeCustomerId?: boolean
+  stripeConnectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -2340,11 +3141,13 @@ export type UserSelectScalar = {
   provider?: boolean
   providerId?: boolean
   roles?: boolean
+  stripeCustomerId?: boolean
+  stripeConnectId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "roles" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "roles" | "stripeCustomerId" | "stripeConnectId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
@@ -2352,9 +3155,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   bids?: boolean | Prisma.User$bidsArgs<ExtArgs>
   deposits?: boolean | Prisma.User$depositsArgs<ExtArgs>
   wonAuctions?: boolean | Prisma.User$wonAuctionsArgs<ExtArgs>
+  reviewedAuctions?: boolean | Prisma.User$reviewedAuctionsArgs<ExtArgs>
   buyerOrders?: boolean | Prisma.User$buyerOrdersArgs<ExtArgs>
   sellerOrders?: boolean | Prisma.User$sellerOrdersArgs<ExtArgs>
   disputes?: boolean | Prisma.User$disputesArgs<ExtArgs>
+  phoneVerifications?: boolean | Prisma.User$phoneVerificationsArgs<ExtArgs>
+  withdrawals?: boolean | Prisma.User$withdrawalsArgs<ExtArgs>
   favoriteObjects?: boolean | Prisma.User$favoriteObjectsArgs<ExtArgs>
   favoriteAuctions?: boolean | Prisma.User$favoriteAuctionsArgs<ExtArgs>
   following?: boolean | Prisma.User$followingArgs<ExtArgs>
@@ -2373,9 +3179,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     bids: Prisma.$BidPayload<ExtArgs>[]
     deposits: Prisma.$AuctionDepositPayload<ExtArgs>[]
     wonAuctions: Prisma.$AuctionPayload<ExtArgs>[]
+    reviewedAuctions: Prisma.$AuctionPayload<ExtArgs>[]
     buyerOrders: Prisma.$OrderPayload<ExtArgs>[]
     sellerOrders: Prisma.$OrderPayload<ExtArgs>[]
     disputes: Prisma.$DisputePayload<ExtArgs>[]
+    phoneVerifications: Prisma.$PhoneVerificationPayload<ExtArgs>[]
+    withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
     favoriteObjects: Prisma.$FavoriteObjectPayload<ExtArgs>[]
     favoriteAuctions: Prisma.$FavoriteAuctionPayload<ExtArgs>[]
     following: Prisma.$FollowPayload<ExtArgs>[]
@@ -2389,6 +3198,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     provider: $Enums.AuthProvider
     providerId: string | null
     roles: $Enums.Role[]
+    stripeCustomerId: string | null
+    stripeConnectId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -2791,9 +3602,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   bids<T extends Prisma.User$bidsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bidsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BidPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deposits<T extends Prisma.User$depositsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$depositsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wonAuctions<T extends Prisma.User$wonAuctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$wonAuctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedAuctions<T extends Prisma.User$reviewedAuctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedAuctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   buyerOrders<T extends Prisma.User$buyerOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$buyerOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sellerOrders<T extends Prisma.User$sellerOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sellerOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   disputes<T extends Prisma.User$disputesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$disputesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisputePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  phoneVerifications<T extends Prisma.User$phoneVerificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$phoneVerificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhoneVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  withdrawals<T extends Prisma.User$withdrawalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favoriteObjects<T extends Prisma.User$favoriteObjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteObjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favoriteAuctions<T extends Prisma.User$favoriteAuctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteAuctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteAuctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   following<T extends Prisma.User$followingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2834,6 +3648,8 @@ export interface UserFieldRefs {
   readonly provider: Prisma.FieldRef<"User", 'AuthProvider'>
   readonly providerId: Prisma.FieldRef<"User", 'String'>
   readonly roles: Prisma.FieldRef<"User", 'Role[]'>
+  readonly stripeCustomerId: Prisma.FieldRef<"User", 'String'>
+  readonly stripeConnectId: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -3363,6 +4179,30 @@ export type User$wonAuctionsArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * User.reviewedAuctions
+ */
+export type User$reviewedAuctionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Auction
+   */
+  select?: Prisma.AuctionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Auction
+   */
+  omit?: Prisma.AuctionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuctionInclude<ExtArgs> | null
+  where?: Prisma.AuctionWhereInput
+  orderBy?: Prisma.AuctionOrderByWithRelationInput | Prisma.AuctionOrderByWithRelationInput[]
+  cursor?: Prisma.AuctionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuctionScalarFieldEnum | Prisma.AuctionScalarFieldEnum[]
+}
+
+/**
  * User.buyerOrders
  */
 export type User$buyerOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3432,6 +4272,54 @@ export type User$disputesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.DisputeScalarFieldEnum | Prisma.DisputeScalarFieldEnum[]
+}
+
+/**
+ * User.phoneVerifications
+ */
+export type User$phoneVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PhoneVerification
+   */
+  select?: Prisma.PhoneVerificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PhoneVerification
+   */
+  omit?: Prisma.PhoneVerificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PhoneVerificationInclude<ExtArgs> | null
+  where?: Prisma.PhoneVerificationWhereInput
+  orderBy?: Prisma.PhoneVerificationOrderByWithRelationInput | Prisma.PhoneVerificationOrderByWithRelationInput[]
+  cursor?: Prisma.PhoneVerificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PhoneVerificationScalarFieldEnum | Prisma.PhoneVerificationScalarFieldEnum[]
+}
+
+/**
+ * User.withdrawals
+ */
+export type User$withdrawalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Withdrawal
+   */
+  select?: Prisma.WithdrawalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Withdrawal
+   */
+  omit?: Prisma.WithdrawalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WithdrawalInclude<ExtArgs> | null
+  where?: Prisma.WithdrawalWhereInput
+  orderBy?: Prisma.WithdrawalOrderByWithRelationInput | Prisma.WithdrawalOrderByWithRelationInput[]
+  cursor?: Prisma.WithdrawalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WithdrawalScalarFieldEnum | Prisma.WithdrawalScalarFieldEnum[]
 }
 
 /**

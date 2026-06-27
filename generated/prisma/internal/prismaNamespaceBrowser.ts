@@ -53,8 +53,10 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   SellerProfile: 'SellerProfile',
+  PhoneVerification: 'PhoneVerification',
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',
+  Withdrawal: 'Withdrawal',
   Category: 'Category',
   Object: 'Object',
   ObjectImage: 'ObjectImage',
@@ -92,6 +94,8 @@ export const UserScalarFieldEnum = {
   provider: 'provider',
   providerId: 'providerId',
   roles: 'roles',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeConnectId: 'stripeConnectId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -102,16 +106,27 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const SellerProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  idNumber: 'idNumber',
-  idImageUrl: 'idImageUrl',
   phoneNumber: 'phoneNumber',
-  address: 'address',
-  status: 'status',
+  phoneVerifiedAt: 'phoneVerifiedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type SellerProfileScalarFieldEnum = (typeof SellerProfileScalarFieldEnum)[keyof typeof SellerProfileScalarFieldEnum]
+
+
+export const PhoneVerificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  phone: 'phone',
+  codeHash: 'codeHash',
+  expiresAt: 'expiresAt',
+  attempts: 'attempts',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PhoneVerificationScalarFieldEnum = (typeof PhoneVerificationScalarFieldEnum)[keyof typeof PhoneVerificationScalarFieldEnum]
 
 
 export const WalletScalarFieldEnum = {
@@ -137,6 +152,19 @@ export const WalletTransactionScalarFieldEnum = {
 } as const
 
 export type WalletTransactionScalarFieldEnum = (typeof WalletTransactionScalarFieldEnum)[keyof typeof WalletTransactionScalarFieldEnum]
+
+
+export const WithdrawalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  status: 'status',
+  stripePayoutId: 'stripePayoutId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WithdrawalScalarFieldEnum = (typeof WithdrawalScalarFieldEnum)[keyof typeof WithdrawalScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {
@@ -189,10 +217,14 @@ export const AuctionScalarFieldEnum = {
   minBidIncrement: 'minBidIncrement',
   currentPrice: 'currentPrice',
   currentWinnerId: 'currentWinnerId',
+  durationDays: 'durationDays',
   startTime: 'startTime',
   endTime: 'endTime',
   antiSnipeSeconds: 'antiSnipeSeconds',
   extendBySeconds: 'extendBySeconds',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  rejectionReason: 'rejectionReason',
   viewsCount: 'viewsCount',
   status: 'status',
   createdAt: 'createdAt',

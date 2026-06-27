@@ -32,6 +32,7 @@ export type AuctionAvgAggregateOutputType = {
   estimatedValue: runtime.Decimal | null
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
+  durationDays: number | null
   antiSnipeSeconds: number | null
   extendBySeconds: number | null
   viewsCount: number | null
@@ -43,6 +44,7 @@ export type AuctionSumAggregateOutputType = {
   estimatedValue: runtime.Decimal | null
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
+  durationDays: number | null
   antiSnipeSeconds: number | null
   extendBySeconds: number | null
   viewsCount: number | null
@@ -57,10 +59,14 @@ export type AuctionMinAggregateOutputType = {
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
   currentWinnerId: string | null
+  durationDays: number | null
   startTime: Date | null
   endTime: Date | null
   antiSnipeSeconds: number | null
   extendBySeconds: number | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  rejectionReason: string | null
   viewsCount: number | null
   status: $Enums.AuctionStatus | null
   createdAt: Date | null
@@ -76,10 +82,14 @@ export type AuctionMaxAggregateOutputType = {
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
   currentWinnerId: string | null
+  durationDays: number | null
   startTime: Date | null
   endTime: Date | null
   antiSnipeSeconds: number | null
   extendBySeconds: number | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  rejectionReason: string | null
   viewsCount: number | null
   status: $Enums.AuctionStatus | null
   createdAt: Date | null
@@ -95,10 +105,14 @@ export type AuctionCountAggregateOutputType = {
   minBidIncrement: number
   currentPrice: number
   currentWinnerId: number
+  durationDays: number
   startTime: number
   endTime: number
   antiSnipeSeconds: number
   extendBySeconds: number
+  reviewedById: number
+  reviewedAt: number
+  rejectionReason: number
   viewsCount: number
   status: number
   createdAt: number
@@ -113,6 +127,7 @@ export type AuctionAvgAggregateInputType = {
   estimatedValue?: true
   minBidIncrement?: true
   currentPrice?: true
+  durationDays?: true
   antiSnipeSeconds?: true
   extendBySeconds?: true
   viewsCount?: true
@@ -124,6 +139,7 @@ export type AuctionSumAggregateInputType = {
   estimatedValue?: true
   minBidIncrement?: true
   currentPrice?: true
+  durationDays?: true
   antiSnipeSeconds?: true
   extendBySeconds?: true
   viewsCount?: true
@@ -138,10 +154,14 @@ export type AuctionMinAggregateInputType = {
   minBidIncrement?: true
   currentPrice?: true
   currentWinnerId?: true
+  durationDays?: true
   startTime?: true
   endTime?: true
   antiSnipeSeconds?: true
   extendBySeconds?: true
+  reviewedById?: true
+  reviewedAt?: true
+  rejectionReason?: true
   viewsCount?: true
   status?: true
   createdAt?: true
@@ -157,10 +177,14 @@ export type AuctionMaxAggregateInputType = {
   minBidIncrement?: true
   currentPrice?: true
   currentWinnerId?: true
+  durationDays?: true
   startTime?: true
   endTime?: true
   antiSnipeSeconds?: true
   extendBySeconds?: true
+  reviewedById?: true
+  reviewedAt?: true
+  rejectionReason?: true
   viewsCount?: true
   status?: true
   createdAt?: true
@@ -176,10 +200,14 @@ export type AuctionCountAggregateInputType = {
   minBidIncrement?: true
   currentPrice?: true
   currentWinnerId?: true
+  durationDays?: true
   startTime?: true
   endTime?: true
   antiSnipeSeconds?: true
   extendBySeconds?: true
+  reviewedById?: true
+  reviewedAt?: true
+  rejectionReason?: true
   viewsCount?: true
   status?: true
   createdAt?: true
@@ -282,10 +310,14 @@ export type AuctionGroupByOutputType = {
   minBidIncrement: runtime.Decimal
   currentPrice: runtime.Decimal
   currentWinnerId: string | null
-  startTime: Date
-  endTime: Date
+  durationDays: number
+  startTime: Date | null
+  endTime: Date | null
   antiSnipeSeconds: number
   extendBySeconds: number
+  reviewedById: string | null
+  reviewedAt: Date | null
+  rejectionReason: string | null
   viewsCount: number
   status: $Enums.AuctionStatus
   createdAt: Date
@@ -324,16 +356,21 @@ export type AuctionWhereInput = {
   minBidIncrement?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableFilter<"Auction"> | string | null
-  startTime?: Prisma.DateTimeFilter<"Auction"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"Auction"> | Date | string
+  durationDays?: Prisma.IntFilter<"Auction"> | number
+  startTime?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
   antiSnipeSeconds?: Prisma.IntFilter<"Auction"> | number
   extendBySeconds?: Prisma.IntFilter<"Auction"> | number
+  reviewedById?: Prisma.StringNullableFilter<"Auction"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"Auction"> | string | null
   viewsCount?: Prisma.IntFilter<"Auction"> | number
   status?: Prisma.EnumAuctionStatusFilter<"Auction"> | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFilter<"Auction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Auction"> | Date | string
   object?: Prisma.XOR<Prisma.ObjectScalarRelationFilter, Prisma.ObjectWhereInput>
   currentWinner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   bids?: Prisma.BidListRelationFilter
   deposits?: Prisma.AuctionDepositListRelationFilter
   orders?: Prisma.OrderListRelationFilter
@@ -349,16 +386,21 @@ export type AuctionOrderByWithRelationInput = {
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
+  startTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   antiSnipeSeconds?: Prisma.SortOrder
   extendBySeconds?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   viewsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   object?: Prisma.ObjectOrderByWithRelationInput
   currentWinner?: Prisma.UserOrderByWithRelationInput
+  reviewedBy?: Prisma.UserOrderByWithRelationInput
   bids?: Prisma.BidOrderByRelationAggregateInput
   deposits?: Prisma.AuctionDepositOrderByRelationAggregateInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
@@ -377,16 +419,21 @@ export type AuctionWhereUniqueInput = Prisma.AtLeast<{
   minBidIncrement?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableFilter<"Auction"> | string | null
-  startTime?: Prisma.DateTimeFilter<"Auction"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"Auction"> | Date | string
+  durationDays?: Prisma.IntFilter<"Auction"> | number
+  startTime?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
   antiSnipeSeconds?: Prisma.IntFilter<"Auction"> | number
   extendBySeconds?: Prisma.IntFilter<"Auction"> | number
+  reviewedById?: Prisma.StringNullableFilter<"Auction"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"Auction"> | string | null
   viewsCount?: Prisma.IntFilter<"Auction"> | number
   status?: Prisma.EnumAuctionStatusFilter<"Auction"> | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFilter<"Auction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Auction"> | Date | string
   object?: Prisma.XOR<Prisma.ObjectScalarRelationFilter, Prisma.ObjectWhereInput>
   currentWinner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   bids?: Prisma.BidListRelationFilter
   deposits?: Prisma.AuctionDepositListRelationFilter
   orders?: Prisma.OrderListRelationFilter
@@ -402,10 +449,14 @@ export type AuctionOrderByWithAggregationInput = {
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
+  startTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  endTime?: Prisma.SortOrderInput | Prisma.SortOrder
   antiSnipeSeconds?: Prisma.SortOrder
   extendBySeconds?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   viewsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -429,10 +480,14 @@ export type AuctionScalarWhereWithAggregatesInput = {
   minBidIncrement?: Prisma.DecimalWithAggregatesFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalWithAggregatesFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableWithAggregatesFilter<"Auction"> | string | null
-  startTime?: Prisma.DateTimeWithAggregatesFilter<"Auction"> | Date | string
-  endTime?: Prisma.DateTimeWithAggregatesFilter<"Auction"> | Date | string
+  durationDays?: Prisma.IntWithAggregatesFilter<"Auction"> | number
+  startTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Auction"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Auction"> | Date | string | null
   antiSnipeSeconds?: Prisma.IntWithAggregatesFilter<"Auction"> | number
   extendBySeconds?: Prisma.IntWithAggregatesFilter<"Auction"> | number
+  reviewedById?: Prisma.StringNullableWithAggregatesFilter<"Auction"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Auction"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"Auction"> | string | null
   viewsCount?: Prisma.IntWithAggregatesFilter<"Auction"> | number
   status?: Prisma.EnumAuctionStatusWithAggregatesFilter<"Auction"> | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Auction"> | Date | string
@@ -446,16 +501,20 @@ export type AuctionCreateInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   object: Prisma.ObjectCreateNestedOneWithoutAuctionsInput
   currentWinner?: Prisma.UserCreateNestedOneWithoutWonAuctionsInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedAuctionsInput
   bids?: Prisma.BidCreateNestedManyWithoutAuctionInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutAuctionInput
   orders?: Prisma.OrderCreateNestedManyWithoutAuctionInput
@@ -471,10 +530,14 @@ export type AuctionUncheckedCreateInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -492,16 +555,20 @@ export type AuctionUpdateInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   object?: Prisma.ObjectUpdateOneRequiredWithoutAuctionsNestedInput
   currentWinner?: Prisma.UserUpdateOneWithoutWonAuctionsNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedAuctionsNestedInput
   bids?: Prisma.BidUpdateManyWithoutAuctionNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutAuctionNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAuctionNestedInput
@@ -517,10 +584,14 @@ export type AuctionUncheckedUpdateInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -540,10 +611,14 @@ export type AuctionCreateManyInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -557,10 +632,13 @@ export type AuctionUpdateManyMutationInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -576,10 +654,14 @@ export type AuctionUncheckedUpdateManyInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -605,10 +687,14 @@ export type AuctionCountOrderByAggregateInput = {
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   antiSnipeSeconds?: Prisma.SortOrder
   extendBySeconds?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   viewsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -621,6 +707,7 @@ export type AuctionAvgOrderByAggregateInput = {
   estimatedValue?: Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   antiSnipeSeconds?: Prisma.SortOrder
   extendBySeconds?: Prisma.SortOrder
   viewsCount?: Prisma.SortOrder
@@ -635,10 +722,14 @@ export type AuctionMaxOrderByAggregateInput = {
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   antiSnipeSeconds?: Prisma.SortOrder
   extendBySeconds?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   viewsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -654,10 +745,14 @@ export type AuctionMinOrderByAggregateInput = {
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   startTime?: Prisma.SortOrder
   endTime?: Prisma.SortOrder
   antiSnipeSeconds?: Prisma.SortOrder
   extendBySeconds?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   viewsCount?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -670,6 +765,7 @@ export type AuctionSumOrderByAggregateInput = {
   estimatedValue?: Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
+  durationDays?: Prisma.SortOrder
   antiSnipeSeconds?: Prisma.SortOrder
   extendBySeconds?: Prisma.SortOrder
   viewsCount?: Prisma.SortOrder
@@ -687,10 +783,24 @@ export type AuctionCreateNestedManyWithoutCurrentWinnerInput = {
   connect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
 }
 
+export type AuctionCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.AuctionCreateWithoutReviewedByInput, Prisma.AuctionUncheckedCreateWithoutReviewedByInput> | Prisma.AuctionCreateWithoutReviewedByInput[] | Prisma.AuctionUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.AuctionCreateOrConnectWithoutReviewedByInput | Prisma.AuctionCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.AuctionCreateManyReviewedByInputEnvelope
+  connect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+}
+
 export type AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput = {
   create?: Prisma.XOR<Prisma.AuctionCreateWithoutCurrentWinnerInput, Prisma.AuctionUncheckedCreateWithoutCurrentWinnerInput> | Prisma.AuctionCreateWithoutCurrentWinnerInput[] | Prisma.AuctionUncheckedCreateWithoutCurrentWinnerInput[]
   connectOrCreate?: Prisma.AuctionCreateOrConnectWithoutCurrentWinnerInput | Prisma.AuctionCreateOrConnectWithoutCurrentWinnerInput[]
   createMany?: Prisma.AuctionCreateManyCurrentWinnerInputEnvelope
+  connect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+}
+
+export type AuctionUncheckedCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.AuctionCreateWithoutReviewedByInput, Prisma.AuctionUncheckedCreateWithoutReviewedByInput> | Prisma.AuctionCreateWithoutReviewedByInput[] | Prisma.AuctionUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.AuctionCreateOrConnectWithoutReviewedByInput | Prisma.AuctionCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.AuctionCreateManyReviewedByInputEnvelope
   connect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
 }
 
@@ -708,6 +818,20 @@ export type AuctionUpdateManyWithoutCurrentWinnerNestedInput = {
   deleteMany?: Prisma.AuctionScalarWhereInput | Prisma.AuctionScalarWhereInput[]
 }
 
+export type AuctionUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.AuctionCreateWithoutReviewedByInput, Prisma.AuctionUncheckedCreateWithoutReviewedByInput> | Prisma.AuctionCreateWithoutReviewedByInput[] | Prisma.AuctionUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.AuctionCreateOrConnectWithoutReviewedByInput | Prisma.AuctionCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.AuctionUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.AuctionUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.AuctionCreateManyReviewedByInputEnvelope
+  set?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  disconnect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  delete?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  connect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  update?: Prisma.AuctionUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.AuctionUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.AuctionUpdateManyWithWhereWithoutReviewedByInput | Prisma.AuctionUpdateManyWithWhereWithoutReviewedByInput[]
+  deleteMany?: Prisma.AuctionScalarWhereInput | Prisma.AuctionScalarWhereInput[]
+}
+
 export type AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput = {
   create?: Prisma.XOR<Prisma.AuctionCreateWithoutCurrentWinnerInput, Prisma.AuctionUncheckedCreateWithoutCurrentWinnerInput> | Prisma.AuctionCreateWithoutCurrentWinnerInput[] | Prisma.AuctionUncheckedCreateWithoutCurrentWinnerInput[]
   connectOrCreate?: Prisma.AuctionCreateOrConnectWithoutCurrentWinnerInput | Prisma.AuctionCreateOrConnectWithoutCurrentWinnerInput[]
@@ -719,6 +843,20 @@ export type AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput = {
   connect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
   update?: Prisma.AuctionUpdateWithWhereUniqueWithoutCurrentWinnerInput | Prisma.AuctionUpdateWithWhereUniqueWithoutCurrentWinnerInput[]
   updateMany?: Prisma.AuctionUpdateManyWithWhereWithoutCurrentWinnerInput | Prisma.AuctionUpdateManyWithWhereWithoutCurrentWinnerInput[]
+  deleteMany?: Prisma.AuctionScalarWhereInput | Prisma.AuctionScalarWhereInput[]
+}
+
+export type AuctionUncheckedUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.AuctionCreateWithoutReviewedByInput, Prisma.AuctionUncheckedCreateWithoutReviewedByInput> | Prisma.AuctionCreateWithoutReviewedByInput[] | Prisma.AuctionUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.AuctionCreateOrConnectWithoutReviewedByInput | Prisma.AuctionCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.AuctionUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.AuctionUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.AuctionCreateManyReviewedByInputEnvelope
+  set?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  disconnect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  delete?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  connect?: Prisma.AuctionWhereUniqueInput | Prisma.AuctionWhereUniqueInput[]
+  update?: Prisma.AuctionUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.AuctionUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.AuctionUpdateManyWithWhereWithoutReviewedByInput | Prisma.AuctionUpdateManyWithWhereWithoutReviewedByInput[]
   deleteMany?: Prisma.AuctionScalarWhereInput | Prisma.AuctionScalarWhereInput[]
 }
 
@@ -831,15 +969,19 @@ export type AuctionCreateWithoutCurrentWinnerInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   object: Prisma.ObjectCreateNestedOneWithoutAuctionsInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedAuctionsInput
   bids?: Prisma.BidCreateNestedManyWithoutAuctionInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutAuctionInput
   orders?: Prisma.OrderCreateNestedManyWithoutAuctionInput
@@ -854,10 +996,14 @@ export type AuctionUncheckedCreateWithoutCurrentWinnerInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -875,6 +1021,68 @@ export type AuctionCreateOrConnectWithoutCurrentWinnerInput = {
 
 export type AuctionCreateManyCurrentWinnerInputEnvelope = {
   data: Prisma.AuctionCreateManyCurrentWinnerInput | Prisma.AuctionCreateManyCurrentWinnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type AuctionCreateWithoutReviewedByInput = {
+  id?: string
+  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  antiSnipeSeconds?: number
+  extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  viewsCount?: number
+  status?: $Enums.AuctionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  object: Prisma.ObjectCreateNestedOneWithoutAuctionsInput
+  currentWinner?: Prisma.UserCreateNestedOneWithoutWonAuctionsInput
+  bids?: Prisma.BidCreateNestedManyWithoutAuctionInput
+  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutAuctionInput
+  orders?: Prisma.OrderCreateNestedManyWithoutAuctionInput
+  favorites?: Prisma.FavoriteAuctionCreateNestedManyWithoutAuctionInput
+}
+
+export type AuctionUncheckedCreateWithoutReviewedByInput = {
+  id?: string
+  objectId: string
+  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentWinnerId?: string | null
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  antiSnipeSeconds?: number
+  extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  viewsCount?: number
+  status?: $Enums.AuctionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  bids?: Prisma.BidUncheckedCreateNestedManyWithoutAuctionInput
+  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutAuctionInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAuctionInput
+  favorites?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutAuctionInput
+}
+
+export type AuctionCreateOrConnectWithoutReviewedByInput = {
+  where: Prisma.AuctionWhereUniqueInput
+  create: Prisma.XOR<Prisma.AuctionCreateWithoutReviewedByInput, Prisma.AuctionUncheckedCreateWithoutReviewedByInput>
+}
+
+export type AuctionCreateManyReviewedByInputEnvelope = {
+  data: Prisma.AuctionCreateManyReviewedByInput | Prisma.AuctionCreateManyReviewedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -906,14 +1114,34 @@ export type AuctionScalarWhereInput = {
   minBidIncrement?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableFilter<"Auction"> | string | null
-  startTime?: Prisma.DateTimeFilter<"Auction"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"Auction"> | Date | string
+  durationDays?: Prisma.IntFilter<"Auction"> | number
+  startTime?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
+  endTime?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
   antiSnipeSeconds?: Prisma.IntFilter<"Auction"> | number
   extendBySeconds?: Prisma.IntFilter<"Auction"> | number
+  reviewedById?: Prisma.StringNullableFilter<"Auction"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"Auction"> | Date | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"Auction"> | string | null
   viewsCount?: Prisma.IntFilter<"Auction"> | number
   status?: Prisma.EnumAuctionStatusFilter<"Auction"> | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFilter<"Auction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Auction"> | Date | string
+}
+
+export type AuctionUpsertWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.AuctionWhereUniqueInput
+  update: Prisma.XOR<Prisma.AuctionUpdateWithoutReviewedByInput, Prisma.AuctionUncheckedUpdateWithoutReviewedByInput>
+  create: Prisma.XOR<Prisma.AuctionCreateWithoutReviewedByInput, Prisma.AuctionUncheckedCreateWithoutReviewedByInput>
+}
+
+export type AuctionUpdateWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.AuctionWhereUniqueInput
+  data: Prisma.XOR<Prisma.AuctionUpdateWithoutReviewedByInput, Prisma.AuctionUncheckedUpdateWithoutReviewedByInput>
+}
+
+export type AuctionUpdateManyWithWhereWithoutReviewedByInput = {
+  where: Prisma.AuctionScalarWhereInput
+  data: Prisma.XOR<Prisma.AuctionUpdateManyMutationInput, Prisma.AuctionUncheckedUpdateManyWithoutReviewedByInput>
 }
 
 export type AuctionCreateWithoutObjectInput = {
@@ -923,15 +1151,19 @@ export type AuctionCreateWithoutObjectInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   currentWinner?: Prisma.UserCreateNestedOneWithoutWonAuctionsInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedAuctionsInput
   bids?: Prisma.BidCreateNestedManyWithoutAuctionInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutAuctionInput
   orders?: Prisma.OrderCreateNestedManyWithoutAuctionInput
@@ -946,10 +1178,14 @@ export type AuctionUncheckedCreateWithoutObjectInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -993,16 +1229,20 @@ export type AuctionCreateWithoutBidsInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   object: Prisma.ObjectCreateNestedOneWithoutAuctionsInput
   currentWinner?: Prisma.UserCreateNestedOneWithoutWonAuctionsInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedAuctionsInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutAuctionInput
   orders?: Prisma.OrderCreateNestedManyWithoutAuctionInput
   favorites?: Prisma.FavoriteAuctionCreateNestedManyWithoutAuctionInput
@@ -1017,10 +1257,14 @@ export type AuctionUncheckedCreateWithoutBidsInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -1053,16 +1297,20 @@ export type AuctionUpdateWithoutBidsInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   object?: Prisma.ObjectUpdateOneRequiredWithoutAuctionsNestedInput
   currentWinner?: Prisma.UserUpdateOneWithoutWonAuctionsNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedAuctionsNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutAuctionNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAuctionNestedInput
   favorites?: Prisma.FavoriteAuctionUpdateManyWithoutAuctionNestedInput
@@ -1077,10 +1325,14 @@ export type AuctionUncheckedUpdateWithoutBidsInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1097,16 +1349,20 @@ export type AuctionCreateWithoutDepositsInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   object: Prisma.ObjectCreateNestedOneWithoutAuctionsInput
   currentWinner?: Prisma.UserCreateNestedOneWithoutWonAuctionsInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedAuctionsInput
   bids?: Prisma.BidCreateNestedManyWithoutAuctionInput
   orders?: Prisma.OrderCreateNestedManyWithoutAuctionInput
   favorites?: Prisma.FavoriteAuctionCreateNestedManyWithoutAuctionInput
@@ -1121,10 +1377,14 @@ export type AuctionUncheckedCreateWithoutDepositsInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -1157,16 +1417,20 @@ export type AuctionUpdateWithoutDepositsInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   object?: Prisma.ObjectUpdateOneRequiredWithoutAuctionsNestedInput
   currentWinner?: Prisma.UserUpdateOneWithoutWonAuctionsNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedAuctionsNestedInput
   bids?: Prisma.BidUpdateManyWithoutAuctionNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAuctionNestedInput
   favorites?: Prisma.FavoriteAuctionUpdateManyWithoutAuctionNestedInput
@@ -1181,10 +1445,14 @@ export type AuctionUncheckedUpdateWithoutDepositsInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1201,16 +1469,20 @@ export type AuctionCreateWithoutOrdersInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   object: Prisma.ObjectCreateNestedOneWithoutAuctionsInput
   currentWinner?: Prisma.UserCreateNestedOneWithoutWonAuctionsInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedAuctionsInput
   bids?: Prisma.BidCreateNestedManyWithoutAuctionInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutAuctionInput
   favorites?: Prisma.FavoriteAuctionCreateNestedManyWithoutAuctionInput
@@ -1225,10 +1497,14 @@ export type AuctionUncheckedCreateWithoutOrdersInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -1261,16 +1537,20 @@ export type AuctionUpdateWithoutOrdersInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   object?: Prisma.ObjectUpdateOneRequiredWithoutAuctionsNestedInput
   currentWinner?: Prisma.UserUpdateOneWithoutWonAuctionsNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedAuctionsNestedInput
   bids?: Prisma.BidUpdateManyWithoutAuctionNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutAuctionNestedInput
   favorites?: Prisma.FavoriteAuctionUpdateManyWithoutAuctionNestedInput
@@ -1285,10 +1565,14 @@ export type AuctionUncheckedUpdateWithoutOrdersInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1305,16 +1589,20 @@ export type AuctionCreateWithoutFavoritesInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   object: Prisma.ObjectCreateNestedOneWithoutAuctionsInput
   currentWinner?: Prisma.UserCreateNestedOneWithoutWonAuctionsInput
+  reviewedBy?: Prisma.UserCreateNestedOneWithoutReviewedAuctionsInput
   bids?: Prisma.BidCreateNestedManyWithoutAuctionInput
   deposits?: Prisma.AuctionDepositCreateNestedManyWithoutAuctionInput
   orders?: Prisma.OrderCreateNestedManyWithoutAuctionInput
@@ -1329,10 +1617,14 @@ export type AuctionUncheckedCreateWithoutFavoritesInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -1365,16 +1657,20 @@ export type AuctionUpdateWithoutFavoritesInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   object?: Prisma.ObjectUpdateOneRequiredWithoutAuctionsNestedInput
   currentWinner?: Prisma.UserUpdateOneWithoutWonAuctionsNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedAuctionsNestedInput
   bids?: Prisma.BidUpdateManyWithoutAuctionNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutAuctionNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAuctionNestedInput
@@ -1389,10 +1685,14 @@ export type AuctionUncheckedUpdateWithoutFavoritesInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1410,10 +1710,36 @@ export type AuctionCreateManyCurrentWinnerInput = {
   estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
+  viewsCount?: number
+  status?: $Enums.AuctionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AuctionCreateManyReviewedByInput = {
+  id?: string
+  objectId: string
+  startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
+  reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentWinnerId?: string | null
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
+  antiSnipeSeconds?: number
+  extendBySeconds?: number
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -1427,15 +1753,19 @@ export type AuctionUpdateWithoutCurrentWinnerInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   object?: Prisma.ObjectUpdateOneRequiredWithoutAuctionsNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedAuctionsNestedInput
   bids?: Prisma.BidUpdateManyWithoutAuctionNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutAuctionNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAuctionNestedInput
@@ -1450,10 +1780,14 @@ export type AuctionUncheckedUpdateWithoutCurrentWinnerInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1472,10 +1806,88 @@ export type AuctionUncheckedUpdateManyWithoutCurrentWinnerInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AuctionUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  object?: Prisma.ObjectUpdateOneRequiredWithoutAuctionsNestedInput
+  currentWinner?: Prisma.UserUpdateOneWithoutWonAuctionsNestedInput
+  bids?: Prisma.BidUpdateManyWithoutAuctionNestedInput
+  deposits?: Prisma.AuctionDepositUpdateManyWithoutAuctionNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutAuctionNestedInput
+  favorites?: Prisma.FavoriteAuctionUpdateManyWithoutAuctionNestedInput
+}
+
+export type AuctionUncheckedUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectId?: Prisma.StringFieldUpdateOperationsInput | string
+  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bids?: Prisma.BidUncheckedUpdateManyWithoutAuctionNestedInput
+  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutAuctionNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutAuctionNestedInput
+  favorites?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutAuctionNestedInput
+}
+
+export type AuctionUncheckedUpdateManyWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  objectId?: Prisma.StringFieldUpdateOperationsInput | string
+  startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1490,10 +1902,14 @@ export type AuctionCreateManyObjectInput = {
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
-  startTime: Date | string
-  endTime: Date | string
+  durationDays: number
+  startTime?: Date | string | null
+  endTime?: Date | string | null
   antiSnipeSeconds?: number
   extendBySeconds?: number
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  rejectionReason?: string | null
   viewsCount?: number
   status?: $Enums.AuctionStatus
   createdAt?: Date | string
@@ -1507,15 +1923,19 @@ export type AuctionUpdateWithoutObjectInput = {
   estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentWinner?: Prisma.UserUpdateOneWithoutWonAuctionsNestedInput
+  reviewedBy?: Prisma.UserUpdateOneWithoutReviewedAuctionsNestedInput
   bids?: Prisma.BidUpdateManyWithoutAuctionNestedInput
   deposits?: Prisma.AuctionDepositUpdateManyWithoutAuctionNestedInput
   orders?: Prisma.OrderUpdateManyWithoutAuctionNestedInput
@@ -1530,10 +1950,14 @@ export type AuctionUncheckedUpdateWithoutObjectInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1552,10 +1976,14 @@ export type AuctionUncheckedUpdateManyWithoutObjectInput = {
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  durationDays?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   antiSnipeSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   extendBySeconds?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   viewsCount?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumAuctionStatusFieldUpdateOperationsInput | $Enums.AuctionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1629,16 +2057,21 @@ export type AuctionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
+  durationDays?: boolean
   startTime?: boolean
   endTime?: boolean
   antiSnipeSeconds?: boolean
   extendBySeconds?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   viewsCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   object?: boolean | Prisma.ObjectDefaultArgs<ExtArgs>
   currentWinner?: boolean | Prisma.Auction$currentWinnerArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Auction$reviewedByArgs<ExtArgs>
   bids?: boolean | Prisma.Auction$bidsArgs<ExtArgs>
   deposits?: boolean | Prisma.Auction$depositsArgs<ExtArgs>
   orders?: boolean | Prisma.Auction$ordersArgs<ExtArgs>
@@ -1655,16 +2088,21 @@ export type AuctionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
+  durationDays?: boolean
   startTime?: boolean
   endTime?: boolean
   antiSnipeSeconds?: boolean
   extendBySeconds?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   viewsCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   object?: boolean | Prisma.ObjectDefaultArgs<ExtArgs>
   currentWinner?: boolean | Prisma.Auction$currentWinnerArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Auction$reviewedByArgs<ExtArgs>
 }, ExtArgs["result"]["auction"]>
 
 export type AuctionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1676,16 +2114,21 @@ export type AuctionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
+  durationDays?: boolean
   startTime?: boolean
   endTime?: boolean
   antiSnipeSeconds?: boolean
   extendBySeconds?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   viewsCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   object?: boolean | Prisma.ObjectDefaultArgs<ExtArgs>
   currentWinner?: boolean | Prisma.Auction$currentWinnerArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Auction$reviewedByArgs<ExtArgs>
 }, ExtArgs["result"]["auction"]>
 
 export type AuctionSelectScalar = {
@@ -1697,20 +2140,25 @@ export type AuctionSelectScalar = {
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
+  durationDays?: boolean
   startTime?: boolean
   endTime?: boolean
   antiSnipeSeconds?: boolean
   extendBySeconds?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  rejectionReason?: boolean
   viewsCount?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AuctionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "objectId" | "startingPrice" | "reservePrice" | "estimatedValue" | "minBidIncrement" | "currentPrice" | "currentWinnerId" | "startTime" | "endTime" | "antiSnipeSeconds" | "extendBySeconds" | "viewsCount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["auction"]>
+export type AuctionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "objectId" | "startingPrice" | "reservePrice" | "estimatedValue" | "minBidIncrement" | "currentPrice" | "currentWinnerId" | "durationDays" | "startTime" | "endTime" | "antiSnipeSeconds" | "extendBySeconds" | "reviewedById" | "reviewedAt" | "rejectionReason" | "viewsCount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["auction"]>
 export type AuctionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   object?: boolean | Prisma.ObjectDefaultArgs<ExtArgs>
   currentWinner?: boolean | Prisma.Auction$currentWinnerArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Auction$reviewedByArgs<ExtArgs>
   bids?: boolean | Prisma.Auction$bidsArgs<ExtArgs>
   deposits?: boolean | Prisma.Auction$depositsArgs<ExtArgs>
   orders?: boolean | Prisma.Auction$ordersArgs<ExtArgs>
@@ -1720,10 +2168,12 @@ export type AuctionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type AuctionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   object?: boolean | Prisma.ObjectDefaultArgs<ExtArgs>
   currentWinner?: boolean | Prisma.Auction$currentWinnerArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Auction$reviewedByArgs<ExtArgs>
 }
 export type AuctionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   object?: boolean | Prisma.ObjectDefaultArgs<ExtArgs>
   currentWinner?: boolean | Prisma.Auction$currentWinnerArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.Auction$reviewedByArgs<ExtArgs>
 }
 
 export type $AuctionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1731,6 +2181,7 @@ export type $AuctionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     object: Prisma.$ObjectPayload<ExtArgs>
     currentWinner: Prisma.$UserPayload<ExtArgs> | null
+    reviewedBy: Prisma.$UserPayload<ExtArgs> | null
     bids: Prisma.$BidPayload<ExtArgs>[]
     deposits: Prisma.$AuctionDepositPayload<ExtArgs>[]
     orders: Prisma.$OrderPayload<ExtArgs>[]
@@ -1745,10 +2196,14 @@ export type $AuctionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     minBidIncrement: runtime.Decimal
     currentPrice: runtime.Decimal
     currentWinnerId: string | null
-    startTime: Date
-    endTime: Date
+    durationDays: number
+    startTime: Date | null
+    endTime: Date | null
     antiSnipeSeconds: number
     extendBySeconds: number
+    reviewedById: string | null
+    reviewedAt: Date | null
+    rejectionReason: string | null
     viewsCount: number
     status: $Enums.AuctionStatus
     createdAt: Date
@@ -2149,6 +2604,7 @@ export interface Prisma__AuctionClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   object<T extends Prisma.ObjectDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ObjectDefaultArgs<ExtArgs>>): Prisma.Prisma__ObjectClient<runtime.Types.Result.GetResult<Prisma.$ObjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   currentWinner<T extends Prisma.Auction$currentWinnerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auction$currentWinnerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  reviewedBy<T extends Prisma.Auction$reviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auction$reviewedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   bids<T extends Prisma.Auction$bidsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auction$bidsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BidPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deposits<T extends Prisma.Auction$depositsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auction$depositsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionDepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.Auction$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auction$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2190,10 +2646,14 @@ export interface AuctionFieldRefs {
   readonly minBidIncrement: Prisma.FieldRef<"Auction", 'Decimal'>
   readonly currentPrice: Prisma.FieldRef<"Auction", 'Decimal'>
   readonly currentWinnerId: Prisma.FieldRef<"Auction", 'String'>
+  readonly durationDays: Prisma.FieldRef<"Auction", 'Int'>
   readonly startTime: Prisma.FieldRef<"Auction", 'DateTime'>
   readonly endTime: Prisma.FieldRef<"Auction", 'DateTime'>
   readonly antiSnipeSeconds: Prisma.FieldRef<"Auction", 'Int'>
   readonly extendBySeconds: Prisma.FieldRef<"Auction", 'Int'>
+  readonly reviewedById: Prisma.FieldRef<"Auction", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"Auction", 'DateTime'>
+  readonly rejectionReason: Prisma.FieldRef<"Auction", 'String'>
   readonly viewsCount: Prisma.FieldRef<"Auction", 'Int'>
   readonly status: Prisma.FieldRef<"Auction", 'AuctionStatus'>
   readonly createdAt: Prisma.FieldRef<"Auction", 'DateTime'>
@@ -2602,6 +3062,25 @@ export type AuctionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
  * Auction.currentWinner
  */
 export type Auction$currentWinnerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Auction.reviewedBy
+ */
+export type Auction$reviewedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */

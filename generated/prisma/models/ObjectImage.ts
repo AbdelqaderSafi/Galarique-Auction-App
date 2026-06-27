@@ -381,14 +381,6 @@ export type ObjectImageUncheckedUpdateManyWithoutObjectNestedInput = {
   deleteMany?: Prisma.ObjectImageScalarWhereInput | Prisma.ObjectImageScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type ObjectImageCreateWithoutObjectInput = {
   id?: string
   url: string

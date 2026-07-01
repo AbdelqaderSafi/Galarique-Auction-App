@@ -9,6 +9,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // الـ CLI (migrate/generate) يستخدم DIRECT_URL لو موجود (اتصال مباشر لـ Neon)،
+    // وإلا DATABASE_URL. التشغيل نفسه يستخدم DATABASE_URL (pooled) عبر database.service.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });

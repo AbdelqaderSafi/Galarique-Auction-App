@@ -1,0 +1,5 @@
+# Force dev dependencies during install so the build tools
+# (@nestjs/cli, typescript, prisma) are available even when the
+# environment runs npm in production mode. Node version comes from .nvmrc (22).
+[phases.install]
+cmds = ["npm ci --include=dev"]

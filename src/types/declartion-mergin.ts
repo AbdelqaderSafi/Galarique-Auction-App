@@ -13,6 +13,11 @@ export interface EnvVariables {
   // إعدادات رموز التحقق (OTP) للإيميل/الهاتف
   OTP_EXP_MINUTES: string;
   OTP_MAX_ATTEMPTS: string;
+
+  // رفع الصور (ImageKit)
+  IMAGEKIT_PUBLIC_KEY: string;
+  IMAGEKIT_PRIVATE_KEY: string;
+  IMAGEKIT_URL_ENDPOINT: string;
 }
 
 // الحقول الحسّاسة التي يجب ألّا تُعاد أبداً في أي response

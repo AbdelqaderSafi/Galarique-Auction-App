@@ -33,6 +33,8 @@ export type UserMinAggregateOutputType = {
   providerId: string | null
   stripeCustomerId: string | null
   stripeConnectId: string | null
+  resetToken: string | null
+  resetTokenExpiry: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +48,8 @@ export type UserMaxAggregateOutputType = {
   providerId: string | null
   stripeCustomerId: string | null
   stripeConnectId: string | null
+  resetToken: string | null
+  resetTokenExpiry: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +64,8 @@ export type UserCountAggregateOutputType = {
   roles: number
   stripeCustomerId: number
   stripeConnectId: number
+  resetToken: number
+  resetTokenExpiry: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -75,6 +81,8 @@ export type UserMinAggregateInputType = {
   providerId?: true
   stripeCustomerId?: true
   stripeConnectId?: true
+  resetToken?: true
+  resetTokenExpiry?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +96,8 @@ export type UserMaxAggregateInputType = {
   providerId?: true
   stripeCustomerId?: true
   stripeConnectId?: true
+  resetToken?: true
+  resetTokenExpiry?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -102,6 +112,8 @@ export type UserCountAggregateInputType = {
   roles?: true
   stripeCustomerId?: true
   stripeConnectId?: true
+  resetToken?: true
+  resetTokenExpiry?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -189,6 +201,8 @@ export type UserGroupByOutputType = {
   roles: $Enums.Role[]
   stripeCustomerId: string | null
   stripeConnectId: string | null
+  resetToken: string | null
+  resetTokenExpiry: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -224,6 +238,8 @@ export type UserWhereInput = {
   roles?: Prisma.EnumRoleNullableListFilter<"User">
   stripeCustomerId?: Prisma.StringNullableFilter<"User"> | string | null
   stripeConnectId?: Prisma.StringNullableFilter<"User"> | string | null
+  resetToken?: Prisma.StringNullableFilter<"User"> | string | null
+  resetTokenExpiry?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sellerProfile?: Prisma.XOR<Prisma.SellerProfileNullableScalarRelationFilter, Prisma.SellerProfileWhereInput> | null
@@ -254,6 +270,8 @@ export type UserOrderByWithRelationInput = {
   roles?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetTokenExpiry?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sellerProfile?: Prisma.SellerProfileOrderByWithRelationInput
@@ -279,6 +297,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   email?: string
   stripeCustomerId?: string
   stripeConnectId?: string
+  resetToken?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -287,6 +306,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   provider?: Prisma.EnumAuthProviderFilter<"User"> | $Enums.AuthProvider
   providerId?: Prisma.StringNullableFilter<"User"> | string | null
   roles?: Prisma.EnumRoleNullableListFilter<"User">
+  resetTokenExpiry?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sellerProfile?: Prisma.XOR<Prisma.SellerProfileNullableScalarRelationFilter, Prisma.SellerProfileWhereInput> | null
@@ -305,7 +325,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
   following?: Prisma.FollowListRelationFilter
   followers?: Prisma.FollowListRelationFilter
-}, "id" | "email" | "stripeCustomerId" | "stripeConnectId">
+}, "id" | "email" | "stripeCustomerId" | "stripeConnectId" | "resetToken">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -317,6 +337,8 @@ export type UserOrderByWithAggregationInput = {
   roles?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetTokenExpiry?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -337,6 +359,8 @@ export type UserScalarWhereWithAggregatesInput = {
   roles?: Prisma.EnumRoleNullableListFilter<"User">
   stripeCustomerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   stripeConnectId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  resetToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  resetTokenExpiry?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -351,6 +375,8 @@ export type UserCreateInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -381,6 +407,8 @@ export type UserUncheckedCreateInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -411,6 +439,8 @@ export type UserUpdateInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -441,6 +471,8 @@ export type UserUncheckedUpdateInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -471,6 +503,8 @@ export type UserCreateManyInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -485,6 +519,8 @@ export type UserUpdateManyMutationInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -499,6 +535,8 @@ export type UserUncheckedUpdateManyInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -521,6 +559,8 @@ export type UserCountOrderByAggregateInput = {
   roles?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpiry?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -534,6 +574,8 @@ export type UserMaxOrderByAggregateInput = {
   providerId?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpiry?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -547,6 +589,8 @@ export type UserMinOrderByAggregateInput = {
   providerId?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrder
+  resetToken?: Prisma.SortOrder
+  resetTokenExpiry?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -580,6 +624,10 @@ export type EnumAuthProviderFieldUpdateOperationsInput = {
 export type UserUpdaterolesInput = {
   set?: $Enums.Role[]
   push?: $Enums.Role | $Enums.Role[]
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -824,6 +872,8 @@ export type UserCreateWithoutSellerProfileInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
@@ -853,6 +903,8 @@ export type UserUncheckedCreateWithoutSellerProfileInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
@@ -898,6 +950,8 @@ export type UserUpdateWithoutSellerProfileInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
@@ -927,6 +981,8 @@ export type UserUncheckedUpdateWithoutSellerProfileInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
@@ -956,6 +1012,8 @@ export type UserCreateWithoutPhoneVerificationsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -985,6 +1043,8 @@ export type UserUncheckedCreateWithoutPhoneVerificationsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1030,6 +1090,8 @@ export type UserUpdateWithoutPhoneVerificationsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1059,6 +1121,8 @@ export type UserUncheckedUpdateWithoutPhoneVerificationsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1088,6 +1152,8 @@ export type UserCreateWithoutWalletInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1117,6 +1183,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1162,6 +1230,8 @@ export type UserUpdateWithoutWalletInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1191,6 +1261,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1220,6 +1292,8 @@ export type UserCreateWithoutWithdrawalsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1249,6 +1323,8 @@ export type UserUncheckedCreateWithoutWithdrawalsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1294,6 +1370,8 @@ export type UserUpdateWithoutWithdrawalsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1323,6 +1401,8 @@ export type UserUncheckedUpdateWithoutWithdrawalsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1352,6 +1432,8 @@ export type UserCreateWithoutObjectsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1381,6 +1463,8 @@ export type UserUncheckedCreateWithoutObjectsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1426,6 +1510,8 @@ export type UserUpdateWithoutObjectsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1455,6 +1541,8 @@ export type UserUncheckedUpdateWithoutObjectsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1484,6 +1572,8 @@ export type UserCreateWithoutWonAuctionsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1513,6 +1603,8 @@ export type UserUncheckedCreateWithoutWonAuctionsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1547,6 +1639,8 @@ export type UserCreateWithoutReviewedAuctionsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1576,6 +1670,8 @@ export type UserUncheckedCreateWithoutReviewedAuctionsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1621,6 +1717,8 @@ export type UserUpdateWithoutWonAuctionsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1650,6 +1748,8 @@ export type UserUncheckedUpdateWithoutWonAuctionsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1690,6 +1790,8 @@ export type UserUpdateWithoutReviewedAuctionsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1719,6 +1821,8 @@ export type UserUncheckedUpdateWithoutReviewedAuctionsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1748,6 +1852,8 @@ export type UserCreateWithoutBidsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1777,6 +1883,8 @@ export type UserUncheckedCreateWithoutBidsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1822,6 +1930,8 @@ export type UserUpdateWithoutBidsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1851,6 +1961,8 @@ export type UserUncheckedUpdateWithoutBidsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1880,6 +1992,8 @@ export type UserCreateWithoutDepositsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1909,6 +2023,8 @@ export type UserUncheckedCreateWithoutDepositsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1954,6 +2070,8 @@ export type UserUpdateWithoutDepositsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1983,6 +2101,8 @@ export type UserUncheckedUpdateWithoutDepositsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2012,6 +2132,8 @@ export type UserCreateWithoutBuyerOrdersInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2041,6 +2163,8 @@ export type UserUncheckedCreateWithoutBuyerOrdersInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2075,6 +2199,8 @@ export type UserCreateWithoutSellerOrdersInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2104,6 +2230,8 @@ export type UserUncheckedCreateWithoutSellerOrdersInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2149,6 +2277,8 @@ export type UserUpdateWithoutBuyerOrdersInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2178,6 +2308,8 @@ export type UserUncheckedUpdateWithoutBuyerOrdersInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2218,6 +2350,8 @@ export type UserUpdateWithoutSellerOrdersInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2247,6 +2381,8 @@ export type UserUncheckedUpdateWithoutSellerOrdersInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2276,6 +2412,8 @@ export type UserCreateWithoutDisputesInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2305,6 +2443,8 @@ export type UserUncheckedCreateWithoutDisputesInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2350,6 +2490,8 @@ export type UserUpdateWithoutDisputesInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2379,6 +2521,8 @@ export type UserUncheckedUpdateWithoutDisputesInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2408,6 +2552,8 @@ export type UserCreateWithoutFavoriteObjectsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2437,6 +2583,8 @@ export type UserUncheckedCreateWithoutFavoriteObjectsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2482,6 +2630,8 @@ export type UserUpdateWithoutFavoriteObjectsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2511,6 +2661,8 @@ export type UserUncheckedUpdateWithoutFavoriteObjectsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2540,6 +2692,8 @@ export type UserCreateWithoutFavoriteAuctionsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2569,6 +2723,8 @@ export type UserUncheckedCreateWithoutFavoriteAuctionsInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2614,6 +2770,8 @@ export type UserUpdateWithoutFavoriteAuctionsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2643,6 +2801,8 @@ export type UserUncheckedUpdateWithoutFavoriteAuctionsInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2672,6 +2832,8 @@ export type UserCreateWithoutFollowingInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2701,6 +2863,8 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2735,6 +2899,8 @@ export type UserCreateWithoutFollowersInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2764,6 +2930,8 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
+  resetToken?: string | null
+  resetTokenExpiry?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2809,6 +2977,8 @@ export type UserUpdateWithoutFollowingInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2838,6 +3008,8 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2878,6 +3050,8 @@ export type UserUpdateWithoutFollowersInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2907,6 +3081,8 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3084,6 +3260,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
+  resetToken?: boolean
+  resetTokenExpiry?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
@@ -3115,6 +3293,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
+  resetToken?: boolean
+  resetTokenExpiry?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3129,6 +3309,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
+  resetToken?: boolean
+  resetTokenExpiry?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3143,11 +3325,13 @@ export type UserSelectScalar = {
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
+  resetToken?: boolean
+  resetTokenExpiry?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "roles" | "stripeCustomerId" | "stripeConnectId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "roles" | "stripeCustomerId" | "stripeConnectId" | "resetToken" | "resetTokenExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
@@ -3200,6 +3384,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     roles: $Enums.Role[]
     stripeCustomerId: string | null
     stripeConnectId: string | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -3650,6 +3836,8 @@ export interface UserFieldRefs {
   readonly roles: Prisma.FieldRef<"User", 'Role[]'>
   readonly stripeCustomerId: Prisma.FieldRef<"User", 'String'>
   readonly stripeConnectId: Prisma.FieldRef<"User", 'String'>
+  readonly resetToken: Prisma.FieldRef<"User", 'String'>
+  readonly resetTokenExpiry: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

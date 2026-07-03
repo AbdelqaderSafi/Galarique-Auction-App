@@ -50,6 +50,11 @@ export type User = Prisma.UserModel
  */
 export type SellerProfile = Prisma.SellerProfileModel
 /**
+ * Model EmailVerification
+ * 
+ */
+export type EmailVerification = Prisma.EmailVerificationModel
+/**
  * Model PhoneVerification
  * 
  */

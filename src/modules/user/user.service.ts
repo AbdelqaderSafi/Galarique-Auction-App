@@ -44,9 +44,36 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  findByResetToken(resetToken: string) {
+    return this.prisma.user.findUnique({ where: { resetToken } });
+  }
+
+  setPasswordResetToken(
+    userId: string,
+    resetToken: string,
+    resetTokenExpiry: Date,
+  ) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { resetToken, resetTokenExpiry },
+    });
+  }
+
+  // يغيّر الباسورد ويلغي التوكن (استخدام واحد)
+  updatePasswordAndClearReset(userId: string, hashedPassword: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: hashedPassword,
+        resetToken: null,
+        resetTokenExpiry: null,
+      },
+    });
+  }
+
   mapUserWithoutPassword(
     user: Awaited<ReturnType<typeof this.findByEmail>>,
   ): UserResponseDTO['userData'] {
-    return removeFields(user!, ['password']);
+    return removeFields(user!, ['password', 'resetToken', 'resetTokenExpiry']);
   }
 }

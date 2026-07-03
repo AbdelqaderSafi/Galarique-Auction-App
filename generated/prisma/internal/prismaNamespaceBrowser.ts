@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   SellerProfile: 'SellerProfile',
+  EmailVerification: 'EmailVerification',
   PhoneVerification: 'PhoneVerification',
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',
@@ -96,6 +97,8 @@ export const UserScalarFieldEnum = {
   roles: 'roles',
   stripeCustomerId: 'stripeCustomerId',
   stripeConnectId: 'stripeConnectId',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -113,6 +116,21 @@ export const SellerProfileScalarFieldEnum = {
 } as const
 
 export type SellerProfileScalarFieldEnum = (typeof SellerProfileScalarFieldEnum)[keyof typeof SellerProfileScalarFieldEnum]
+
+
+export const EmailVerificationScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  fullName: 'fullName',
+  password: 'password',
+  codeHash: 'codeHash',
+  expiresAt: 'expiresAt',
+  attempts: 'attempts',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailVerificationScalarFieldEnum = (typeof EmailVerificationScalarFieldEnum)[keyof typeof EmailVerificationScalarFieldEnum]
 
 
 export const PhoneVerificationScalarFieldEnum = {

@@ -469,18 +469,6 @@ export type PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.PhoneVerificationScalarWhereInput | Prisma.PhoneVerificationScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type PhoneVerificationCreateWithoutUserInput = {
   id?: string
   phone: string

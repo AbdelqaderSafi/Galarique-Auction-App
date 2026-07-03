@@ -43,7 +43,11 @@ export class AuthGuard implements CanActivate {
         where: { id: payload.sub },
       });
 
-      req.user = removeFields(user, ['password']);
+      req.user = removeFields(user, [
+        'password',
+        'resetToken',
+        'resetTokenExpiry',
+      ]);
     } catch {
       throw new UnauthorizedException();
     }

@@ -112,6 +112,10 @@ model User {
   stripeCustomerId String? @unique // لشحن المحفظة (PaymentIntent)
   stripeConnectId  String? @unique // لحساب الـ payouts (Stripe Connect)
 
+  // إعادة تعيين كلمة المرور (رابط + token صالح لمدّة محدودة، استخدام واحد)
+  resetToken       String?   @unique
+  resetTokenExpiry DateTime?
+
   sellerProfile SellerProfile?
   wallet        Wallet?
 
@@ -146,6 +150,23 @@ model SellerProfile {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// تحقّق الإيميل عند التسجيل — نخزّن بيانات التسجيل مؤقتاً هنا
+// ولا نُنشئ User إلا بعد تأكيد الرمز (OTP من 6 أرقام)
+model EmailVerification {
+  id         String    @id @default(uuid())
+  email      String
+  fullName   String
+  password   String // مُجزّأة بـ argon2 (يُخزَّن الهاش لا كلمة السر)
+  codeHash   String // رمز التحقق (6 أرقام) مُجزّأ
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  consumedAt DateTime? // وقت الاستخدام الناجح
+
+  createdAt DateTime @default(now())
+
+  @@index([email])
 }
 
 // أكواد تحقّق الهاتف (OTP) — عابرة، تُستهلك عند التأكيد

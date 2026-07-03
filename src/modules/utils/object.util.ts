@@ -6,5 +6,5 @@ export function removeFields<T extends object, K extends keyof T>(
   for (const field of fields) {
     delete result[field];
   }
-  return result as Omit<T, K>;
+  return result;
 }

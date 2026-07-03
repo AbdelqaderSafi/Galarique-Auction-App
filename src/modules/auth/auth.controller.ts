@@ -10,20 +10,24 @@ import {
 import type { Request } from 'express';
 import { AuthService } from './auth.service';
 import type {
+  ChangePasswordDTO,
   ForgotPasswordDTO,
   GoogleAuthDTO,
   LoginDTO,
   MessageResponseDTO,
   RegisterDTO,
+  ResendVerificationDTO,
   ResetPasswordDTO,
   UserResponseDTO,
   VerifyEmailDTO,
 } from './dto/auth.dto';
 import { IsPublic } from 'src/decorators/public.decorator';
 import {
+  changePasswordSchema,
   forgotPasswordSchema,
   loginValidationSchema,
   registerValidationSchema,
+  resendVerificationSchema,
   resetPasswordSchema,
   verifyEmailSchema,
 } from './util/auth.validation.schema';
@@ -32,11 +36,13 @@ import {
   SwaggerAuthTag,
   ApiRegister,
   ApiVerifyEmail,
+  ApiResendVerification,
   ApiLogin,
   ApiGoogleAuth,
   ApiValidateToken,
   ApiForgotPassword,
   ApiResetPassword,
+  ApiChangePassword,
 } from 'src/swagger/auth.swagger';
 
 @SwaggerAuthTag()
@@ -106,5 +112,27 @@ export class AuthController {
     @Body() resetPasswordDTO: ResetPasswordDTO,
   ): Promise<MessageResponseDTO> {
     return this.authService.resetPassword(resetPasswordDTO);
+  }
+
+  @Post('resend-verification')
+  @IsPublic(true)
+  @HttpCode(200)
+  @ApiResendVerification()
+  @UsePipes(new ZodValidationPipe(resendVerificationSchema))
+  resendVerification(
+    @Body() dto: ResendVerificationDTO,
+  ): Promise<MessageResponseDTO> {
+    return this.authService.resendVerification(dto);
+  }
+
+  @Post('change-password')
+  @HttpCode(200)
+  @ApiChangePassword()
+  @UsePipes(new ZodValidationPipe(changePasswordSchema))
+  changePassword(
+    @Req() req: Request,
+    @Body() dto: ChangePasswordDTO,
+  ): Promise<MessageResponseDTO> {
+    return this.authService.changePassword(req.user!.id, dto);
   }
 }

@@ -11,10 +11,12 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import {
+  ChangePasswordDTO,
   ForgotPasswordDTO,
   GoogleAuthDTO,
   LoginDTO,
   RegisterDTO,
+  ResendVerificationDTO,
   ResetPasswordDTO,
   VerifyEmailDTO,
 } from '../modules/auth/dto/auth.dto';
@@ -89,4 +91,30 @@ export const ApiResetPassword = () =>
     ApiOkResponse({ description: 'Password reset successfully' }),
     ApiNotFoundResponse({ description: 'Invalid or expired reset token' }),
     ApiBadRequestResponse({ description: 'Reset token has expired' }),
+  );
+
+export const ApiResendVerification = () =>
+  applyDecorators(
+    ApiOperation({
+      summary: 'Resend email verification code',
+      description:
+        'Generates a new 6-digit code and sends it. Always returns a generic message.',
+    }),
+    ApiBody({ type: ResendVerificationDTO }),
+    ApiOkResponse({
+      description: 'Generic message (does not reveal account existence)',
+    }),
+  );
+
+export const ApiChangePassword = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({ summary: 'Change password (must be logged in)' }),
+    ApiBody({ type: ChangePasswordDTO }),
+    ApiOkResponse({ description: 'Password changed successfully' }),
+    ApiBadRequestResponse({
+      description:
+        'Current password incorrect / new same as old / social account',
+    }),
+    ApiUnauthorizedResponse({ description: 'Not authenticated' }),
   );

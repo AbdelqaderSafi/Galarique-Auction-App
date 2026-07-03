@@ -6,11 +6,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  ChangePasswordDTO,
   ForgotPasswordDTO,
   GoogleAuthDTO,
   LoginDTO,
   MessageResponseDTO,
   RegisterDTO,
+  ResendVerificationDTO,
   ResetPasswordDTO,
   UserResponseDTO,
   VerifyEmailDTO,
@@ -248,6 +250,84 @@ export class AuthService {
     return {
       message: 'Password has been reset successfully. You can now log in.',
     };
+  }
+
+  // إعادة إرسال رمز التحقق لإيميل معلّق (يولّد رمزاً جديداً ويلغي القديم)
+  async resendVerification(
+    dto: ResendVerificationDTO,
+  ): Promise<MessageResponseDTO> {
+    const pending = await this.emailVerificationService.findLatestPending(
+      dto.email,
+    );
+
+    // نفس الرسالة سواء كان الإيميل معلّقاً أم لا (لا نكشف معلومات)
+    if (!pending) {
+      return {
+        message:
+          'If there is a pending verification for this email, a new code has been sent.',
+      };
+    }
+
+    const code = this.generateOtpCode();
+    const codeHash = await this.hashPassword(code);
+    const expiresAt = new Date(Date.now() + this.otpExpiryMs());
+
+    await this.emailVerificationService.createPending({
+      email: pending.email,
+      fullName: pending.fullName,
+      hashedPassword: pending.password,
+      codeHash,
+      expiresAt,
+    });
+
+    await this.mailService.sendEmailVerificationCode(
+      pending.email,
+      pending.fullName,
+      code,
+    );
+
+    return {
+      message:
+        'If there is a pending verification for this email, a new code has been sent.',
+    };
+  }
+
+  // تغيير الباسورد وهو مسجّل دخول (يتطلّب الباسورد الحالي للتأكيد)
+  async changePassword(
+    userId: string,
+    dto: ChangePasswordDTO,
+  ): Promise<MessageResponseDTO> {
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    if (!user.password) {
+      throw new BadRequestException(
+        'This account uses social login and has no password to change.',
+      );
+    }
+
+    const isCurrentValid = await this.verifyPassword(
+      dto.currentPassword,
+      user.password,
+    );
+
+    if (!isCurrentValid) {
+      throw new BadRequestException('Current password is incorrect.');
+    }
+
+    if (dto.currentPassword === dto.newPassword) {
+      throw new BadRequestException(
+        'New password must be different from the current password.',
+      );
+    }
+
+    const hashedNew = await this.hashPassword(dto.newPassword);
+    await this.userService.updatePasswordAndClearReset(userId, hashedNew);
+
+    return { message: 'Password changed successfully.' };
   }
 
   private hashPassword(password: string) {

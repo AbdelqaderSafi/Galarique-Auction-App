@@ -1,8 +1,10 @@
 import { validationSchema } from 'src/modules/user/util/user.validation.schema';
 import { z, ZodType } from 'zod';
 import {
+  ChangePasswordDTO,
   ForgotPasswordDTO,
   LoginDTO,
+  ResendVerificationDTO,
   ResetPasswordDTO,
   VerifyEmailDTO,
 } from '../dto/auth.dto';
@@ -27,3 +29,12 @@ export const resetPasswordSchema = z.object({
   token: z.string().min(1),
   newPassword: z.string().min(8),
 }) satisfies ZodType<ResetPasswordDTO>;
+
+export const resendVerificationSchema = z.object({
+  email: z.string().email(),
+}) satisfies ZodType<ResendVerificationDTO>;
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1),
+  newPassword: z.string().min(8),
+}) satisfies ZodType<ChangePasswordDTO>;

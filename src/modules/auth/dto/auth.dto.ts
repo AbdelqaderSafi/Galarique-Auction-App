@@ -33,9 +33,22 @@ export class VerifyEmailDTO {
   code!: string;
 }
 
+export class ResendVerificationDTO {
+  @ApiProperty({ example: 'ahmed@example.com' })
+  email!: string;
+}
+
 export class ForgotPasswordDTO {
   @ApiProperty({ example: 'ahmed@example.com' })
   email!: string;
+}
+
+export class ChangePasswordDTO {
+  @ApiProperty({ example: 'OldPass@123' })
+  currentPassword!: string;
+
+  @ApiProperty({ example: 'NewStrongPass@123', minLength: 8 })
+  newPassword!: string;
 }
 
 export class ResetPasswordDTO {

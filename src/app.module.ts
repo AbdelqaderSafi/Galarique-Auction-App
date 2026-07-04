@@ -5,15 +5,19 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { MailModule } from './modules/mail/mail.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
+import { FirebaseAdminModule } from './modules/firebase/firebase-admin.module';
+import { SellerVerificationModule } from './modules/seller-verification/seller-verification.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     MailModule,
+    FirebaseAdminModule,
     AuthModule,
     CategoriesModule,
     UploadsModule,
+    SellerVerificationModule,
   ],
 })
 export class AppModule {}

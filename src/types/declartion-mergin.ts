@@ -18,6 +18,11 @@ export interface EnvVariables {
   IMAGEKIT_PUBLIC_KEY: string;
   IMAGEKIT_PRIVATE_KEY: string;
   IMAGEKIT_URL_ENDPOINT: string;
+
+  // توثيق الهاتف (Firebase Admin)
+  FIREBASE_PROJECT_ID: string;
+  FIREBASE_CLIENT_EMAIL: string;
+  FIREBASE_PRIVATE_KEY: string;
 }
 
 // الحقول الحسّاسة التي يجب ألّا تُعاد أبداً في أي response

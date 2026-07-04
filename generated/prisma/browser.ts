@@ -33,11 +33,6 @@ export type SellerProfile = Prisma.SellerProfileModel
  */
 export type EmailVerification = Prisma.EmailVerificationModel
 /**
- * Model PhoneVerification
- * 
- */
-export type PhoneVerification = Prisma.PhoneVerificationModel
-/**
  * Model Wallet
  * 
  */

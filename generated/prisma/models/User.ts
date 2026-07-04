@@ -35,6 +35,8 @@ export type UserMinAggregateOutputType = {
   stripeConnectId: string | null
   resetToken: string | null
   resetTokenExpiry: Date | null
+  phone: string | null
+  isPhoneVerified: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +52,8 @@ export type UserMaxAggregateOutputType = {
   stripeConnectId: string | null
   resetToken: string | null
   resetTokenExpiry: Date | null
+  phone: string | null
+  isPhoneVerified: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +70,8 @@ export type UserCountAggregateOutputType = {
   stripeConnectId: number
   resetToken: number
   resetTokenExpiry: number
+  phone: number
+  isPhoneVerified: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -83,6 +89,8 @@ export type UserMinAggregateInputType = {
   stripeConnectId?: true
   resetToken?: true
   resetTokenExpiry?: true
+  phone?: true
+  isPhoneVerified?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -98,6 +106,8 @@ export type UserMaxAggregateInputType = {
   stripeConnectId?: true
   resetToken?: true
   resetTokenExpiry?: true
+  phone?: true
+  isPhoneVerified?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -114,6 +124,8 @@ export type UserCountAggregateInputType = {
   stripeConnectId?: true
   resetToken?: true
   resetTokenExpiry?: true
+  phone?: true
+  isPhoneVerified?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -203,6 +215,8 @@ export type UserGroupByOutputType = {
   stripeConnectId: string | null
   resetToken: string | null
   resetTokenExpiry: Date | null
+  phone: string | null
+  isPhoneVerified: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -240,6 +254,8 @@ export type UserWhereInput = {
   stripeConnectId?: Prisma.StringNullableFilter<"User"> | string | null
   resetToken?: Prisma.StringNullableFilter<"User"> | string | null
   resetTokenExpiry?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
+  isPhoneVerified?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sellerProfile?: Prisma.XOR<Prisma.SellerProfileNullableScalarRelationFilter, Prisma.SellerProfileWhereInput> | null
@@ -252,7 +268,6 @@ export type UserWhereInput = {
   buyerOrders?: Prisma.OrderListRelationFilter
   sellerOrders?: Prisma.OrderListRelationFilter
   disputes?: Prisma.DisputeListRelationFilter
-  phoneVerifications?: Prisma.PhoneVerificationListRelationFilter
   withdrawals?: Prisma.WithdrawalListRelationFilter
   favoriteObjects?: Prisma.FavoriteObjectListRelationFilter
   favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
@@ -272,6 +287,8 @@ export type UserOrderByWithRelationInput = {
   stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
   resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
   resetTokenExpiry?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPhoneVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sellerProfile?: Prisma.SellerProfileOrderByWithRelationInput
@@ -284,7 +301,6 @@ export type UserOrderByWithRelationInput = {
   buyerOrders?: Prisma.OrderOrderByRelationAggregateInput
   sellerOrders?: Prisma.OrderOrderByRelationAggregateInput
   disputes?: Prisma.DisputeOrderByRelationAggregateInput
-  phoneVerifications?: Prisma.PhoneVerificationOrderByRelationAggregateInput
   withdrawals?: Prisma.WithdrawalOrderByRelationAggregateInput
   favoriteObjects?: Prisma.FavoriteObjectOrderByRelationAggregateInput
   favoriteAuctions?: Prisma.FavoriteAuctionOrderByRelationAggregateInput
@@ -298,6 +314,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   stripeCustomerId?: string
   stripeConnectId?: string
   resetToken?: string
+  phone?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -307,6 +324,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   providerId?: Prisma.StringNullableFilter<"User"> | string | null
   roles?: Prisma.EnumRoleNullableListFilter<"User">
   resetTokenExpiry?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  isPhoneVerified?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sellerProfile?: Prisma.XOR<Prisma.SellerProfileNullableScalarRelationFilter, Prisma.SellerProfileWhereInput> | null
@@ -319,13 +337,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   buyerOrders?: Prisma.OrderListRelationFilter
   sellerOrders?: Prisma.OrderListRelationFilter
   disputes?: Prisma.DisputeListRelationFilter
-  phoneVerifications?: Prisma.PhoneVerificationListRelationFilter
   withdrawals?: Prisma.WithdrawalListRelationFilter
   favoriteObjects?: Prisma.FavoriteObjectListRelationFilter
   favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
   following?: Prisma.FollowListRelationFilter
   followers?: Prisma.FollowListRelationFilter
-}, "id" | "email" | "stripeCustomerId" | "stripeConnectId" | "resetToken">
+}, "id" | "email" | "stripeCustomerId" | "stripeConnectId" | "resetToken" | "phone">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -339,6 +356,8 @@ export type UserOrderByWithAggregationInput = {
   stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
   resetToken?: Prisma.SortOrderInput | Prisma.SortOrder
   resetTokenExpiry?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPhoneVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -361,6 +380,8 @@ export type UserScalarWhereWithAggregatesInput = {
   stripeConnectId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   resetToken?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   resetTokenExpiry?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  isPhoneVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -377,6 +398,8 @@ export type UserCreateInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -389,7 +412,6 @@ export type UserCreateInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -409,6 +431,8 @@ export type UserUncheckedCreateInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -421,7 +445,6 @@ export type UserUncheckedCreateInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -441,6 +464,8 @@ export type UserUpdateInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -453,7 +478,6 @@ export type UserUpdateInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -473,6 +497,8 @@ export type UserUncheckedUpdateInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -485,7 +511,6 @@ export type UserUncheckedUpdateInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -505,6 +530,8 @@ export type UserCreateManyInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -521,6 +548,8 @@ export type UserUpdateManyMutationInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -537,6 +566,8 @@ export type UserUncheckedUpdateManyInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -561,6 +592,8 @@ export type UserCountOrderByAggregateInput = {
   stripeConnectId?: Prisma.SortOrder
   resetToken?: Prisma.SortOrder
   resetTokenExpiry?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  isPhoneVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -576,6 +609,8 @@ export type UserMaxOrderByAggregateInput = {
   stripeConnectId?: Prisma.SortOrder
   resetToken?: Prisma.SortOrder
   resetTokenExpiry?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  isPhoneVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -591,6 +626,8 @@ export type UserMinOrderByAggregateInput = {
   stripeConnectId?: Prisma.SortOrder
   resetToken?: Prisma.SortOrder
   resetTokenExpiry?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  isPhoneVerified?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -630,6 +667,10 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
@@ -646,20 +687,6 @@ export type UserUpdateOneRequiredWithoutSellerProfileNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSellerProfileInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSellerProfileInput, Prisma.UserUpdateWithoutSellerProfileInput>, Prisma.UserUncheckedUpdateWithoutSellerProfileInput>
-}
-
-export type UserCreateNestedOneWithoutPhoneVerificationsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPhoneVerificationsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutPhoneVerificationsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPhoneVerificationsInput
-  upsert?: Prisma.UserUpsertWithoutPhoneVerificationsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPhoneVerificationsInput, Prisma.UserUpdateWithoutPhoneVerificationsInput>, Prisma.UserUncheckedUpdateWithoutPhoneVerificationsInput>
 }
 
 export type UserCreateNestedOneWithoutWalletInput = {
@@ -874,6 +901,8 @@ export type UserCreateWithoutSellerProfileInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
@@ -885,7 +914,6 @@ export type UserCreateWithoutSellerProfileInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -905,6 +933,8 @@ export type UserUncheckedCreateWithoutSellerProfileInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
@@ -916,7 +946,6 @@ export type UserUncheckedCreateWithoutSellerProfileInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -952,6 +981,8 @@ export type UserUpdateWithoutSellerProfileInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
@@ -963,7 +994,6 @@ export type UserUpdateWithoutSellerProfileInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -983,149 +1013,10 @@ export type UserUncheckedUpdateWithoutSellerProfileInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
-  objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
-  bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
-  deposits?: Prisma.AuctionDepositUncheckedUpdateManyWithoutUserNestedInput
-  wonAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutCurrentWinnerNestedInput
-  reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
-  buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
-  sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
-  disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
-  withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-  favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
-  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
-  following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
-  followers?: Prisma.FollowUncheckedUpdateManyWithoutSellerNestedInput
-}
-
-export type UserCreateWithoutPhoneVerificationsInput = {
-  id?: string
-  fullName: string
-  email: string
-  password?: string | null
-  provider?: $Enums.AuthProvider
-  providerId?: string | null
-  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
-  stripeCustomerId?: string | null
-  stripeConnectId?: string | null
-  resetToken?: string | null
-  resetTokenExpiry?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
-  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
-  objects?: Prisma.ObjectCreateNestedManyWithoutOwnerInput
-  bids?: Prisma.BidCreateNestedManyWithoutBidderInput
-  deposits?: Prisma.AuctionDepositCreateNestedManyWithoutUserInput
-  wonAuctions?: Prisma.AuctionCreateNestedManyWithoutCurrentWinnerInput
-  reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
-  buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
-  sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
-  disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
-  favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
-  favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
-  following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
-  followers?: Prisma.FollowCreateNestedManyWithoutSellerInput
-}
-
-export type UserUncheckedCreateWithoutPhoneVerificationsInput = {
-  id?: string
-  fullName: string
-  email: string
-  password?: string | null
-  provider?: $Enums.AuthProvider
-  providerId?: string | null
-  roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
-  stripeCustomerId?: string | null
-  stripeConnectId?: string | null
-  resetToken?: string | null
-  resetTokenExpiry?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
-  wallet?: Prisma.WalletUncheckedCreateNestedOneWithoutUserInput
-  objects?: Prisma.ObjectUncheckedCreateNestedManyWithoutOwnerInput
-  bids?: Prisma.BidUncheckedCreateNestedManyWithoutBidderInput
-  deposits?: Prisma.AuctionDepositUncheckedCreateNestedManyWithoutUserInput
-  wonAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutCurrentWinnerInput
-  reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
-  buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
-  sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
-  disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
-  favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
-  favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
-  following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
-  followers?: Prisma.FollowUncheckedCreateNestedManyWithoutSellerInput
-}
-
-export type UserCreateOrConnectWithoutPhoneVerificationsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
-}
-
-export type UserUpsertWithoutPhoneVerificationsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutPhoneVerificationsInput, Prisma.UserUncheckedUpdateWithoutPhoneVerificationsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutPhoneVerificationsInput, Prisma.UserUncheckedCreateWithoutPhoneVerificationsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutPhoneVerificationsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutPhoneVerificationsInput, Prisma.UserUncheckedUpdateWithoutPhoneVerificationsInput>
-}
-
-export type UserUpdateWithoutPhoneVerificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
-  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
-  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
-  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
-  objects?: Prisma.ObjectUpdateManyWithoutOwnerNestedInput
-  bids?: Prisma.BidUpdateManyWithoutBidderNestedInput
-  deposits?: Prisma.AuctionDepositUpdateManyWithoutUserNestedInput
-  wonAuctions?: Prisma.AuctionUpdateManyWithoutCurrentWinnerNestedInput
-  reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
-  buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
-  sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
-  disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
-  favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
-  favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
-  following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
-  followers?: Prisma.FollowUpdateManyWithoutSellerNestedInput
-}
-
-export type UserUncheckedUpdateWithoutPhoneVerificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
-  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
-  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
   wallet?: Prisma.WalletUncheckedUpdateOneWithoutUserNestedInput
   objects?: Prisma.ObjectUncheckedUpdateManyWithoutOwnerNestedInput
   bids?: Prisma.BidUncheckedUpdateManyWithoutBidderNestedInput
@@ -1154,6 +1045,8 @@ export type UserCreateWithoutWalletInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1165,7 +1058,6 @@ export type UserCreateWithoutWalletInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -1185,6 +1077,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1196,7 +1090,6 @@ export type UserUncheckedCreateWithoutWalletInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -1232,6 +1125,8 @@ export type UserUpdateWithoutWalletInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1243,7 +1138,6 @@ export type UserUpdateWithoutWalletInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -1263,6 +1157,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1274,7 +1170,6 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -1294,6 +1189,8 @@ export type UserCreateWithoutWithdrawalsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1306,7 +1203,6 @@ export type UserCreateWithoutWithdrawalsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -1325,6 +1221,8 @@ export type UserUncheckedCreateWithoutWithdrawalsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1337,7 +1235,6 @@ export type UserUncheckedCreateWithoutWithdrawalsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -1372,6 +1269,8 @@ export type UserUpdateWithoutWithdrawalsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1384,7 +1283,6 @@ export type UserUpdateWithoutWithdrawalsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -1403,6 +1301,8 @@ export type UserUncheckedUpdateWithoutWithdrawalsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1415,7 +1315,6 @@ export type UserUncheckedUpdateWithoutWithdrawalsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -1434,6 +1333,8 @@ export type UserCreateWithoutObjectsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1445,7 +1346,6 @@ export type UserCreateWithoutObjectsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -1465,6 +1365,8 @@ export type UserUncheckedCreateWithoutObjectsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1476,7 +1378,6 @@ export type UserUncheckedCreateWithoutObjectsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -1512,6 +1413,8 @@ export type UserUpdateWithoutObjectsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1523,7 +1426,6 @@ export type UserUpdateWithoutObjectsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -1543,6 +1445,8 @@ export type UserUncheckedUpdateWithoutObjectsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1554,7 +1458,6 @@ export type UserUncheckedUpdateWithoutObjectsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -1574,6 +1477,8 @@ export type UserCreateWithoutWonAuctionsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1585,7 +1490,6 @@ export type UserCreateWithoutWonAuctionsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -1605,6 +1509,8 @@ export type UserUncheckedCreateWithoutWonAuctionsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1616,7 +1522,6 @@ export type UserUncheckedCreateWithoutWonAuctionsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -1641,6 +1546,8 @@ export type UserCreateWithoutReviewedAuctionsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1652,7 +1559,6 @@ export type UserCreateWithoutReviewedAuctionsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -1672,6 +1578,8 @@ export type UserUncheckedCreateWithoutReviewedAuctionsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1683,7 +1591,6 @@ export type UserUncheckedCreateWithoutReviewedAuctionsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -1719,6 +1626,8 @@ export type UserUpdateWithoutWonAuctionsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1730,7 +1639,6 @@ export type UserUpdateWithoutWonAuctionsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -1750,6 +1658,8 @@ export type UserUncheckedUpdateWithoutWonAuctionsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1761,7 +1671,6 @@ export type UserUncheckedUpdateWithoutWonAuctionsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -1792,6 +1701,8 @@ export type UserUpdateWithoutReviewedAuctionsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1803,7 +1714,6 @@ export type UserUpdateWithoutReviewedAuctionsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -1823,6 +1733,8 @@ export type UserUncheckedUpdateWithoutReviewedAuctionsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1834,7 +1746,6 @@ export type UserUncheckedUpdateWithoutReviewedAuctionsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -1854,6 +1765,8 @@ export type UserCreateWithoutBidsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -1865,7 +1778,6 @@ export type UserCreateWithoutBidsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -1885,6 +1797,8 @@ export type UserUncheckedCreateWithoutBidsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -1896,7 +1810,6 @@ export type UserUncheckedCreateWithoutBidsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -1932,6 +1845,8 @@ export type UserUpdateWithoutBidsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -1943,7 +1858,6 @@ export type UserUpdateWithoutBidsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -1963,6 +1877,8 @@ export type UserUncheckedUpdateWithoutBidsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -1974,7 +1890,6 @@ export type UserUncheckedUpdateWithoutBidsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -1994,6 +1909,8 @@ export type UserCreateWithoutDepositsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2005,7 +1922,6 @@ export type UserCreateWithoutDepositsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -2025,6 +1941,8 @@ export type UserUncheckedCreateWithoutDepositsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2036,7 +1954,6 @@ export type UserUncheckedCreateWithoutDepositsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -2072,6 +1989,8 @@ export type UserUpdateWithoutDepositsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2083,7 +2002,6 @@ export type UserUpdateWithoutDepositsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -2103,6 +2021,8 @@ export type UserUncheckedUpdateWithoutDepositsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2114,7 +2034,6 @@ export type UserUncheckedUpdateWithoutDepositsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -2134,6 +2053,8 @@ export type UserCreateWithoutBuyerOrdersInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2145,7 +2066,6 @@ export type UserCreateWithoutBuyerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -2165,6 +2085,8 @@ export type UserUncheckedCreateWithoutBuyerOrdersInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2176,7 +2098,6 @@ export type UserUncheckedCreateWithoutBuyerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -2201,6 +2122,8 @@ export type UserCreateWithoutSellerOrdersInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2212,7 +2135,6 @@ export type UserCreateWithoutSellerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -2232,6 +2154,8 @@ export type UserUncheckedCreateWithoutSellerOrdersInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2243,7 +2167,6 @@ export type UserUncheckedCreateWithoutSellerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -2279,6 +2202,8 @@ export type UserUpdateWithoutBuyerOrdersInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2290,7 +2215,6 @@ export type UserUpdateWithoutBuyerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -2310,6 +2234,8 @@ export type UserUncheckedUpdateWithoutBuyerOrdersInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2321,7 +2247,6 @@ export type UserUncheckedUpdateWithoutBuyerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -2352,6 +2277,8 @@ export type UserUpdateWithoutSellerOrdersInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2363,7 +2290,6 @@ export type UserUpdateWithoutSellerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -2383,6 +2309,8 @@ export type UserUncheckedUpdateWithoutSellerOrdersInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2394,7 +2322,6 @@ export type UserUncheckedUpdateWithoutSellerOrdersInput = {
   reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -2414,6 +2341,8 @@ export type UserCreateWithoutDisputesInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2425,7 +2354,6 @@ export type UserCreateWithoutDisputesInput = {
   reviewedAuctions?: Prisma.AuctionCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -2445,6 +2373,8 @@ export type UserUncheckedCreateWithoutDisputesInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2456,7 +2386,6 @@ export type UserUncheckedCreateWithoutDisputesInput = {
   reviewedAuctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutReviewedByInput
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -2492,6 +2421,8 @@ export type UserUpdateWithoutDisputesInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2503,7 +2434,6 @@ export type UserUpdateWithoutDisputesInput = {
   reviewedAuctions?: Prisma.AuctionUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -2523,6 +2453,8 @@ export type UserUncheckedUpdateWithoutDisputesInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2534,7 +2466,6 @@ export type UserUncheckedUpdateWithoutDisputesInput = {
   reviewedAuctions?: Prisma.AuctionUncheckedUpdateManyWithoutReviewedByNestedInput
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -2554,6 +2485,8 @@ export type UserCreateWithoutFavoriteObjectsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2566,7 +2499,6 @@ export type UserCreateWithoutFavoriteObjectsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -2585,6 +2517,8 @@ export type UserUncheckedCreateWithoutFavoriteObjectsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2597,7 +2531,6 @@ export type UserUncheckedCreateWithoutFavoriteObjectsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -2632,6 +2565,8 @@ export type UserUpdateWithoutFavoriteObjectsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2644,7 +2579,6 @@ export type UserUpdateWithoutFavoriteObjectsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -2663,6 +2597,8 @@ export type UserUncheckedUpdateWithoutFavoriteObjectsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2675,7 +2611,6 @@ export type UserUncheckedUpdateWithoutFavoriteObjectsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -2694,6 +2629,8 @@ export type UserCreateWithoutFavoriteAuctionsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2706,7 +2643,6 @@ export type UserCreateWithoutFavoriteAuctionsInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   following?: Prisma.FollowCreateNestedManyWithoutFollowerInput
@@ -2725,6 +2661,8 @@ export type UserUncheckedCreateWithoutFavoriteAuctionsInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2737,7 +2675,6 @@ export type UserUncheckedCreateWithoutFavoriteAuctionsInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   following?: Prisma.FollowUncheckedCreateNestedManyWithoutFollowerInput
@@ -2772,6 +2709,8 @@ export type UserUpdateWithoutFavoriteAuctionsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2784,7 +2723,6 @@ export type UserUpdateWithoutFavoriteAuctionsInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUpdateManyWithoutFollowerNestedInput
@@ -2803,6 +2741,8 @@ export type UserUncheckedUpdateWithoutFavoriteAuctionsInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -2815,7 +2755,6 @@ export type UserUncheckedUpdateWithoutFavoriteAuctionsInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   following?: Prisma.FollowUncheckedUpdateManyWithoutFollowerNestedInput
@@ -2834,6 +2773,8 @@ export type UserCreateWithoutFollowingInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2846,7 +2787,6 @@ export type UserCreateWithoutFollowingInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -2865,6 +2805,8 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2877,7 +2819,6 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -2901,6 +2842,8 @@ export type UserCreateWithoutFollowersInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileCreateNestedOneWithoutUserInput
@@ -2913,7 +2856,6 @@ export type UserCreateWithoutFollowersInput = {
   buyerOrders?: Prisma.OrderCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionCreateNestedManyWithoutUserInput
@@ -2932,6 +2874,8 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   stripeConnectId?: string | null
   resetToken?: string | null
   resetTokenExpiry?: Date | string | null
+  phone?: string | null
+  isPhoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedCreateNestedOneWithoutUserInput
@@ -2944,7 +2888,6 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   buyerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutBuyerInput
   sellerOrders?: Prisma.OrderUncheckedCreateNestedManyWithoutSellerInput
   disputes?: Prisma.DisputeUncheckedCreateNestedManyWithoutRaisedByInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedCreateNestedManyWithoutUserInput
   withdrawals?: Prisma.WithdrawalUncheckedCreateNestedManyWithoutUserInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutUserInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedCreateNestedManyWithoutUserInput
@@ -2979,6 +2922,8 @@ export type UserUpdateWithoutFollowingInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -2991,7 +2936,6 @@ export type UserUpdateWithoutFollowingInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -3010,6 +2954,8 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3022,7 +2968,6 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -3052,6 +2997,8 @@ export type UserUpdateWithoutFollowersInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUpdateOneWithoutUserNestedInput
@@ -3064,7 +3011,6 @@ export type UserUpdateWithoutFollowersInput = {
   buyerOrders?: Prisma.OrderUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUpdateManyWithoutUserNestedInput
@@ -3083,6 +3029,8 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   resetTokenExpiry?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPhoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sellerProfile?: Prisma.SellerProfileUncheckedUpdateOneWithoutUserNestedInput
@@ -3095,7 +3043,6 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   buyerOrders?: Prisma.OrderUncheckedUpdateManyWithoutBuyerNestedInput
   sellerOrders?: Prisma.OrderUncheckedUpdateManyWithoutSellerNestedInput
   disputes?: Prisma.DisputeUncheckedUpdateManyWithoutRaisedByNestedInput
-  phoneVerifications?: Prisma.PhoneVerificationUncheckedUpdateManyWithoutUserNestedInput
   withdrawals?: Prisma.WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   favoriteObjects?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutUserNestedInput
   favoriteAuctions?: Prisma.FavoriteAuctionUncheckedUpdateManyWithoutUserNestedInput
@@ -3116,7 +3063,6 @@ export type UserCountOutputType = {
   buyerOrders: number
   sellerOrders: number
   disputes: number
-  phoneVerifications: number
   withdrawals: number
   favoriteObjects: number
   favoriteAuctions: number
@@ -3133,7 +3079,6 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   buyerOrders?: boolean | UserCountOutputTypeCountBuyerOrdersArgs
   sellerOrders?: boolean | UserCountOutputTypeCountSellerOrdersArgs
   disputes?: boolean | UserCountOutputTypeCountDisputesArgs
-  phoneVerifications?: boolean | UserCountOutputTypeCountPhoneVerificationsArgs
   withdrawals?: boolean | UserCountOutputTypeCountWithdrawalsArgs
   favoriteObjects?: boolean | UserCountOutputTypeCountFavoriteObjectsArgs
   favoriteAuctions?: boolean | UserCountOutputTypeCountFavoriteAuctionsArgs
@@ -3210,13 +3155,6 @@ export type UserCountOutputTypeCountDisputesArgs<ExtArgs extends runtime.Types.E
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountPhoneVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PhoneVerificationWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountWithdrawalsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.WithdrawalWhereInput
 }
@@ -3262,6 +3200,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   stripeConnectId?: boolean
   resetToken?: boolean
   resetTokenExpiry?: boolean
+  phone?: boolean
+  isPhoneVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
@@ -3274,7 +3214,6 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   buyerOrders?: boolean | Prisma.User$buyerOrdersArgs<ExtArgs>
   sellerOrders?: boolean | Prisma.User$sellerOrdersArgs<ExtArgs>
   disputes?: boolean | Prisma.User$disputesArgs<ExtArgs>
-  phoneVerifications?: boolean | Prisma.User$phoneVerificationsArgs<ExtArgs>
   withdrawals?: boolean | Prisma.User$withdrawalsArgs<ExtArgs>
   favoriteObjects?: boolean | Prisma.User$favoriteObjectsArgs<ExtArgs>
   favoriteAuctions?: boolean | Prisma.User$favoriteAuctionsArgs<ExtArgs>
@@ -3295,6 +3234,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   stripeConnectId?: boolean
   resetToken?: boolean
   resetTokenExpiry?: boolean
+  phone?: boolean
+  isPhoneVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3311,6 +3252,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   stripeConnectId?: boolean
   resetToken?: boolean
   resetTokenExpiry?: boolean
+  phone?: boolean
+  isPhoneVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -3327,11 +3270,13 @@ export type UserSelectScalar = {
   stripeConnectId?: boolean
   resetToken?: boolean
   resetTokenExpiry?: boolean
+  phone?: boolean
+  isPhoneVerified?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "roles" | "stripeCustomerId" | "stripeConnectId" | "resetToken" | "resetTokenExpiry" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "roles" | "stripeCustomerId" | "stripeConnectId" | "resetToken" | "resetTokenExpiry" | "phone" | "isPhoneVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
@@ -3343,7 +3288,6 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   buyerOrders?: boolean | Prisma.User$buyerOrdersArgs<ExtArgs>
   sellerOrders?: boolean | Prisma.User$sellerOrdersArgs<ExtArgs>
   disputes?: boolean | Prisma.User$disputesArgs<ExtArgs>
-  phoneVerifications?: boolean | Prisma.User$phoneVerificationsArgs<ExtArgs>
   withdrawals?: boolean | Prisma.User$withdrawalsArgs<ExtArgs>
   favoriteObjects?: boolean | Prisma.User$favoriteObjectsArgs<ExtArgs>
   favoriteAuctions?: boolean | Prisma.User$favoriteAuctionsArgs<ExtArgs>
@@ -3367,7 +3311,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     buyerOrders: Prisma.$OrderPayload<ExtArgs>[]
     sellerOrders: Prisma.$OrderPayload<ExtArgs>[]
     disputes: Prisma.$DisputePayload<ExtArgs>[]
-    phoneVerifications: Prisma.$PhoneVerificationPayload<ExtArgs>[]
     withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
     favoriteObjects: Prisma.$FavoriteObjectPayload<ExtArgs>[]
     favoriteAuctions: Prisma.$FavoriteAuctionPayload<ExtArgs>[]
@@ -3386,6 +3329,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     stripeConnectId: string | null
     resetToken: string | null
     resetTokenExpiry: Date | null
+    phone: string | null
+    isPhoneVerified: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -3792,7 +3737,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   buyerOrders<T extends Prisma.User$buyerOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$buyerOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sellerOrders<T extends Prisma.User$sellerOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sellerOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   disputes<T extends Prisma.User$disputesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$disputesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DisputePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  phoneVerifications<T extends Prisma.User$phoneVerificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$phoneVerificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhoneVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   withdrawals<T extends Prisma.User$withdrawalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favoriteObjects<T extends Prisma.User$favoriteObjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteObjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favoriteAuctions<T extends Prisma.User$favoriteAuctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteAuctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteAuctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3838,6 +3782,8 @@ export interface UserFieldRefs {
   readonly stripeConnectId: Prisma.FieldRef<"User", 'String'>
   readonly resetToken: Prisma.FieldRef<"User", 'String'>
   readonly resetTokenExpiry: Prisma.FieldRef<"User", 'DateTime'>
+  readonly phone: Prisma.FieldRef<"User", 'String'>
+  readonly isPhoneVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -4460,30 +4406,6 @@ export type User$disputesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.DisputeScalarFieldEnum | Prisma.DisputeScalarFieldEnum[]
-}
-
-/**
- * User.phoneVerifications
- */
-export type User$phoneVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PhoneVerification
-   */
-  select?: Prisma.PhoneVerificationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PhoneVerification
-   */
-  omit?: Prisma.PhoneVerificationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PhoneVerificationInclude<ExtArgs> | null
-  where?: Prisma.PhoneVerificationWhereInput
-  orderBy?: Prisma.PhoneVerificationOrderByWithRelationInput | Prisma.PhoneVerificationOrderByWithRelationInput[]
-  cursor?: Prisma.PhoneVerificationWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PhoneVerificationScalarFieldEnum | Prisma.PhoneVerificationScalarFieldEnum[]
 }
 
 /**

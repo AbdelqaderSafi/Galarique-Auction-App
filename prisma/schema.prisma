@@ -116,6 +116,10 @@ model User {
   resetToken       String?   @unique
   resetTokenExpiry DateTime?
 
+  // توثيق الهاتف عبر Firebase Phone Auth (يُمنح دور SELLER عند النجاح)
+  phone           String?  @unique // رقم فلسطيني موثّق (+970/+972)
+  isPhoneVerified Boolean  @default(false)
+
   sellerProfile SellerProfile?
   wallet        Wallet?
 
@@ -128,7 +132,6 @@ model User {
   buyerOrders        Order[]             @relation("BuyerOrders") // طلباته كمشتري
   sellerOrders       Order[]             @relation("SellerOrders") // طلباته كبائع
   disputes           Dispute[] // النزاعات التي رفعها
-  phoneVerifications PhoneVerification[] // أكواد تحقّق الهاتف
   withdrawals        Withdrawal[] // طلبات السحب
   favoriteObjects    FavoriteObject[] // مفضّلة القطع
   favoriteAuctions   FavoriteAuction[] // مفضّلة المزادات
@@ -167,22 +170,6 @@ model EmailVerification {
   createdAt DateTime @default(now())
 
   @@index([email])
-}
-
-// أكواد تحقّق الهاتف (OTP) — عابرة، تُستهلك عند التأكيد
-model PhoneVerification {
-  id         String    @id @default(uuid())
-  user       User      @relation(fields: [userId], references: [id])
-  userId     String
-  phone      String // الرقم المُراد توثيقه (+970/+972)
-  codeHash   String // الكود مُجزّأ (لا يُخزّن صراحةً)
-  expiresAt  DateTime
-  attempts   Int       @default(0)
-  consumedAt DateTime? // وقت الاستخدام الناجح
-
-  createdAt DateTime @default(now())
-
-  @@index([userId, phone])
 }
 
 // المحفظة الموحّدة للمستخدم

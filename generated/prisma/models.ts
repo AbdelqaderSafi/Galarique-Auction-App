@@ -11,7 +11,6 @@
 export type * from './models/User.js'
 export type * from './models/SellerProfile.js'
 export type * from './models/EmailVerification.js'
-export type * from './models/PhoneVerification.js'
 export type * from './models/Wallet.js'
 export type * from './models/WalletTransaction.js'
 export type * from './models/Withdrawal.js'

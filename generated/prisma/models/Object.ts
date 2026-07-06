@@ -41,7 +41,7 @@ export type ObjectSumAggregateOutputType = {
 export type ObjectMinAggregateOutputType = {
   id: string | null
   ownerId: string | null
-  categoryId: string | null
+  category: $Enums.Category | null
   title: string | null
   description: string | null
   era: string | null
@@ -60,7 +60,7 @@ export type ObjectMinAggregateOutputType = {
 export type ObjectMaxAggregateOutputType = {
   id: string | null
   ownerId: string | null
-  categoryId: string | null
+  category: $Enums.Category | null
   title: string | null
   description: string | null
   era: string | null
@@ -79,7 +79,7 @@ export type ObjectMaxAggregateOutputType = {
 export type ObjectCountAggregateOutputType = {
   id: number
   ownerId: number
-  categoryId: number
+  category: number
   title: number
   description: number
   era: number
@@ -112,7 +112,7 @@ export type ObjectSumAggregateInputType = {
 export type ObjectMinAggregateInputType = {
   id?: true
   ownerId?: true
-  categoryId?: true
+  category?: true
   title?: true
   description?: true
   era?: true
@@ -131,7 +131,7 @@ export type ObjectMinAggregateInputType = {
 export type ObjectMaxAggregateInputType = {
   id?: true
   ownerId?: true
-  categoryId?: true
+  category?: true
   title?: true
   description?: true
   era?: true
@@ -150,7 +150,7 @@ export type ObjectMaxAggregateInputType = {
 export type ObjectCountAggregateInputType = {
   id?: true
   ownerId?: true
-  categoryId?: true
+  category?: true
   title?: true
   description?: true
   era?: true
@@ -256,7 +256,7 @@ export type ObjectGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ObjectGroupByOutputType = {
   id: string
   ownerId: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era: string | null
@@ -298,7 +298,7 @@ export type ObjectWhereInput = {
   NOT?: Prisma.ObjectWhereInput | Prisma.ObjectWhereInput[]
   id?: Prisma.StringFilter<"Object"> | string
   ownerId?: Prisma.StringFilter<"Object"> | string
-  categoryId?: Prisma.StringFilter<"Object"> | string
+  category?: Prisma.EnumCategoryFilter<"Object"> | $Enums.Category
   title?: Prisma.StringFilter<"Object"> | string
   description?: Prisma.StringFilter<"Object"> | string
   era?: Prisma.StringNullableFilter<"Object"> | string | null
@@ -313,7 +313,6 @@ export type ObjectWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Object"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Object"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   images?: Prisma.ObjectImageListRelationFilter
   auctions?: Prisma.AuctionListRelationFilter
   favorites?: Prisma.FavoriteObjectListRelationFilter
@@ -322,7 +321,7 @@ export type ObjectWhereInput = {
 export type ObjectOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   era?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -337,7 +336,6 @@ export type ObjectOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
-  category?: Prisma.CategoryOrderByWithRelationInput
   images?: Prisma.ObjectImageOrderByRelationAggregateInput
   auctions?: Prisma.AuctionOrderByRelationAggregateInput
   favorites?: Prisma.FavoriteObjectOrderByRelationAggregateInput
@@ -349,7 +347,7 @@ export type ObjectWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ObjectWhereInput[]
   NOT?: Prisma.ObjectWhereInput | Prisma.ObjectWhereInput[]
   ownerId?: Prisma.StringFilter<"Object"> | string
-  categoryId?: Prisma.StringFilter<"Object"> | string
+  category?: Prisma.EnumCategoryFilter<"Object"> | $Enums.Category
   title?: Prisma.StringFilter<"Object"> | string
   description?: Prisma.StringFilter<"Object"> | string
   era?: Prisma.StringNullableFilter<"Object"> | string | null
@@ -364,7 +362,6 @@ export type ObjectWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Object"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Object"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
   images?: Prisma.ObjectImageListRelationFilter
   auctions?: Prisma.AuctionListRelationFilter
   favorites?: Prisma.FavoriteObjectListRelationFilter
@@ -373,7 +370,7 @@ export type ObjectWhereUniqueInput = Prisma.AtLeast<{
 export type ObjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   era?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -400,7 +397,7 @@ export type ObjectScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ObjectScalarWhereWithAggregatesInput | Prisma.ObjectScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Object"> | string
   ownerId?: Prisma.StringWithAggregatesFilter<"Object"> | string
-  categoryId?: Prisma.StringWithAggregatesFilter<"Object"> | string
+  category?: Prisma.EnumCategoryWithAggregatesFilter<"Object"> | $Enums.Category
   title?: Prisma.StringWithAggregatesFilter<"Object"> | string
   description?: Prisma.StringWithAggregatesFilter<"Object"> | string
   era?: Prisma.StringNullableWithAggregatesFilter<"Object"> | string | null
@@ -418,6 +415,7 @@ export type ObjectScalarWhereWithAggregatesInput = {
 
 export type ObjectCreateInput = {
   id?: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -432,7 +430,6 @@ export type ObjectCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutObjectsInput
-  category: Prisma.CategoryCreateNestedOneWithoutObjectsInput
   images?: Prisma.ObjectImageCreateNestedManyWithoutObjectInput
   auctions?: Prisma.AuctionCreateNestedManyWithoutObjectInput
   favorites?: Prisma.FavoriteObjectCreateNestedManyWithoutObjectInput
@@ -441,7 +438,7 @@ export type ObjectCreateInput = {
 export type ObjectUncheckedCreateInput = {
   id?: string
   ownerId: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -462,6 +459,7 @@ export type ObjectUncheckedCreateInput = {
 
 export type ObjectUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -476,7 +474,6 @@ export type ObjectUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutObjectsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutObjectsNestedInput
   images?: Prisma.ObjectImageUpdateManyWithoutObjectNestedInput
   auctions?: Prisma.AuctionUpdateManyWithoutObjectNestedInput
   favorites?: Prisma.FavoriteObjectUpdateManyWithoutObjectNestedInput
@@ -485,7 +482,7 @@ export type ObjectUpdateInput = {
 export type ObjectUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -507,7 +504,7 @@ export type ObjectUncheckedUpdateInput = {
 export type ObjectCreateManyInput = {
   id?: string
   ownerId: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -525,6 +522,7 @@ export type ObjectCreateManyInput = {
 
 export type ObjectUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -543,7 +541,7 @@ export type ObjectUpdateManyMutationInput = {
 export type ObjectUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -572,7 +570,7 @@ export type ObjectOrderByRelationAggregateInput = {
 export type ObjectCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   era?: Prisma.SortOrder
@@ -597,7 +595,7 @@ export type ObjectAvgOrderByAggregateInput = {
 export type ObjectMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   era?: Prisma.SortOrder
@@ -616,7 +614,7 @@ export type ObjectMaxOrderByAggregateInput = {
 export type ObjectMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  categoryId?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   era?: Prisma.SortOrder
@@ -685,46 +683,8 @@ export type ObjectUncheckedUpdateManyWithoutOwnerNestedInput = {
   deleteMany?: Prisma.ObjectScalarWhereInput | Prisma.ObjectScalarWhereInput[]
 }
 
-export type ObjectCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ObjectCreateWithoutCategoryInput, Prisma.ObjectUncheckedCreateWithoutCategoryInput> | Prisma.ObjectCreateWithoutCategoryInput[] | Prisma.ObjectUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ObjectCreateOrConnectWithoutCategoryInput | Prisma.ObjectCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ObjectCreateManyCategoryInputEnvelope
-  connect?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-}
-
-export type ObjectUncheckedCreateNestedManyWithoutCategoryInput = {
-  create?: Prisma.XOR<Prisma.ObjectCreateWithoutCategoryInput, Prisma.ObjectUncheckedCreateWithoutCategoryInput> | Prisma.ObjectCreateWithoutCategoryInput[] | Prisma.ObjectUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ObjectCreateOrConnectWithoutCategoryInput | Prisma.ObjectCreateOrConnectWithoutCategoryInput[]
-  createMany?: Prisma.ObjectCreateManyCategoryInputEnvelope
-  connect?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-}
-
-export type ObjectUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ObjectCreateWithoutCategoryInput, Prisma.ObjectUncheckedCreateWithoutCategoryInput> | Prisma.ObjectCreateWithoutCategoryInput[] | Prisma.ObjectUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ObjectCreateOrConnectWithoutCategoryInput | Prisma.ObjectCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ObjectUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ObjectUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ObjectCreateManyCategoryInputEnvelope
-  set?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  disconnect?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  delete?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  connect?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  update?: Prisma.ObjectUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ObjectUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ObjectUpdateManyWithWhereWithoutCategoryInput | Prisma.ObjectUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.ObjectScalarWhereInput | Prisma.ObjectScalarWhereInput[]
-}
-
-export type ObjectUncheckedUpdateManyWithoutCategoryNestedInput = {
-  create?: Prisma.XOR<Prisma.ObjectCreateWithoutCategoryInput, Prisma.ObjectUncheckedCreateWithoutCategoryInput> | Prisma.ObjectCreateWithoutCategoryInput[] | Prisma.ObjectUncheckedCreateWithoutCategoryInput[]
-  connectOrCreate?: Prisma.ObjectCreateOrConnectWithoutCategoryInput | Prisma.ObjectCreateOrConnectWithoutCategoryInput[]
-  upsert?: Prisma.ObjectUpsertWithWhereUniqueWithoutCategoryInput | Prisma.ObjectUpsertWithWhereUniqueWithoutCategoryInput[]
-  createMany?: Prisma.ObjectCreateManyCategoryInputEnvelope
-  set?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  disconnect?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  delete?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  connect?: Prisma.ObjectWhereUniqueInput | Prisma.ObjectWhereUniqueInput[]
-  update?: Prisma.ObjectUpdateWithWhereUniqueWithoutCategoryInput | Prisma.ObjectUpdateWithWhereUniqueWithoutCategoryInput[]
-  updateMany?: Prisma.ObjectUpdateManyWithWhereWithoutCategoryInput | Prisma.ObjectUpdateManyWithWhereWithoutCategoryInput[]
-  deleteMany?: Prisma.ObjectScalarWhereInput | Prisma.ObjectScalarWhereInput[]
+export type EnumCategoryFieldUpdateOperationsInput = {
+  set?: $Enums.Category
 }
 
 export type NullableDecimalFieldUpdateOperationsInput = {
@@ -783,6 +743,7 @@ export type ObjectUpdateOneRequiredWithoutFavoritesNestedInput = {
 
 export type ObjectCreateWithoutOwnerInput = {
   id?: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -796,7 +757,6 @@ export type ObjectCreateWithoutOwnerInput = {
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
-  category: Prisma.CategoryCreateNestedOneWithoutObjectsInput
   images?: Prisma.ObjectImageCreateNestedManyWithoutObjectInput
   auctions?: Prisma.AuctionCreateNestedManyWithoutObjectInput
   favorites?: Prisma.FavoriteObjectCreateNestedManyWithoutObjectInput
@@ -804,7 +764,7 @@ export type ObjectCreateWithoutOwnerInput = {
 
 export type ObjectUncheckedCreateWithoutOwnerInput = {
   id?: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -855,7 +815,7 @@ export type ObjectScalarWhereInput = {
   NOT?: Prisma.ObjectScalarWhereInput | Prisma.ObjectScalarWhereInput[]
   id?: Prisma.StringFilter<"Object"> | string
   ownerId?: Prisma.StringFilter<"Object"> | string
-  categoryId?: Prisma.StringFilter<"Object"> | string
+  category?: Prisma.EnumCategoryFilter<"Object"> | $Enums.Category
   title?: Prisma.StringFilter<"Object"> | string
   description?: Prisma.StringFilter<"Object"> | string
   era?: Prisma.StringNullableFilter<"Object"> | string | null
@@ -871,76 +831,9 @@ export type ObjectScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Object"> | Date | string
 }
 
-export type ObjectCreateWithoutCategoryInput = {
-  id?: string
-  title: string
-  description: string
-  era?: string | null
-  condition?: string | null
-  originality?: string | null
-  authenticity?: string | null
-  country?: string | null
-  heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  status?: $Enums.ObjectStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  owner: Prisma.UserCreateNestedOneWithoutObjectsInput
-  images?: Prisma.ObjectImageCreateNestedManyWithoutObjectInput
-  auctions?: Prisma.AuctionCreateNestedManyWithoutObjectInput
-  favorites?: Prisma.FavoriteObjectCreateNestedManyWithoutObjectInput
-}
-
-export type ObjectUncheckedCreateWithoutCategoryInput = {
-  id?: string
-  ownerId: string
-  title: string
-  description: string
-  era?: string | null
-  condition?: string | null
-  originality?: string | null
-  authenticity?: string | null
-  country?: string | null
-  heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  status?: $Enums.ObjectStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  images?: Prisma.ObjectImageUncheckedCreateNestedManyWithoutObjectInput
-  auctions?: Prisma.AuctionUncheckedCreateNestedManyWithoutObjectInput
-  favorites?: Prisma.FavoriteObjectUncheckedCreateNestedManyWithoutObjectInput
-}
-
-export type ObjectCreateOrConnectWithoutCategoryInput = {
-  where: Prisma.ObjectWhereUniqueInput
-  create: Prisma.XOR<Prisma.ObjectCreateWithoutCategoryInput, Prisma.ObjectUncheckedCreateWithoutCategoryInput>
-}
-
-export type ObjectCreateManyCategoryInputEnvelope = {
-  data: Prisma.ObjectCreateManyCategoryInput | Prisma.ObjectCreateManyCategoryInput[]
-  skipDuplicates?: boolean
-}
-
-export type ObjectUpsertWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.ObjectWhereUniqueInput
-  update: Prisma.XOR<Prisma.ObjectUpdateWithoutCategoryInput, Prisma.ObjectUncheckedUpdateWithoutCategoryInput>
-  create: Prisma.XOR<Prisma.ObjectCreateWithoutCategoryInput, Prisma.ObjectUncheckedCreateWithoutCategoryInput>
-}
-
-export type ObjectUpdateWithWhereUniqueWithoutCategoryInput = {
-  where: Prisma.ObjectWhereUniqueInput
-  data: Prisma.XOR<Prisma.ObjectUpdateWithoutCategoryInput, Prisma.ObjectUncheckedUpdateWithoutCategoryInput>
-}
-
-export type ObjectUpdateManyWithWhereWithoutCategoryInput = {
-  where: Prisma.ObjectScalarWhereInput
-  data: Prisma.XOR<Prisma.ObjectUpdateManyMutationInput, Prisma.ObjectUncheckedUpdateManyWithoutCategoryInput>
-}
-
 export type ObjectCreateWithoutImagesInput = {
   id?: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -955,7 +848,6 @@ export type ObjectCreateWithoutImagesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutObjectsInput
-  category: Prisma.CategoryCreateNestedOneWithoutObjectsInput
   auctions?: Prisma.AuctionCreateNestedManyWithoutObjectInput
   favorites?: Prisma.FavoriteObjectCreateNestedManyWithoutObjectInput
 }
@@ -963,7 +855,7 @@ export type ObjectCreateWithoutImagesInput = {
 export type ObjectUncheckedCreateWithoutImagesInput = {
   id?: string
   ownerId: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -999,6 +891,7 @@ export type ObjectUpdateToOneWithWhereWithoutImagesInput = {
 
 export type ObjectUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1013,7 +906,6 @@ export type ObjectUpdateWithoutImagesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutObjectsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutObjectsNestedInput
   auctions?: Prisma.AuctionUpdateManyWithoutObjectNestedInput
   favorites?: Prisma.FavoriteObjectUpdateManyWithoutObjectNestedInput
 }
@@ -1021,7 +913,7 @@ export type ObjectUpdateWithoutImagesInput = {
 export type ObjectUncheckedUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1041,6 +933,7 @@ export type ObjectUncheckedUpdateWithoutImagesInput = {
 
 export type ObjectCreateWithoutAuctionsInput = {
   id?: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -1055,7 +948,6 @@ export type ObjectCreateWithoutAuctionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutObjectsInput
-  category: Prisma.CategoryCreateNestedOneWithoutObjectsInput
   images?: Prisma.ObjectImageCreateNestedManyWithoutObjectInput
   favorites?: Prisma.FavoriteObjectCreateNestedManyWithoutObjectInput
 }
@@ -1063,7 +955,7 @@ export type ObjectCreateWithoutAuctionsInput = {
 export type ObjectUncheckedCreateWithoutAuctionsInput = {
   id?: string
   ownerId: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -1099,6 +991,7 @@ export type ObjectUpdateToOneWithWhereWithoutAuctionsInput = {
 
 export type ObjectUpdateWithoutAuctionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1113,7 +1006,6 @@ export type ObjectUpdateWithoutAuctionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutObjectsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutObjectsNestedInput
   images?: Prisma.ObjectImageUpdateManyWithoutObjectNestedInput
   favorites?: Prisma.FavoriteObjectUpdateManyWithoutObjectNestedInput
 }
@@ -1121,7 +1013,7 @@ export type ObjectUpdateWithoutAuctionsInput = {
 export type ObjectUncheckedUpdateWithoutAuctionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1141,6 +1033,7 @@ export type ObjectUncheckedUpdateWithoutAuctionsInput = {
 
 export type ObjectCreateWithoutFavoritesInput = {
   id?: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -1155,7 +1048,6 @@ export type ObjectCreateWithoutFavoritesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutObjectsInput
-  category: Prisma.CategoryCreateNestedOneWithoutObjectsInput
   images?: Prisma.ObjectImageCreateNestedManyWithoutObjectInput
   auctions?: Prisma.AuctionCreateNestedManyWithoutObjectInput
 }
@@ -1163,7 +1055,7 @@ export type ObjectCreateWithoutFavoritesInput = {
 export type ObjectUncheckedCreateWithoutFavoritesInput = {
   id?: string
   ownerId: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -1199,6 +1091,7 @@ export type ObjectUpdateToOneWithWhereWithoutFavoritesInput = {
 
 export type ObjectUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1213,7 +1106,6 @@ export type ObjectUpdateWithoutFavoritesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutObjectsNestedInput
-  category?: Prisma.CategoryUpdateOneRequiredWithoutObjectsNestedInput
   images?: Prisma.ObjectImageUpdateManyWithoutObjectNestedInput
   auctions?: Prisma.AuctionUpdateManyWithoutObjectNestedInput
 }
@@ -1221,7 +1113,7 @@ export type ObjectUpdateWithoutFavoritesInput = {
 export type ObjectUncheckedUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1241,7 +1133,7 @@ export type ObjectUncheckedUpdateWithoutFavoritesInput = {
 
 export type ObjectCreateManyOwnerInput = {
   id?: string
-  categoryId: string
+  category: $Enums.Category
   title: string
   description: string
   era?: string | null
@@ -1259,6 +1151,7 @@ export type ObjectCreateManyOwnerInput = {
 
 export type ObjectUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1272,7 +1165,6 @@ export type ObjectUpdateWithoutOwnerInput = {
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  category?: Prisma.CategoryUpdateOneRequiredWithoutObjectsNestedInput
   images?: Prisma.ObjectImageUpdateManyWithoutObjectNestedInput
   auctions?: Prisma.AuctionUpdateManyWithoutObjectNestedInput
   favorites?: Prisma.FavoriteObjectUpdateManyWithoutObjectNestedInput
@@ -1280,7 +1172,7 @@ export type ObjectUpdateWithoutOwnerInput = {
 
 export type ObjectUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1301,85 +1193,7 @@ export type ObjectUncheckedUpdateWithoutOwnerInput = {
 
 export type ObjectUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type ObjectCreateManyCategoryInput = {
-  id?: string
-  ownerId: string
-  title: string
-  description: string
-  era?: string | null
-  condition?: string | null
-  originality?: string | null
-  authenticity?: string | null
-  country?: string | null
-  heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  status?: $Enums.ObjectStatus
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ObjectUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  owner?: Prisma.UserUpdateOneRequiredWithoutObjectsNestedInput
-  images?: Prisma.ObjectImageUpdateManyWithoutObjectNestedInput
-  auctions?: Prisma.AuctionUpdateManyWithoutObjectNestedInput
-  favorites?: Prisma.FavoriteObjectUpdateManyWithoutObjectNestedInput
-}
-
-export type ObjectUncheckedUpdateWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
-  era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  images?: Prisma.ObjectImageUncheckedUpdateManyWithoutObjectNestedInput
-  auctions?: Prisma.AuctionUncheckedUpdateManyWithoutObjectNestedInput
-  favorites?: Prisma.FavoriteObjectUncheckedUpdateManyWithoutObjectNestedInput
-}
-
-export type ObjectUncheckedUpdateManyWithoutCategoryInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1447,7 +1261,7 @@ export type ObjectCountOutputTypeCountFavoritesArgs<ExtArgs extends runtime.Type
 export type ObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   ownerId?: boolean
-  categoryId?: boolean
+  category?: boolean
   title?: boolean
   description?: boolean
   era?: boolean
@@ -1462,7 +1276,6 @@ export type ObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Object$imagesArgs<ExtArgs>
   auctions?: boolean | Prisma.Object$auctionsArgs<ExtArgs>
   favorites?: boolean | Prisma.Object$favoritesArgs<ExtArgs>
@@ -1472,7 +1285,7 @@ export type ObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type ObjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   ownerId?: boolean
-  categoryId?: boolean
+  category?: boolean
   title?: boolean
   description?: boolean
   era?: boolean
@@ -1487,13 +1300,12 @@ export type ObjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["object"]>
 
 export type ObjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   ownerId?: boolean
-  categoryId?: boolean
+  category?: boolean
   title?: boolean
   description?: boolean
   era?: boolean
@@ -1508,13 +1320,12 @@ export type ObjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["object"]>
 
 export type ObjectSelectScalar = {
   id?: boolean
   ownerId?: boolean
-  categoryId?: boolean
+  category?: boolean
   title?: boolean
   description?: boolean
   era?: boolean
@@ -1530,10 +1341,9 @@ export type ObjectSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "categoryId" | "title" | "description" | "era" | "condition" | "originality" | "authenticity" | "country" | "heightCm" | "widthCm" | "depthCm" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["object"]>
+export type ObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "category" | "title" | "description" | "era" | "condition" | "originality" | "authenticity" | "country" | "heightCm" | "widthCm" | "depthCm" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["object"]>
 export type ObjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Object$imagesArgs<ExtArgs>
   auctions?: boolean | Prisma.Object$auctionsArgs<ExtArgs>
   favorites?: boolean | Prisma.Object$favoritesArgs<ExtArgs>
@@ -1541,18 +1351,15 @@ export type ObjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 }
 export type ObjectIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }
 export type ObjectIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }
 
 export type $ObjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Object"
   objects: {
     owner: Prisma.$UserPayload<ExtArgs>
-    category: Prisma.$CategoryPayload<ExtArgs>
     images: Prisma.$ObjectImagePayload<ExtArgs>[]
     auctions: Prisma.$AuctionPayload<ExtArgs>[]
     favorites: Prisma.$FavoriteObjectPayload<ExtArgs>[]
@@ -1560,7 +1367,7 @@ export type $ObjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     ownerId: string
-    categoryId: string
+    category: $Enums.Category
     title: string
     description: string
     era: string | null
@@ -1969,7 +1776,6 @@ readonly fields: ObjectFieldRefs;
 export interface Prisma__ObjectClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   images<T extends Prisma.Object$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Object$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ObjectImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auctions<T extends Prisma.Object$auctionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Object$auctionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorites<T extends Prisma.Object$favoritesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Object$favoritesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoriteObjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2004,7 +1810,7 @@ export interface Prisma__ObjectClient<T, Null = never, ExtArgs extends runtime.T
 export interface ObjectFieldRefs {
   readonly id: Prisma.FieldRef<"Object", 'String'>
   readonly ownerId: Prisma.FieldRef<"Object", 'String'>
-  readonly categoryId: Prisma.FieldRef<"Object", 'String'>
+  readonly category: Prisma.FieldRef<"Object", 'Category'>
   readonly title: Prisma.FieldRef<"Object", 'String'>
   readonly description: Prisma.FieldRef<"Object", 'String'>
   readonly era: Prisma.FieldRef<"Object", 'String'>

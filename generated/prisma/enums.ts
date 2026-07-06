@@ -103,3 +103,17 @@ export const WalletTxnType = {
 } as const
 
 export type WalletTxnType = (typeof WalletTxnType)[keyof typeof WalletTxnType]
+
+
+export const Category = {
+  ART: 'ART',
+  WATCHES: 'WATCHES',
+  COLLECTIBLES: 'COLLECTIBLES',
+  JEWELRY: 'JEWELRY',
+  FURNITURE: 'FURNITURE',
+  BOOKS: 'BOOKS',
+  FASHION: 'FASHION',
+  ELECTRONICS: 'ELECTRONICS'
+} as const
+
+export type Category = (typeof Category)[keyof typeof Category]

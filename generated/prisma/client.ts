@@ -75,11 +75,6 @@ export type WalletTransaction = Prisma.WalletTransactionModel
  */
 export type Withdrawal = Prisma.WithdrawalModel
 /**
- * Model Category
- * 
- */
-export type Category = Prisma.CategoryModel
-/**
  * Model Object
  * 
  */

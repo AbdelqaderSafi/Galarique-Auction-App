@@ -58,7 +58,6 @@ export const ModelName = {
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',
   Withdrawal: 'Withdrawal',
-  Category: 'Category',
   Object: 'Object',
   ObjectImage: 'ObjectImage',
   Auction: 'Auction',
@@ -185,19 +184,10 @@ export const WithdrawalScalarFieldEnum = {
 export type WithdrawalScalarFieldEnum = (typeof WithdrawalScalarFieldEnum)[keyof typeof WithdrawalScalarFieldEnum]
 
 
-export const CategoryScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  iconUrl: 'iconUrl'
-} as const
-
-export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
-
-
 export const ObjectScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
-  categoryId: 'categoryId',
+  category: 'category',
   title: 'title',
   description: 'description',
   era: 'era',

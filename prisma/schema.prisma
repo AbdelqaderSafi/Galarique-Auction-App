@@ -234,12 +234,16 @@ model Withdrawal {
 //  CATALOG: CATEGORY / OBJECT
 // =====================================================================
 
-model Category {
-  id      String  @id @default(uuid())
-  name    String  @unique // Art, Watches, Jewelry...
-  iconUrl String?
-
-  objects Object[]
+// التصنيفات ثابتة (enum) — لا جدول
+enum Category {
+  ART
+  WATCHES
+  COLLECTIBLES
+  JEWELRY
+  FURNITURE
+  BOOKS
+  FASHION
+  ELECTRONICS
 }
 
 // القطعة الفنية — كيان دائم يمكن أن يُعرض بأكثر من مزاد
@@ -248,8 +252,7 @@ model Object {
   owner   User   @relation("OwnerObjects", fields: [ownerId], references: [id])
   ownerId String
 
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
+  category Category
 
   title       String
   description String
@@ -274,7 +277,7 @@ model Object {
   updatedAt DateTime @updatedAt
 
   @@index([ownerId])
-  @@index([categoryId])
+  @@index([category])
 }
 
 model ObjectImage {

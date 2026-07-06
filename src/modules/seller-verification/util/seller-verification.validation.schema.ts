@@ -1,6 +1,9 @@
-import { z, ZodType } from 'zod';
-import { VerifyPhoneDTO } from '../dto/seller-verification.dto';
+import { z } from 'zod';
+
+export const requestVerificationSchema = z.object({
+  phoneNumber: z.string().min(9).max(20),
+});
 
 export const verifyPhoneSchema = z.object({
-  idToken: z.string().min(1),
-}) satisfies ZodType<VerifyPhoneDTO>;
+  code: z.string().regex(/^\d{6}$/, 'Code must be 6 digits'),
+});

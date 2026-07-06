@@ -19,10 +19,10 @@ export interface EnvVariables {
   IMAGEKIT_PRIVATE_KEY: string;
   IMAGEKIT_URL_ENDPOINT: string;
 
-  // توثيق الهاتف (Firebase Admin)
-  FIREBASE_PROJECT_ID: string;
-  FIREBASE_CLIENT_EMAIL: string;
-  FIREBASE_PRIVATE_KEY: string;
+  // واتساب (Baileys) — مجلد جلسة الاتصال (اختياري، الافتراضي ./wa-auth)
+  WHATSAPP_AUTH_DIR?: string;
+  // رقم واتساب البوت (دولي بدون +) — لتفعيل الربط بكود اقتران بدل QR
+  WHATSAPP_PAIRING_NUMBER?: string;
 }
 
 // الحقول الحسّاسة التي يجب ألّا تُعاد أبداً في أي response

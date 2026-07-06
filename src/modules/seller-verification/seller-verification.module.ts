@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { SellerVerificationService } from './seller-verification.service';
 import { SellerVerificationController } from './seller-verification.controller';
-import { UserModule } from '../user/user.module';
+import { SellerVerificationService } from './seller-verification.service';
+import { PhoneVerificationService } from './phone-verification.service';
 
 @Module({
-  imports: [UserModule],
   controllers: [SellerVerificationController],
-  providers: [SellerVerificationService],
+  providers: [SellerVerificationService, PhoneVerificationService],
 })
 export class SellerVerificationModule {}

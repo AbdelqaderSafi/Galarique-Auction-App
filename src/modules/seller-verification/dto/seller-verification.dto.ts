@@ -1,14 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { SafeUser } from 'src/types/declartion-mergin';
 
-export class VerifyPhoneDTO {
+export class RequestVerificationDTO {
   @ApiProperty({
-    description: 'Firebase ID token obtained after phone OTP on the client',
+    example: '+970599123456',
+    description: 'Palestinian mobile number (+970 / +972)',
   })
-  idToken!: string;
+  phoneNumber!: string;
 }
 
-export type VerifyPhoneResponseDTO = {
-  token: string;
-  userData: SafeUser;
-};
+export class VerifyPhoneDTO {
+  @ApiProperty({ example: '123456', description: '6-digit code sent via WhatsApp' })
+  code!: string;
+}
+
+export type SellerMessageResponseDTO = { message: string };

@@ -5,39 +5,50 @@ import {
   ApiOkResponse,
   ApiBadRequestResponse,
   ApiConflictResponse,
-  ApiUnauthorizedResponse,
-  ApiServiceUnavailableResponse,
+  ApiForbiddenResponse,
   ApiBearerAuth,
   ApiBody,
 } from '@nestjs/swagger';
-import { VerifyPhoneDTO } from '../modules/seller-verification/dto/seller-verification.dto';
+import {
+  RequestVerificationDTO,
+  VerifyPhoneDTO,
+} from '../modules/seller-verification/dto/seller-verification.dto';
 
-export const SwaggerSellerTag = () => ApiTags('Seller');
+export const SwaggerSellerTag = () => ApiTags('Seller verification');
+
+export const ApiRequestVerification = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({
+      summary:
+        'Request a WhatsApp OTP to verify a Palestinian phone and become a seller',
+    }),
+    ApiBody({ type: RequestVerificationDTO }),
+    ApiOkResponse({ description: 'Verification code sent via WhatsApp' }),
+    ApiBadRequestResponse({ description: 'Invalid Palestinian mobile number' }),
+    ApiConflictResponse({ description: 'Already a seller / phone already in use' }),
+  );
 
 export const ApiVerifyPhone = () =>
   applyDecorators(
     ApiBearerAuth('access-token'),
-    ApiOperation({
-      summary: 'Verify a Palestinian phone via Firebase and become a SELLER',
-      description:
-        'Accepts a Firebase idToken (from client-side phone OTP). On success: ' +
-        'grants the SELLER role, marks the phone verified, creates a SellerProfile, ' +
-        'and returns a fresh JWT that already contains the SELLER role.',
-    }),
+    ApiOperation({ summary: 'Verify the WhatsApp OTP; grants the SELLER role' }),
     ApiBody({ type: VerifyPhoneDTO }),
-    ApiOkResponse({
-      description: 'Seller verified, returns new JWT + user data',
-    }),
-    ApiBadRequestResponse({
-      description: 'Token has no phone / phone is not Palestinian (+970/+972)',
-    }),
-    ApiUnauthorizedResponse({
-      description: 'Invalid or expired Firebase token',
-    }),
-    ApiConflictResponse({
-      description: 'Phone already registered to another account',
-    }),
-    ApiServiceUnavailableResponse({
-      description: 'Firebase is not configured',
-    }),
+    ApiOkResponse({ description: 'Phone verified, SELLER role granted' }),
+    ApiBadRequestResponse({ description: 'Invalid or expired code' }),
+  );
+
+export const ApiResendPhoneCode = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({ summary: 'Resend the WhatsApp verification code' }),
+    ApiOkResponse({ description: 'A new code has been sent' }),
+  );
+
+export const ApiWhatsappStatus = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({ summary: 'WhatsApp link status + QR for pairing (admin only)' }),
+    ApiOkResponse({ description: '{ connected, qr }' }),
+    ApiForbiddenResponse({ description: 'Admin role required' }),
   );

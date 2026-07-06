@@ -56,3 +56,6 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # /generated/prisma — intentionally committed for Vercel deployment
+
+# WhatsApp (Baileys) session — never commit
+wa-auth/

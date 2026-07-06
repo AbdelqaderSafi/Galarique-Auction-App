@@ -5,7 +5,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { MailModule } from './modules/mail/mail.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
-import { FirebaseAdminModule } from './modules/firebase/firebase-admin.module';
+import { WhatsappModule } from './modules/whatsapp/whatsapp.module';
 import { SellerVerificationModule } from './modules/seller-verification/seller-verification.module';
 
 @Module({
@@ -13,7 +13,7 @@ import { SellerVerificationModule } from './modules/seller-verification/seller-v
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     MailModule,
-    FirebaseAdminModule,
+    WhatsappModule,
     AuthModule,
     CategoriesModule,
     UploadsModule,

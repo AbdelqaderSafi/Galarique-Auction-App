@@ -76,7 +76,7 @@ export const ApiValidateToken = () =>
 
 export const ApiForgotPassword = () =>
   applyDecorators(
-    ApiOperation({ summary: 'Request a password reset link by email' }),
+    ApiOperation({ summary: 'Request a password reset code by email' }),
     ApiBody({ type: ForgotPasswordDTO }),
     ApiOkResponse({
       description:
@@ -86,11 +86,13 @@ export const ApiForgotPassword = () =>
 
 export const ApiResetPassword = () =>
   applyDecorators(
-    ApiOperation({ summary: 'Reset password using the emailed token' }),
+    ApiOperation({ summary: 'Reset password using the emailed 6-digit code' }),
     ApiBody({ type: ResetPasswordDTO }),
     ApiOkResponse({ description: 'Password reset successfully' }),
-    ApiNotFoundResponse({ description: 'Invalid or expired reset token' }),
-    ApiBadRequestResponse({ description: 'Reset token has expired' }),
+    ApiNotFoundResponse({ description: 'No pending password reset for this email' }),
+    ApiBadRequestResponse({
+      description: 'Invalid / expired code or too many attempts',
+    }),
   );
 
 export const ApiResendVerification = () =>

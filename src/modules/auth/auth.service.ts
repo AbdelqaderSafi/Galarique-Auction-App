@@ -22,6 +22,7 @@ import * as crypto from 'crypto';
 import { UserService } from '../user/user.service';
 import { MailService } from '../mail/mail.service';
 import { EmailVerificationService } from './email-verification.service';
+import { PasswordResetService } from './password-reset.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthProvider, Role } from 'generated/prisma/client';
 import { ConfigService } from '@nestjs/config';
@@ -30,7 +31,7 @@ import { OAuth2Client } from 'google-auth-library';
 
 // رسالة موحّدة لا تكشف ما إذا كان الإيميل مسجّلاً أم لا
 const GENERIC_RESET_MESSAGE =
-  'If this email exists, a reset link has been sent.';
+  'If this email exists, a reset code has been sent.';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +41,7 @@ export class AuthService {
     private configService: ConfigService<EnvVariables>,
     private mailService: MailService,
     private emailVerificationService: EmailVerificationService,
+    private passwordResetService: PasswordResetService,
   ) {}
 
   // الخطوة 1: لا نُنشئ اليوزر بعد — نبعث رمز تأكيد للإيميل ونخزّن البيانات مؤقتاً
@@ -212,40 +214,51 @@ export class AuthService {
       return { message: GENERIC_RESET_MESSAGE };
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const expiry = new Date(Date.now() + 60 * 60 * 1000); // صالح ساعة واحدة
+    const code = this.generateOtpCode();
+    const codeHash = await this.hashPassword(code);
+    const expiresAt = new Date(Date.now() + this.otpExpiryMs());
 
-    await this.userService.setPasswordResetToken(user.id, token, expiry);
+    await this.passwordResetService.createPending({
+      userId: user.id,
+      codeHash,
+      expiresAt,
+    });
 
-    const frontendUrl =
-      this.configService.get<string>('FRONTEND_URL') ?? 'http://localhost:3000';
-    const resetLink = `${frontendUrl}/reset-password?token=${token}`;
-
-    await this.mailService.sendPasswordResetEmail(
-      user.email,
-      user.fullName,
-      resetLink,
-    );
+    await this.mailService.sendPasswordResetCode(user.email, user.fullName, code);
 
     return { message: GENERIC_RESET_MESSAGE };
   }
 
   async resetPassword(dto: ResetPasswordDTO): Promise<MessageResponseDTO> {
-    const user = await this.userService.findByResetToken(dto.token);
-
-    if (!user || !user.resetTokenExpiry) {
-      throw new NotFoundException('Invalid or expired reset token');
+    const user = await this.userService.findByEmail(dto.email);
+    if (!user) {
+      throw new BadRequestException('Invalid code or email.');
     }
 
-    if (user.resetTokenExpiry < new Date()) {
-      throw new BadRequestException(
-        'Reset token has expired. Please request a new one.',
+    const pending = await this.passwordResetService.findLatestPending(user.id);
+    if (!pending) {
+      throw new NotFoundException(
+        'No pending password reset. Request a code first.',
       );
     }
 
-    const hashedPassword = await this.hashPassword(dto.newPassword);
+    if (pending.attempts >= this.otpMaxAttempts()) {
+      throw new BadRequestException('Too many attempts. Request a new code.');
+    }
 
-    await this.userService.updatePasswordAndClearReset(user.id, hashedPassword);
+    if (pending.expiresAt < new Date()) {
+      throw new BadRequestException('The code has expired. Request a new one.');
+    }
+
+    const isValid = await this.verifyPassword(dto.code, pending.codeHash);
+    if (!isValid) {
+      await this.passwordResetService.incrementAttempts(pending.id);
+      throw new BadRequestException('Invalid reset code.');
+    }
+
+    const hashedPassword = await this.hashPassword(dto.newPassword);
+    await this.userService.updatePassword(user.id, hashedPassword);
+    await this.passwordResetService.markConsumed(pending.id);
 
     return {
       message: 'Password has been reset successfully. You can now log in.',
@@ -325,7 +338,7 @@ export class AuthService {
     }
 
     const hashedNew = await this.hashPassword(dto.newPassword);
-    await this.userService.updatePasswordAndClearReset(userId, hashedNew);
+    await this.userService.updatePassword(userId, hashedNew);
 
     return { message: 'Password changed successfully.' };
   }

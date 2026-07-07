@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   SellerProfile: 'SellerProfile',
   EmailVerification: 'EmailVerification',
+  PasswordReset: 'PasswordReset',
   PhoneVerification: 'PhoneVerification',
   Wallet: 'Wallet',
   WalletTransaction: 'WalletTransaction',
@@ -96,8 +97,6 @@ export const UserScalarFieldEnum = {
   roles: 'roles',
   stripeCustomerId: 'stripeCustomerId',
   stripeConnectId: 'stripeConnectId',
-  resetToken: 'resetToken',
-  resetTokenExpiry: 'resetTokenExpiry',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -130,6 +129,19 @@ export const EmailVerificationScalarFieldEnum = {
 } as const
 
 export type EmailVerificationScalarFieldEnum = (typeof EmailVerificationScalarFieldEnum)[keyof typeof EmailVerificationScalarFieldEnum]
+
+
+export const PasswordResetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  codeHash: 'codeHash',
+  expiresAt: 'expiresAt',
+  attempts: 'attempts',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetScalarFieldEnum = (typeof PasswordResetScalarFieldEnum)[keyof typeof PasswordResetScalarFieldEnum]
 
 
 export const PhoneVerificationScalarFieldEnum = {

@@ -14,21 +14,20 @@ export class MailService {
 
   constructor(private readonly configService: ConfigService<EnvVariables>) {}
 
-  async sendPasswordResetEmail(
+  async sendPasswordResetCode(
     to: string,
     fullName: string,
-    resetLink: string,
+    code: string,
   ): Promise<void> {
-    const subject = 'Reset your GalleryQ password';
-    const html = this.buildPasswordResetHtml(fullName, resetLink);
+    const subject = 'Your GalleryQ password reset code';
+    const html = this.buildPasswordResetCodeHtml(fullName, code);
     const text =
       `Hi ${fullName},\n\n` +
-      `We received a request to reset your GalleryQ password.\n` +
-      `Open this link to choose a new password (valid for 1 hour):\n\n` +
-      `${resetLink}\n\n` +
+      `Your GalleryQ password reset code is: ${code}\n` +
+      `It is valid for a few minutes. Enter it in the app to set a new password.\n\n` +
       `If you didn't request this, you can safely ignore this email.`;
 
-    await this.send({ to, subject, html, text, fallbackLink: resetLink });
+    await this.send({ to, subject, html, text, fallbackCode: code });
   }
 
   async sendEmailVerificationCode(
@@ -123,24 +122,19 @@ export class MailService {
     return { name: DEFAULT_SENDER.name, email: raw.trim() };
   }
 
-  private buildPasswordResetHtml(fullName: string, resetLink: string): string {
+  private buildPasswordResetCodeHtml(fullName: string, code: string): string {
     return `
   <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
     <h2 style="margin: 0 0 16px;">Bid Smart. Win Big.</h2>
     <p>Hi ${fullName},</p>
-    <p>We received a request to reset your GalleryQ password. Click the button below to choose a new one. This link is valid for <strong>1 hour</strong>.</p>
+    <p>Use the code below to reset your GalleryQ password:</p>
     <p style="text-align: center; margin: 32px 0;">
-      <a href="${resetLink}"
-         style="background: #111827; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 8px; display: inline-block;">
-        Reset password
-      </a>
+      <span style="font-size: 32px; font-weight: 700; letter-spacing: 8px; background: #f3f4f6; padding: 12px 24px; border-radius: 8px; display: inline-block;">
+        ${code}
+      </span>
     </p>
     <p style="font-size: 13px; color: #6b7280;">
-      If the button doesn't work, copy and paste this link into your browser:<br />
-      <a href="${resetLink}">${resetLink}</a>
-    </p>
-    <p style="font-size: 13px; color: #6b7280;">
-      If you didn't request a password reset, you can safely ignore this email.
+      This code expires shortly. If you didn't request a password reset, you can safely ignore this email.
     </p>
   </div>`;
   }

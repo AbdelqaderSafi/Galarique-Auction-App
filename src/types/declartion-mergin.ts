@@ -26,10 +26,7 @@ export interface EnvVariables {
 }
 
 // الحقول الحسّاسة التي يجب ألّا تُعاد أبداً في أي response
-export type SafeUser = Omit<
-  User,
-  'password' | 'resetToken' | 'resetTokenExpiry'
->;
+export type SafeUser = Omit<User, 'password'>;
 
 declare module 'express' {
   interface Request {

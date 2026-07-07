@@ -26,7 +26,8 @@ export const forgotPasswordSchema = z.object({
 }) satisfies ZodType<ForgotPasswordDTO>;
 
 export const resetPasswordSchema = z.object({
-  token: z.string().min(1),
+  email: z.string().email(),
+  code: z.string().regex(/^\d{6}$/, 'Code must be 6 digits'),
   newPassword: z.string().min(8),
 }) satisfies ZodType<ResetPasswordDTO>;
 

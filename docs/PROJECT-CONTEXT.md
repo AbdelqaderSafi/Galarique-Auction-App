@@ -54,7 +54,7 @@ Art & collectibles **auctions** mobile app (graduation project). This repo is th
 
 **Guest:** browse only; bidding/following/favoriting require auth. **Favorites:** `FavoriteObject`, `FavoriteAuction`, and `Follow` (= Fav Sellers).
 
-**Auth (built, full):** `register` does NOT create the user immediately — it emails a 6-digit code and stores the pending signup in the `EmailVerification` model; `verify-email` checks the code and only THEN creates the `User` + issues a JWT. Also: `resend-verification`, `login`, `google`, `validate` (🔒, renews the JWT + returns the user), `forgot-password` (random 32-byte reset token, 1h, `resetToken`/`resetTokenExpiry` on User; generic response — no user enumeration), `reset-password`, `change-password` (🔒, needs current password). OTP settings from `OTP_EXP_MINUTES` / `OTP_MAX_ATTEMPTS`.
+**Auth (built, full):** `register` does NOT create the user immediately — it emails a 6-digit code and stores the pending signup in the `EmailVerification` model; `verify-email` checks the code and only THEN creates the `User` + issues a JWT. Also: `resend-verification`, `login`, `google`, `validate` (🔒, renews the JWT + returns the user), `forgot-password` (emails a **6-digit code** stored in the `PasswordReset` table; generic response — no user enumeration), `reset-password` (`{ email, code, newPassword }`), `change-password` (🔒, needs current password). OTP settings from `OTP_EXP_MINUTES` / `OTP_MAX_ATTEMPTS`. (Password reset is code-based in-app, NOT a link.)
 
 **Admin:** no separate login — everyone uses `POST /auth/login`; `roles` containing `ADMIN` gates `@Roles([ADMIN])`. Public `register` always creates `[BUYER]`. Admins are created by **`npm run seed`** (`prisma/seed.ts`, uses raw `pg` + argon2 — NOT the Prisma client, see gotcha) from `ADMIN_EMAIL`/`ADMIN_PASSWORD`/`ADMIN_FULLNAME`.
 
@@ -66,7 +66,7 @@ Art & collectibles **auctions** mobile app (graduation project). This repo is th
 
 **Roadmap (remaining, in order):** `auctions` (+ admin review) → `wallet` (balance/hold + Stripe top-up/webhook + Connect payouts) → `bids` (+ $50 deposit, anti-snipe, concurrency) → `orders` (escrow) → `disputes` → `favorites`/`follows` → `scheduler` (close auctions, 72h payment + second-chance, 14-day auto-release). Note: `wallet` must come before `bids` (bids hold the deposit from the wallet). Add notification emails as each module is built.
 
-**Schema note:** `EmailVerification` (pending signups) and `PhoneVerification` (seller OTP) are OTP tables; `SellerProfile` is phone-based (`phoneNumber` unique + `phoneVerifiedAt`); `User` has `resetToken`/`resetTokenExpiry` + `stripeCustomerId`/`stripeConnectId`; `Object.category` is a `Category` enum column.
+**Schema note:** `EmailVerification` (pending signups), `PhoneVerification` (seller OTP), and `PasswordReset` (password-reset OTP) are OTP tables (codeHash/expiresAt/attempts/consumedAt); `SellerProfile` is phone-based (`phoneNumber` unique + `phoneVerifiedAt`); `User` has `stripeCustomerId`/`stripeConnectId`; `Object.category` is a `Category` enum column.
 
 ---
 

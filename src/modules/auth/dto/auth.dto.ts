@@ -52,8 +52,11 @@ export class ChangePasswordDTO {
 }
 
 export class ResetPasswordDTO {
-  @ApiProperty({ description: 'Reset token received via email link' })
-  token!: string;
+  @ApiProperty({ example: 'ahmed@example.com' })
+  email!: string;
+
+  @ApiProperty({ example: '123456', description: '6-digit code from the reset email' })
+  code!: string;
 
   @ApiProperty({ example: 'NewStrongPass@123', minLength: 8 })
   newPassword!: string;

@@ -312,7 +312,6 @@ model Auction {
   // التسعير (من Set Value + ثغرات نضيفها بالباك اند)
   startingPrice   Decimal  @db.Decimal(12, 2) // سعر الافتتاح
   reservePrice    Decimal? @db.Decimal(12, 2) // السعر الاحتياطي (اختياري)
-  estimatedValue  Decimal? @db.Decimal(12, 2) // تقديري خاص (لا يراه المشتري)
   minBidIncrement Decimal  @default(50) @db.Decimal(12, 2) // الحد الأدنى للزيادة
   currentPrice    Decimal  @default(0) @db.Decimal(12, 2) // أعلى مزايدة حالياً
 

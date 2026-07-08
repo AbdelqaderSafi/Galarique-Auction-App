@@ -30,11 +30,11 @@ Art & collectibles **auctions** mobile app (graduation project). This repo is th
 
 **Scope:** Only the Figma page `buyer flow AI` is approved (it holds both buyer & seller screens). **Shipping is OUT of scope.** No saved cards, no in-app chat, no in-app notifications, no separate EXPERT role, no multi-currency.
 
-**Object vs Auction:** `Object` = the permanent artwork (owner, `category` **enum**, title, description, era, condition, originality, authenticity, country, dimensions, images, status). `Auction` = a timed event on an Object. Create wizard: Category → Images → Details → Set Value (`estimatedValue` private/admin-only, `reservePrice` optional).
+**Object vs Auction:** `Object` = the permanent artwork (owner, `category` **enum**, title, description, era, condition, originality, authenticity, country, dimensions, images, status). `Auction` = a timed event on an Object. Create wizard: Category → Images → Details → Set Value (`startingPrice`, `reservePrice` optional). (There is no `estimatedValue` — the field was dropped from the model.)
 
 **Categories:** a fixed **enum** `Category` (`ART, WATCHES, COLLECTIBLES, JEWELRY, FURNITURE, BOOKS, FASHION, ELECTRONICS`) — NOT a table. `GET /categories` (public) returns the `{ value, label }` list.
 
-**Auction lifecycle:** `DRAFT` → (submit) `PENDING_REVIEW` → **ADMIN approves** → `LIVE` (`startTime=now`, `endTime=now+durationDays`) → `ENDED` → `SOLD`/`UNSOLD`; or ADMIN `REJECTED` (+`rejectionReason`). Seller picks a **preset `durationDays`** (3/5/7/10). ADMIN sets the private `estimatedValue`. Anti-snipe: a bid within `antiSnipeSeconds` (default 60) of `endTime` extends it by `extendBySeconds` (default 60).
+**Auction lifecycle:** create → `PENDING_REVIEW` (no DRAFT stage; every auction is reviewed) → **ADMIN approves** → `LIVE` (`startTime=now`, `endTime=now+durationDays`) → `ENDED` → `SOLD`/`UNSOLD`; or ADMIN `REJECTED` (+`rejectionReason`, seller edits → resubmits, or cancels). Seller picks a **preset `durationDays`** (3/5/7/10). Anti-snipe: a bid within `antiSnipeSeconds` (default 60) of `endTime` extends it by `extendBySeconds` (default 60).
 
 **Bidding:** free amount, must be `≥ currentPrice + minBidIncrement`. A **flat $50 deposit** is held on a user's **first** bid in an auction (`balance → lockedBalance`, `AuctionDeposit` HELD, `WalletTransaction` DEPOSIT_HOLD). "You pay only if you win." Do the whole bid inside a **DB transaction** (concurrency). Losers' deposits → RELEASED.
 
@@ -62,18 +62,19 @@ Art & collectibles **auctions** mobile app (graduation project). This repo is th
 
 ## Modules
 
-**Built:** `auth` (full — see above), `user` (service only), `database` (`@Global`), `mail` (Brevo), `uploads` (ImageKit), `whatsapp` (`@Global`, Baileys), `seller-verification` (WhatsApp OTP → SELLER), `categories` (GET public — fixed enum list), `objects` (seller artwork CRUD).
+**Built:** `auth` (full — see above), `user` (service only), `database` (`@Global`), `mail` (Brevo), `uploads` (ImageKit), `whatsapp` (`@Global`, Baileys), `seller-verification` (WhatsApp OTP → SELLER), `categories` (GET public — fixed enum list), `objects` (seller artwork CRUD), `auctions` (create → `PENDING_REVIEW`, admin approve/reject + review queue, public browse/detail, seller edit/cancel; approve/reject emails).
 
-**Roadmap (remaining, in order):** `auctions` (+ admin review) → `wallet` (balance/hold + Stripe top-up/webhook + Connect payouts) → `bids` (+ $50 deposit, anti-snipe, concurrency) → `orders` (escrow) → `disputes` → `favorites`/`follows` → `scheduler` (close auctions, 72h payment + second-chance, 14-day auto-release). Note: `wallet` must come before `bids` (bids hold the deposit from the wallet). Add notification emails as each module is built.
+**Roadmap (remaining, in order):** `wallet` (balance/hold + Stripe top-up/webhook + Connect payouts) → `bids` (+ $50 deposit, anti-snipe, concurrency) → `orders` (escrow) → `disputes` → `favorites`/`follows` → `scheduler` (close auctions, 72h payment + second-chance, 14-day auto-release). Note: `wallet` must come before `bids` (bids hold the deposit from the wallet). Add notification emails as each module is built.
 
 **Schema note:** `EmailVerification` (pending signups), `PhoneVerification` (seller OTP), and `PasswordReset` (password-reset OTP) are OTP tables (codeHash/expiresAt/attempts/consumedAt); `SellerProfile` is phone-based (`phoneNumber` unique + `phoneVerifiedAt`); `User` has `stripeCustomerId`/`stripeConnectId`; `Object.category` is a `Category` enum column.
 
 ---
 
-## Current status & pending decisions (2026-07-06)
+## Current status & pending decisions (2026-07-08)
 
-- **Done through:** `objects` module + Category-as-enum (committed `633867f`, **not pushed**). Everything before it is committed.
-- **Next module:** `auctions` (create from an AVAILABLE object → `PENDING_REVIEW` → admin approve sets `LIVE` + `endTime`, or reject → public browse + detail).
+- **Done through:** `auctions` module (create → review → public browse) + dropped `estimatedValue` from `Auction` (migration `20260708120000_auctions_remove_estimated_value`). All 65 endpoint tests pass. **Not pushed.**
+- **Next module:** `wallet` (balance/lockedBalance + Stripe top-up webhook + Connect payouts) — must precede `bids`.
+- **Auction endpoints:** `POST /auctions` (seller, from AVAILABLE object), `GET /auctions/mine` (seller), `PATCH /auctions/:id` + `POST /auctions/:id/cancel` (seller/admin; pending/rejected only for seller), `GET /auctions` (public, LIVE-only browse: category/q/sort/pagination), `GET /auctions/:id` (public detail, public statuses only), `GET /auctions/admin/pending` + `POST /auctions/:id/approve` + `POST /auctions/:id/reject` (admin). `currentPrice` stays 0 until the first bid (bids module owns the opening-bid floor = `startingPrice`).
 - **Pending decision — refresh tokens:** a teammate wants automatic token refresh. Today `GET /auth/validate` just renews a single **30-day** JWT while it's still valid (sliding session; can't renew once expired). Options to build later: (a) stateless refresh JWT — simple, not revocable; (b) stored/rotating refresh token — revocable, needs a `RefreshToken` model + migration + `POST /auth/refresh`, and login/register/google would return `{ accessToken (short), refreshToken }`. **Changing the login response shape affects the mobile team — coordinate first.** Not yet decided or built.
 
 ---

@@ -46,6 +46,39 @@ export class MailService {
     await this.send({ to, subject, html, text, fallbackCode: code });
   }
 
+  async sendAuctionApproved(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+  ): Promise<void> {
+    const subject = `Your auction is live: ${auctionTitle}`;
+    const html = this.buildAuctionApprovedHtml(fullName, auctionTitle);
+    const text =
+      `Hi ${fullName},\n\n` +
+      `Good news — your auction "${auctionTitle}" has been approved and is now live on GalleryQ.\n` +
+      `Buyers can start bidding right away.\n\n` +
+      `Bid Smart. Win Big.`;
+
+    await this.send({ to, subject, html, text });
+  }
+
+  async sendAuctionRejected(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+    reason: string,
+  ): Promise<void> {
+    const subject = `Your auction needs changes: ${auctionTitle}`;
+    const html = this.buildAuctionRejectedHtml(fullName, auctionTitle, reason);
+    const text =
+      `Hi ${fullName},\n\n` +
+      `Your auction "${auctionTitle}" was not approved.\n` +
+      `Reason: ${reason}\n\n` +
+      `You can edit it in the app and resubmit it for review.`;
+
+    await this.send({ to, subject, html, text });
+  }
+
   private async send(options: {
     to: string;
     subject: string;
@@ -135,6 +168,39 @@ export class MailService {
     </p>
     <p style="font-size: 13px; color: #6b7280;">
       This code expires shortly. If you didn't request a password reset, you can safely ignore this email.
+    </p>
+  </div>`;
+  }
+
+  private buildAuctionApprovedHtml(
+    fullName: string,
+    auctionTitle: string,
+  ): string {
+    return `
+  <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
+    <h2 style="margin: 0 0 16px;">Bid Smart. Win Big.</h2>
+    <p>Hi ${fullName},</p>
+    <p>Your auction <strong>${auctionTitle}</strong> has been approved and is now
+      <strong>live</strong> on GalleryQ. Buyers can start bidding right away.</p>
+    <p style="font-size: 13px; color: #6b7280;">Good luck with your auction!</p>
+  </div>`;
+  }
+
+  private buildAuctionRejectedHtml(
+    fullName: string,
+    auctionTitle: string,
+    reason: string,
+  ): string {
+    return `
+  <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
+    <h2 style="margin: 0 0 16px;">Bid Smart. Win Big.</h2>
+    <p>Hi ${fullName},</p>
+    <p>Your auction <strong>${auctionTitle}</strong> was not approved.</p>
+    <p style="background: #fef2f2; border-radius: 8px; padding: 12px 16px; color: #991b1b;">
+      <strong>Reason:</strong> ${reason}
+    </p>
+    <p style="font-size: 13px; color: #6b7280;">
+      You can edit the auction in the app and resubmit it for review.
     </p>
   </div>`;
   }

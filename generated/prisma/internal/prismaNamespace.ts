@@ -1938,7 +1938,6 @@ export const AuctionScalarFieldEnum = {
   objectId: 'objectId',
   startingPrice: 'startingPrice',
   reservePrice: 'reservePrice',
-  estimatedValue: 'estimatedValue',
   minBidIncrement: 'minBidIncrement',
   currentPrice: 'currentPrice',
   currentWinnerId: 'currentWinnerId',

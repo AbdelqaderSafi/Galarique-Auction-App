@@ -29,7 +29,6 @@ export type AggregateAuction = {
 export type AuctionAvgAggregateOutputType = {
   startingPrice: runtime.Decimal | null
   reservePrice: runtime.Decimal | null
-  estimatedValue: runtime.Decimal | null
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
   durationDays: number | null
@@ -41,7 +40,6 @@ export type AuctionAvgAggregateOutputType = {
 export type AuctionSumAggregateOutputType = {
   startingPrice: runtime.Decimal | null
   reservePrice: runtime.Decimal | null
-  estimatedValue: runtime.Decimal | null
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
   durationDays: number | null
@@ -55,7 +53,6 @@ export type AuctionMinAggregateOutputType = {
   objectId: string | null
   startingPrice: runtime.Decimal | null
   reservePrice: runtime.Decimal | null
-  estimatedValue: runtime.Decimal | null
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
   currentWinnerId: string | null
@@ -78,7 +75,6 @@ export type AuctionMaxAggregateOutputType = {
   objectId: string | null
   startingPrice: runtime.Decimal | null
   reservePrice: runtime.Decimal | null
-  estimatedValue: runtime.Decimal | null
   minBidIncrement: runtime.Decimal | null
   currentPrice: runtime.Decimal | null
   currentWinnerId: string | null
@@ -101,7 +97,6 @@ export type AuctionCountAggregateOutputType = {
   objectId: number
   startingPrice: number
   reservePrice: number
-  estimatedValue: number
   minBidIncrement: number
   currentPrice: number
   currentWinnerId: number
@@ -124,7 +119,6 @@ export type AuctionCountAggregateOutputType = {
 export type AuctionAvgAggregateInputType = {
   startingPrice?: true
   reservePrice?: true
-  estimatedValue?: true
   minBidIncrement?: true
   currentPrice?: true
   durationDays?: true
@@ -136,7 +130,6 @@ export type AuctionAvgAggregateInputType = {
 export type AuctionSumAggregateInputType = {
   startingPrice?: true
   reservePrice?: true
-  estimatedValue?: true
   minBidIncrement?: true
   currentPrice?: true
   durationDays?: true
@@ -150,7 +143,6 @@ export type AuctionMinAggregateInputType = {
   objectId?: true
   startingPrice?: true
   reservePrice?: true
-  estimatedValue?: true
   minBidIncrement?: true
   currentPrice?: true
   currentWinnerId?: true
@@ -173,7 +165,6 @@ export type AuctionMaxAggregateInputType = {
   objectId?: true
   startingPrice?: true
   reservePrice?: true
-  estimatedValue?: true
   minBidIncrement?: true
   currentPrice?: true
   currentWinnerId?: true
@@ -196,7 +187,6 @@ export type AuctionCountAggregateInputType = {
   objectId?: true
   startingPrice?: true
   reservePrice?: true
-  estimatedValue?: true
   minBidIncrement?: true
   currentPrice?: true
   currentWinnerId?: true
@@ -306,7 +296,6 @@ export type AuctionGroupByOutputType = {
   objectId: string
   startingPrice: runtime.Decimal
   reservePrice: runtime.Decimal | null
-  estimatedValue: runtime.Decimal | null
   minBidIncrement: runtime.Decimal
   currentPrice: runtime.Decimal
   currentWinnerId: string | null
@@ -352,7 +341,6 @@ export type AuctionWhereInput = {
   objectId?: Prisma.StringFilter<"Auction"> | string
   startingPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.DecimalNullableFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.DecimalNullableFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableFilter<"Auction"> | string | null
@@ -382,7 +370,6 @@ export type AuctionOrderByWithRelationInput = {
   objectId?: Prisma.SortOrder
   startingPrice?: Prisma.SortOrder
   reservePrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  estimatedValue?: Prisma.SortOrderInput | Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -415,7 +402,6 @@ export type AuctionWhereUniqueInput = Prisma.AtLeast<{
   objectId?: Prisma.StringFilter<"Auction"> | string
   startingPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.DecimalNullableFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.DecimalNullableFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableFilter<"Auction"> | string | null
@@ -445,7 +431,6 @@ export type AuctionOrderByWithAggregationInput = {
   objectId?: Prisma.SortOrder
   startingPrice?: Prisma.SortOrder
   reservePrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  estimatedValue?: Prisma.SortOrderInput | Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -476,7 +461,6 @@ export type AuctionScalarWhereWithAggregatesInput = {
   objectId?: Prisma.StringWithAggregatesFilter<"Auction"> | string
   startingPrice?: Prisma.DecimalWithAggregatesFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.DecimalNullableWithAggregatesFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.DecimalNullableWithAggregatesFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalWithAggregatesFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalWithAggregatesFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableWithAggregatesFilter<"Auction"> | string | null
@@ -498,7 +482,6 @@ export type AuctionCreateInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -526,7 +509,6 @@ export type AuctionUncheckedCreateInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -552,7 +534,6 @@ export type AuctionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -580,7 +561,6 @@ export type AuctionUncheckedUpdateInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -607,7 +587,6 @@ export type AuctionCreateManyInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -629,7 +608,6 @@ export type AuctionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -650,7 +628,6 @@ export type AuctionUncheckedUpdateManyInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -683,7 +660,6 @@ export type AuctionCountOrderByAggregateInput = {
   objectId?: Prisma.SortOrder
   startingPrice?: Prisma.SortOrder
   reservePrice?: Prisma.SortOrder
-  estimatedValue?: Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrder
@@ -704,7 +680,6 @@ export type AuctionCountOrderByAggregateInput = {
 export type AuctionAvgOrderByAggregateInput = {
   startingPrice?: Prisma.SortOrder
   reservePrice?: Prisma.SortOrder
-  estimatedValue?: Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   durationDays?: Prisma.SortOrder
@@ -718,7 +693,6 @@ export type AuctionMaxOrderByAggregateInput = {
   objectId?: Prisma.SortOrder
   startingPrice?: Prisma.SortOrder
   reservePrice?: Prisma.SortOrder
-  estimatedValue?: Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrder
@@ -741,7 +715,6 @@ export type AuctionMinOrderByAggregateInput = {
   objectId?: Prisma.SortOrder
   startingPrice?: Prisma.SortOrder
   reservePrice?: Prisma.SortOrder
-  estimatedValue?: Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   currentWinnerId?: Prisma.SortOrder
@@ -762,7 +735,6 @@ export type AuctionMinOrderByAggregateInput = {
 export type AuctionSumOrderByAggregateInput = {
   startingPrice?: Prisma.SortOrder
   reservePrice?: Prisma.SortOrder
-  estimatedValue?: Prisma.SortOrder
   minBidIncrement?: Prisma.SortOrder
   currentPrice?: Prisma.SortOrder
   durationDays?: Prisma.SortOrder
@@ -966,7 +938,6 @@ export type AuctionCreateWithoutCurrentWinnerInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -993,7 +964,6 @@ export type AuctionUncheckedCreateWithoutCurrentWinnerInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1028,7 +998,6 @@ export type AuctionCreateWithoutReviewedByInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1055,7 +1024,6 @@ export type AuctionUncheckedCreateWithoutReviewedByInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1110,7 +1078,6 @@ export type AuctionScalarWhereInput = {
   objectId?: Prisma.StringFilter<"Auction"> | string
   startingPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.DecimalNullableFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.DecimalNullableFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFilter<"Auction"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.StringNullableFilter<"Auction"> | string | null
@@ -1148,7 +1115,6 @@ export type AuctionCreateWithoutObjectInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1174,7 +1140,6 @@ export type AuctionUncheckedCreateWithoutObjectInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1226,7 +1191,6 @@ export type AuctionCreateWithoutBidsInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1253,7 +1217,6 @@ export type AuctionUncheckedCreateWithoutBidsInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1294,7 +1257,6 @@ export type AuctionUpdateWithoutBidsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1321,7 +1283,6 @@ export type AuctionUncheckedUpdateWithoutBidsInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1346,7 +1307,6 @@ export type AuctionCreateWithoutDepositsInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1373,7 +1333,6 @@ export type AuctionUncheckedCreateWithoutDepositsInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1414,7 +1373,6 @@ export type AuctionUpdateWithoutDepositsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1441,7 +1399,6 @@ export type AuctionUncheckedUpdateWithoutDepositsInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1466,7 +1423,6 @@ export type AuctionCreateWithoutOrdersInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1493,7 +1449,6 @@ export type AuctionUncheckedCreateWithoutOrdersInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1534,7 +1489,6 @@ export type AuctionUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1561,7 +1515,6 @@ export type AuctionUncheckedUpdateWithoutOrdersInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1586,7 +1539,6 @@ export type AuctionCreateWithoutFavoritesInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1613,7 +1565,6 @@ export type AuctionUncheckedCreateWithoutFavoritesInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1654,7 +1605,6 @@ export type AuctionUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1681,7 +1631,6 @@ export type AuctionUncheckedUpdateWithoutFavoritesInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1707,7 +1656,6 @@ export type AuctionCreateManyCurrentWinnerInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays: number
@@ -1729,7 +1677,6 @@ export type AuctionCreateManyReviewedByInput = {
   objectId: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1750,7 +1697,6 @@ export type AuctionUpdateWithoutCurrentWinnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1777,7 +1723,6 @@ export type AuctionUncheckedUpdateWithoutCurrentWinnerInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1803,7 +1748,6 @@ export type AuctionUncheckedUpdateManyWithoutCurrentWinnerInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1824,7 +1768,6 @@ export type AuctionUpdateWithoutReviewedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1851,7 +1794,6 @@ export type AuctionUncheckedUpdateWithoutReviewedByInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1877,7 +1819,6 @@ export type AuctionUncheckedUpdateManyWithoutReviewedByInput = {
   objectId?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1898,7 +1839,6 @@ export type AuctionCreateManyObjectInput = {
   id?: string
   startingPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: string | null
@@ -1920,7 +1860,6 @@ export type AuctionUpdateWithoutObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   durationDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1946,7 +1885,6 @@ export type AuctionUncheckedUpdateWithoutObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1972,7 +1910,6 @@ export type AuctionUncheckedUpdateManyWithoutObjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   startingPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   reservePrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  estimatedValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   minBidIncrement?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currentWinnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2053,7 +1990,6 @@ export type AuctionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objectId?: boolean
   startingPrice?: boolean
   reservePrice?: boolean
-  estimatedValue?: boolean
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
@@ -2084,7 +2020,6 @@ export type AuctionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   objectId?: boolean
   startingPrice?: boolean
   reservePrice?: boolean
-  estimatedValue?: boolean
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
@@ -2110,7 +2045,6 @@ export type AuctionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   objectId?: boolean
   startingPrice?: boolean
   reservePrice?: boolean
-  estimatedValue?: boolean
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
@@ -2136,7 +2070,6 @@ export type AuctionSelectScalar = {
   objectId?: boolean
   startingPrice?: boolean
   reservePrice?: boolean
-  estimatedValue?: boolean
   minBidIncrement?: boolean
   currentPrice?: boolean
   currentWinnerId?: boolean
@@ -2154,7 +2087,7 @@ export type AuctionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AuctionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "objectId" | "startingPrice" | "reservePrice" | "estimatedValue" | "minBidIncrement" | "currentPrice" | "currentWinnerId" | "durationDays" | "startTime" | "endTime" | "antiSnipeSeconds" | "extendBySeconds" | "reviewedById" | "reviewedAt" | "rejectionReason" | "viewsCount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["auction"]>
+export type AuctionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "objectId" | "startingPrice" | "reservePrice" | "minBidIncrement" | "currentPrice" | "currentWinnerId" | "durationDays" | "startTime" | "endTime" | "antiSnipeSeconds" | "extendBySeconds" | "reviewedById" | "reviewedAt" | "rejectionReason" | "viewsCount" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["auction"]>
 export type AuctionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   object?: boolean | Prisma.ObjectDefaultArgs<ExtArgs>
   currentWinner?: boolean | Prisma.Auction$currentWinnerArgs<ExtArgs>
@@ -2192,7 +2125,6 @@ export type $AuctionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     objectId: string
     startingPrice: runtime.Decimal
     reservePrice: runtime.Decimal | null
-    estimatedValue: runtime.Decimal | null
     minBidIncrement: runtime.Decimal
     currentPrice: runtime.Decimal
     currentWinnerId: string | null
@@ -2642,7 +2574,6 @@ export interface AuctionFieldRefs {
   readonly objectId: Prisma.FieldRef<"Auction", 'String'>
   readonly startingPrice: Prisma.FieldRef<"Auction", 'Decimal'>
   readonly reservePrice: Prisma.FieldRef<"Auction", 'Decimal'>
-  readonly estimatedValue: Prisma.FieldRef<"Auction", 'Decimal'>
   readonly minBidIncrement: Prisma.FieldRef<"Auction", 'Decimal'>
   readonly currentPrice: Prisma.FieldRef<"Auction", 'Decimal'>
   readonly currentWinnerId: Prisma.FieldRef<"Auction", 'String'>

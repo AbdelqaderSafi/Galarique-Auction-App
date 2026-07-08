@@ -1,0 +1,146 @@
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
+import type { Request } from 'express';
+import { Role } from 'generated/prisma/client';
+import { Roles } from 'src/decorators/roles.decorator';
+import { IsPublic } from 'src/decorators/public.decorator';
+import { ZodValidationPipe } from 'src/pipes/zod.validation.pipe';
+import { AuctionsService } from './auctions.service';
+import {
+  AuctionDetailDTO,
+  AuctionResponseDTO,
+  BrowseAuctionsQueryDTO,
+  CreateAuctionDTO,
+  PaginatedAuctionsDTO,
+  RejectAuctionDTO,
+  UpdateAuctionDTO,
+} from './dto/auctions.dto';
+import {
+  browseAuctionsQuerySchema,
+  createAuctionSchema,
+  rejectAuctionSchema,
+  updateAuctionSchema,
+} from './util/auctions.validation.schema';
+import {
+  SwaggerAuctionsTag,
+  ApiCreateAuction,
+  ApiListMyAuctions,
+  ApiUpdateAuction,
+  ApiCancelAuction,
+  ApiBrowseAuctions,
+  ApiGetAuction,
+  ApiPendingAuctions,
+  ApiApproveAuction,
+  ApiRejectAuction,
+} from 'src/swagger/auctions.swagger';
+
+@SwaggerAuctionsTag()
+@Controller('auctions')
+export class AuctionsController {
+  constructor(private readonly auctionsService: AuctionsService) {}
+
+  // ---- Public browse (before :id so /admin isn't captured as an id) ----
+
+  @Get()
+  @IsPublic(true)
+  @ApiBrowseAuctions()
+  browse(
+    @Query(new ZodValidationPipe(browseAuctionsQuerySchema))
+    query: BrowseAuctionsQueryDTO,
+  ): Promise<PaginatedAuctionsDTO> {
+    return this.auctionsService.browse(query);
+  }
+
+  // ---- Seller ----
+
+  @Post()
+  @Roles([Role.SELLER])
+  @ApiCreateAuction()
+  create(
+    @Req() req: Request,
+    @Body(new ZodValidationPipe(createAuctionSchema)) dto: CreateAuctionDTO,
+  ): Promise<AuctionResponseDTO> {
+    return this.auctionsService.create(req.user!.id, dto);
+  }
+
+  @Get('mine')
+  @Roles([Role.SELLER])
+  @ApiListMyAuctions()
+  findMine(@Req() req: Request): Promise<AuctionResponseDTO[]> {
+    return this.auctionsService.findMine(req.user!.id);
+  }
+
+  // ---- Admin ----
+
+  @Get('admin/pending')
+  @Roles([Role.ADMIN])
+  @ApiPendingAuctions()
+  pending(): Promise<AuctionResponseDTO[]> {
+    return this.auctionsService.pendingQueue();
+  }
+
+  @Post(':id/approve')
+  @HttpCode(200)
+  @Roles([Role.ADMIN])
+  @ApiApproveAuction()
+  approve(
+    @Req() req: Request,
+    @Param('id') id: string,
+  ): Promise<AuctionResponseDTO> {
+    return this.auctionsService.approve(id, req.user!.id);
+  }
+
+  @Post(':id/reject')
+  @HttpCode(200)
+  @Roles([Role.ADMIN])
+  @ApiRejectAuction()
+  reject(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(rejectAuctionSchema)) dto: RejectAuctionDTO,
+  ): Promise<AuctionResponseDTO> {
+    return this.auctionsService.reject(id, req.user!.id, dto.reason);
+  }
+
+  // ---- Seller (mutations on a specific auction) ----
+
+  @Patch(':id')
+  @Roles([Role.SELLER, Role.ADMIN])
+  @ApiUpdateAuction()
+  update(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(updateAuctionSchema)) dto: UpdateAuctionDTO,
+  ): Promise<AuctionResponseDTO> {
+    return this.auctionsService.update(id, req.user!, dto);
+  }
+
+  @Post(':id/cancel')
+  @HttpCode(200)
+  @Roles([Role.SELLER, Role.ADMIN])
+  @ApiCancelAuction()
+  cancel(
+    @Req() req: Request,
+    @Param('id') id: string,
+  ): Promise<AuctionResponseDTO> {
+    return this.auctionsService.cancel(id, req.user!);
+  }
+
+  // ---- Public detail (last: catch-all :id) ----
+
+  @Get(':id')
+  @IsPublic(true)
+  @ApiGetAuction()
+  findOne(@Param('id') id: string): Promise<AuctionDetailDTO> {
+    return this.auctionsService.findPublic(id);
+  }
+}

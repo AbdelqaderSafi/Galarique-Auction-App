@@ -28,6 +28,7 @@ import {
   ApiVerifyPhone,
   ApiResendPhoneCode,
   ApiWhatsappStatus,
+  ApiWhatsappRelink,
 } from 'src/swagger/seller-verification.swagger';
 
 @SwaggerSellerTag()
@@ -67,11 +68,28 @@ export class SellerVerificationController {
     return this.sellerVerificationService.resend(req.user!.id);
   }
 
-  // للأدمن: حالة اتصال واتساب + الـ QR للربط الأولي
+  // للأدمن: حالة اتصال واتساب + الـ QR/كود الاقتران للربط الأولي
   @Get('whatsapp/status')
   @Roles([Role.ADMIN])
   @ApiWhatsappStatus()
-  whatsappStatus(): { connected: boolean; qr: string | null } {
-    return { connected: this.whatsapp.isReady(), qr: this.whatsapp.getQr() };
+  whatsappStatus(): {
+    connected: boolean;
+    qr: string | null;
+    pairingCode: string | null;
+  } {
+    return {
+      connected: this.whatsapp.isReady(),
+      qr: this.whatsapp.getQr(),
+      pairingCode: this.whatsapp.getPairingCode(),
+    };
+  }
+
+  // للأدمن: إعادة الربط (يطلب كود اقتران جديد) — مفيد على البرودكشن
+  @Post('whatsapp/relink')
+  @HttpCode(200)
+  @Roles([Role.ADMIN])
+  @ApiWhatsappRelink()
+  whatsappRelink(): Promise<{ message: string }> {
+    return this.whatsapp.relink();
   }
 }

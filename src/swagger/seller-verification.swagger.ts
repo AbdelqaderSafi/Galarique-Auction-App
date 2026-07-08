@@ -48,7 +48,21 @@ export const ApiResendPhoneCode = () =>
 export const ApiWhatsappStatus = () =>
   applyDecorators(
     ApiBearerAuth('access-token'),
-    ApiOperation({ summary: 'WhatsApp link status + QR for pairing (admin only)' }),
-    ApiOkResponse({ description: '{ connected, qr }' }),
+    ApiOperation({
+      summary: 'WhatsApp link status + QR/pairing code for linking (admin only)',
+    }),
+    ApiOkResponse({ description: '{ connected, qr, pairingCode }' }),
+    ApiForbiddenResponse({ description: 'Admin role required' }),
+  );
+
+export const ApiWhatsappRelink = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({
+      summary: 'Force a fresh WhatsApp link / new pairing code (admin only)',
+    }),
+    ApiOkResponse({
+      description: 'Reconnecting; poll the status endpoint for a new code',
+    }),
     ApiForbiddenResponse({ description: 'Admin role required' }),
   );

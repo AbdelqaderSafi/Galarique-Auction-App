@@ -23,6 +23,8 @@ export interface EnvVariables {
   WHATSAPP_AUTH_DIR?: string;
   // رقم واتساب البوت (دولي بدون +) — لتفعيل الربط بكود اقتران بدل QR
   WHATSAPP_PAIRING_NUMBER?: string;
+  // تعطيل اتصال واتساب أثناء التطوير ("false")؛ الافتراضي مُفعّل
+  WHATSAPP_ENABLED?: string;
 }
 
 // الحقول الحسّاسة التي يجب ألّا تُعاد أبداً في أي response

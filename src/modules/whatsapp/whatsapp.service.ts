@@ -14,11 +14,22 @@ export class WhatsappService implements OnModuleInit {
   private sock: any = null;
   private ready = false;
   private lastQr: string | null = null;
+  private lastPairingCode: string | null = null;
   private pairingRequested = false;
 
   constructor(private readonly config: ConfigService<EnvVariables>) {}
 
   onModuleInit(): void {
+    // مفتاح تعطيل: مفيد أثناء التطوير (nest --watch) لتفادي إعادة الربط
+    // ووصول إشعار "Finished syncing" مع كل إعادة تشغيل. عند التعطيل يبقى
+    // sendOtp يعمل ويطبع الرمز في الـ console. الافتراضي: مُفعّل.
+    if (this.config.get<string>('WHATSAPP_ENABLED') === 'false') {
+      this.logger.warn(
+        'WhatsApp disabled (WHATSAPP_ENABLED=false); OTP codes will be logged to the console.',
+      );
+      return;
+    }
+
     // نبدأ الاتصال دون حجب إقلاع التطبيق؛ أي فشل لا يكسر السيرفر
     void this.connect().catch((err) =>
       this.logger.error(
@@ -33,6 +44,36 @@ export class WhatsappService implements OnModuleInit {
 
   getQr(): string | null {
     return this.lastQr;
+  }
+
+  /** آخر كود اقتران مُولّد (للربط من لوحة/endpoint دون الوصول لسجلّات السيرفر). */
+  getPairingCode(): string | null {
+    return this.lastPairingCode;
+  }
+
+  /**
+   * يعيد الربط من الصفر: يغلق الاتصال الحالي ويطلب كود اقتران جديد.
+   * مفيد على البرودكشن إذا انتهت صلاحية الكود أو ضاعت الجلسة.
+   */
+  async relink(): Promise<{ message: string }> {
+    if (this.config.get<string>('WHATSAPP_ENABLED') === 'false') {
+      return { message: 'WhatsApp is disabled (WHATSAPP_ENABLED=false).' };
+    }
+    try {
+      this.sock?.end?.(undefined);
+    } catch {
+      // نتجاهل أي خطأ عند إغلاق الاتصال القديم
+    }
+    this.sock = null;
+    this.ready = false;
+    this.lastQr = null;
+    this.lastPairingCode = null;
+    this.pairingRequested = false;
+    await this.connect();
+    return {
+      message:
+        'Reconnecting. Poll GET /seller/whatsapp/status for a fresh pairing code.',
+    };
   }
 
   /** يرسل رمز التحقق عبر واتساب؛ عند عدم الاتصال يطبع بالـ console (fallback). */
@@ -95,6 +136,7 @@ export class WhatsappService implements OnModuleInit {
         void (async () => {
           try {
             const code: string = await sock.requestPairingCode(pairingNumber);
+            this.lastPairingCode = code;
             this.logger.warn(
               `WhatsApp pairing code: ${code}  —  open WhatsApp → Linked Devices → Link a Device → "Link with phone number instead", then enter this code.`,
             );
@@ -123,10 +165,15 @@ export class WhatsappService implements OnModuleInit {
       if (connection === 'open') {
         this.ready = true;
         this.lastQr = null;
+        this.lastPairingCode = null;
         this.logger.log('WhatsApp connected and ready.');
       }
 
       if (connection === 'close') {
+        // نتجاهل إغلاق أي socket قديم استُبدل بآخر (مثلاً بعد relink)
+        if (this.sock !== sock) {
+          return;
+        }
         this.ready = false;
         const statusCode = lastDisconnect?.error?.output?.statusCode;
         const loggedOut = statusCode === DisconnectReason.loggedOut;

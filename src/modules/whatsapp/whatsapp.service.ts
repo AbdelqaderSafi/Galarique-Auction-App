@@ -120,6 +120,11 @@ export class WhatsappService implements OnModuleInit {
       auth: state,
       logger: this.silentLogger(),
       browser: Browsers.ubuntu('Chrome'),
+      // المشروع يرسل OTP فقط — لا نحتاج مزامنة سجل/حالة المحادثات.
+      // إيقافها يمنع إشعار "Finished syncing" على هاتف البوت مع كل اتصال.
+      syncFullHistory: false,
+      shouldSyncHistoryMessage: () => false,
+      markOnlineOnConnect: false,
     });
     this.sock = sock;
 

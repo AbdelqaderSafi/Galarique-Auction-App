@@ -16,7 +16,7 @@ import type { SafeUser } from 'src/types/declartion-mergin';
 import type {
   AuctionDetailDTO,
   BrowseAuctionsQueryDTO,
-  CreateAuctionDTO,
+  CreateAuctionData,
   PaginatedAuctionsDTO,
   UpdateAuctionDTO,
 } from './dto/auctions.dto';
@@ -53,7 +53,8 @@ export class AuctionsService {
   // ======================= Seller =======================
 
   // إنشاء المزاد بالكامل: القطعة (Object) + المزاد (Auction) في transaction واحد
-  async create(sellerId: string, dto: CreateAuctionDTO) {
+  // (الصور تكون مرفوعة مسبقاً كروابط في dto.mainImage / dto.images)
+  async create(sellerId: string, dto: CreateAuctionData) {
     const {
       images,
       startingPrice,

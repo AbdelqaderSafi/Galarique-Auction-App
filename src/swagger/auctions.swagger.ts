@@ -9,6 +9,7 @@ import {
   ApiForbiddenResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
@@ -23,15 +24,16 @@ export const SwaggerAuctionsTag = () => ApiTags('Auctions');
 export const ApiCreateAuction = () =>
   applyDecorators(
     ApiBearerAuth('access-token'),
+    ApiConsumes('multipart/form-data'),
     ApiOperation({
       summary:
-        'Create an auction (object + auction) via the wizard, seller only',
+        'Create an auction (object + auction) via the wizard — multipart with image files, seller only',
     }),
     ApiBody({ type: CreateAuctionDTO }),
     ApiCreatedResponse({
       description: 'Created (DRAFT if saveAsDraft, else PENDING_REVIEW)',
     }),
-    ApiBadRequestResponse({ description: 'Invalid input' }),
+    ApiBadRequestResponse({ description: 'Invalid input / missing mainImage' }),
     ApiForbiddenResponse({ description: 'Seller role required' }),
   );
 

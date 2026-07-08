@@ -26,34 +26,49 @@ const durationDays = z
     message: 'durationDays must be one of 1, 3, 7, 10',
   });
 
-// حقول القطعة (خطوتا Category + Details + Images) — تُنشأ مع المزاد
-const objectFields = {
-  category: z.enum(CATEGORY_VALUES),
-  mainImage: z.string().url(), // الصورة الرئيسية (الغلاف) — مطلوبة
-  images: z.array(z.string().url()).max(10).optional(), // صور إضافية (حتى 10)
-  title: z.string().trim().min(2).max(120),
-  description: z.string().trim().max(2000).optional(),
-  era: shortText.optional(),
-  condition: shortText.optional(),
-  originality: shortText.optional(),
-  heightCm: dimension.optional(),
-  widthCm: dimension.optional(),
-  depthCm: dimension.optional(),
+// إنشاء المزاد بالكامل — يُرسَل كـ multipart/form-data (الصور ملفات، والباقي نصوص).
+// الصور (mainImage + images) تُعالَج كملفات في الـ controller، لا هنا.
+// خطوة تمهيدية: نحذف الحقول الفارغة (نصوص "") ونحوّل saveAsDraft لقيمة منطقية،
+// لأن multipart يبعث كل شيء كنصوص وقد يرسل حقولاً اختيارية فارغة.
+const normalizeMultipartBody = (raw: unknown) => {
+  if (!raw || typeof raw !== 'object') return raw;
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (v === '' || v === null) continue; // فارغ = غياب
+    out[k] = v;
+  }
+  if ('saveAsDraft' in out) {
+    out.saveAsDraft = out.saveAsDraft === true || out.saveAsDraft === 'true';
+  }
+  return out;
 };
 
-// إنشاء المزاد بالكامل (كل خطوات الـ wizard في طلب واحد)
-export const createAuctionSchema = z.object({
-  ...objectFields,
-  // خطوة Set Value — بدون reserve/second-chance
-  startingPrice: price,
-  minBidIncrement: increment.optional(),
-  // خطوة Auction Duration
-  durationDays,
-  // خطوة Review: Next (false) أو Save as Draft (true)
-  saveAsDraft: z.boolean().optional().default(false),
-});
+export const createAuctionBodySchema = z.preprocess(
+  normalizeMultipartBody,
+  z.object({
+    category: z.enum(CATEGORY_VALUES),
+    title: z.string().trim().min(2).max(120),
+    description: z.string().trim().max(2000).optional(),
+    era: z.string().trim().max(60).optional(),
+    condition: z.string().trim().max(60).optional(),
+    originality: z.string().trim().max(60).optional(),
+    heightCm: z.coerce.number().positive().max(100_000).optional(),
+    widthCm: z.coerce.number().positive().max(100_000).optional(),
+    depthCm: z.coerce.number().positive().max(100_000).optional(),
+    startingPrice: z.coerce.number().positive().max(100_000_000),
+    minBidIncrement: z.coerce.number().positive().max(1_000_000).optional(),
+    durationDays: z
+      .coerce.number()
+      .int()
+      .refine((v) => (DURATION_PRESETS as readonly number[]).includes(v), {
+        message: 'durationDays must be one of 1, 3, 7, 10',
+      }),
+    saveAsDraft: z.boolean().optional().default(false),
+  }),
+);
+export type CreateAuctionBody = z.infer<typeof createAuctionBodySchema>;
 
-// تعديل قبل الإطلاق (DRAFT/PENDING_REVIEW/REJECTED) — كل الحقول اختيارية، بدون saveAsDraft
+// تعديل قبل الإطلاق (DRAFT/PENDING_REVIEW/REJECTED) — JSON بروابط الصور
 export const updateAuctionSchema = z.object({
   category: z.enum(CATEGORY_VALUES).optional(),
   mainImage: z.string().url().optional(),

@@ -6,25 +6,23 @@ import type {
   ObjectImage,
 } from 'generated/prisma/client';
 
-// إنشاء المزاد بالكامل — كل خطوات الـ wizard (Category → Images → Details → Set Value → Duration → Review)
+// إنشاء المزاد بالكامل — يُرسَل كـ multipart/form-data (الصور ملفات من الجهاز).
+// هذه الفئة لتوثيق Swagger فقط (شكل الفورم).
 export class CreateAuctionDTO {
+  // 2. Images (ملفات من جهاز المستخدم — تُرفع داخلياً إلى ImageKit)
+  @ApiProperty({ type: 'string', format: 'binary', description: 'Main/cover image file' })
+  mainImage!: unknown;
+
+  @ApiPropertyOptional({
+    type: 'array',
+    items: { type: 'string', format: 'binary' },
+    description: 'Additional product image files (up to 10)',
+  })
+  images?: unknown;
+
   // 1. Category
   @ApiProperty({ enum: Category, example: Category.ART })
   category!: Category;
-
-  // 2. Images (ارفعها عبر /uploads أولاً)
-  @ApiProperty({
-    description: 'Main/cover image URL shown in the UI',
-    example: 'https://ik.imagekit.io/demo/cover.jpg',
-  })
-  mainImage!: string;
-
-  @ApiPropertyOptional({
-    type: [String],
-    description: 'Additional product image URLs (up to 10)',
-    example: ['https://ik.imagekit.io/demo/1.jpg'],
-  })
-  images?: string[];
 
   // 3. Details
   @ApiProperty({ example: 'Still Life with Flowers' })
@@ -66,6 +64,25 @@ export class CreateAuctionDTO {
   @ApiPropertyOptional({ default: false, description: 'Save as draft instead of submitting' })
   saveAsDraft?: boolean;
 }
+
+// مدخل خدمة الإنشاء بعد رفع الصور (روابط جاهزة)
+export type CreateAuctionData = {
+  category: Category;
+  title: string;
+  description?: string;
+  era?: string;
+  condition?: string;
+  originality?: string;
+  heightCm?: number;
+  widthCm?: number;
+  depthCm?: number;
+  mainImage: string;
+  images: string[];
+  startingPrice: number;
+  minBidIncrement?: number;
+  durationDays: number;
+  saveAsDraft: boolean;
+};
 
 // تعديل قبل الإطلاق — كل الحقول اختيارية (بدون saveAsDraft)
 export class UpdateAuctionDTO {

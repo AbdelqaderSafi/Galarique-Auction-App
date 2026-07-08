@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,28 +10,50 @@ import {
   Post,
   Query,
   Req,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import type { Request } from 'express';
 import { Role } from 'generated/prisma/client';
 import { Roles } from 'src/decorators/roles.decorator';
 import { IsPublic } from 'src/decorators/public.decorator';
 import { ZodValidationPipe } from 'src/pipes/zod.validation.pipe';
 import { AuctionsService } from './auctions.service';
+import { UploadsService } from '../uploads/uploads.service';
 import {
   AuctionDetailDTO,
   AuctionResponseDTO,
   BrowseAuctionsQueryDTO,
-  CreateAuctionDTO,
   PaginatedAuctionsDTO,
   RejectAuctionDTO,
   UpdateAuctionDTO,
 } from './dto/auctions.dto';
 import {
   browseAuctionsQuerySchema,
-  createAuctionSchema,
+  createAuctionBodySchema,
   rejectAuctionSchema,
   updateAuctionSchema,
+  type CreateAuctionBody,
 } from './util/auctions.validation.schema';
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB لكل صورة
+const MAX_GALLERY = 10;
+
+// multer: صور فقط + حد للحجم (يبقى في الذاكرة ثم يُرفع إلى ImageKit)
+const auctionUploadOptions = {
+  limits: { fileSize: MAX_IMAGE_SIZE },
+  fileFilter: (
+    _req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, acceptFile: boolean) => void,
+  ) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new BadRequestException('Only image files are allowed'), false);
+    }
+    cb(null, true);
+  },
+};
 import {
   SwaggerAuctionsTag,
   ApiCreateAuction,
@@ -49,7 +72,10 @@ import {
 @SwaggerAuctionsTag()
 @Controller('auctions')
 export class AuctionsController {
-  constructor(private readonly auctionsService: AuctionsService) {}
+  constructor(
+    private readonly auctionsService: AuctionsService,
+    private readonly uploads: UploadsService,
+  ) {}
 
   // ---- Public browse (before :id so /admin & /mine aren't captured as ids) ----
 
@@ -68,11 +94,33 @@ export class AuctionsController {
   @Post()
   @Roles([Role.SELLER])
   @ApiCreateAuction()
-  create(
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'mainImage', maxCount: 1 },
+        { name: 'images', maxCount: MAX_GALLERY },
+      ],
+      auctionUploadOptions,
+    ),
+  )
+  async create(
     @Req() req: Request,
-    @Body(new ZodValidationPipe(createAuctionSchema)) dto: CreateAuctionDTO,
+    @UploadedFiles()
+    files: { mainImage?: Express.Multer.File[]; images?: Express.Multer.File[] },
+    @Body(new ZodValidationPipe(createAuctionBodySchema)) body: CreateAuctionBody,
   ): Promise<AuctionResponseDTO> {
-    return this.auctionsService.create(req.user!.id, dto);
+    const mainFile = files?.mainImage?.[0];
+    if (!mainFile) {
+      throw new BadRequestException('mainImage file is required');
+    }
+
+    // ارفع الملفات إلى ImageKit ثم خزّن الروابط
+    const mainImage = (await this.uploads.uploadImage(mainFile)).url;
+    const images = files?.images?.length
+      ? (await this.uploads.uploadImages(files.images)).map((u) => u.url)
+      : [];
+
+    return this.auctionsService.create(req.user!.id, { ...body, mainImage, images });
   }
 
   @Get('mine')

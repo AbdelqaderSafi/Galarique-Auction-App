@@ -44,11 +44,10 @@ export type ObjectMinAggregateOutputType = {
   category: $Enums.Category | null
   title: string | null
   description: string | null
+  mainImage: string | null
   era: string | null
   condition: string | null
   originality: string | null
-  authenticity: string | null
-  country: string | null
   heightCm: runtime.Decimal | null
   widthCm: runtime.Decimal | null
   depthCm: runtime.Decimal | null
@@ -63,11 +62,10 @@ export type ObjectMaxAggregateOutputType = {
   category: $Enums.Category | null
   title: string | null
   description: string | null
+  mainImage: string | null
   era: string | null
   condition: string | null
   originality: string | null
-  authenticity: string | null
-  country: string | null
   heightCm: runtime.Decimal | null
   widthCm: runtime.Decimal | null
   depthCm: runtime.Decimal | null
@@ -82,11 +80,10 @@ export type ObjectCountAggregateOutputType = {
   category: number
   title: number
   description: number
+  mainImage: number
   era: number
   condition: number
   originality: number
-  authenticity: number
-  country: number
   heightCm: number
   widthCm: number
   depthCm: number
@@ -115,11 +112,10 @@ export type ObjectMinAggregateInputType = {
   category?: true
   title?: true
   description?: true
+  mainImage?: true
   era?: true
   condition?: true
   originality?: true
-  authenticity?: true
-  country?: true
   heightCm?: true
   widthCm?: true
   depthCm?: true
@@ -134,11 +130,10 @@ export type ObjectMaxAggregateInputType = {
   category?: true
   title?: true
   description?: true
+  mainImage?: true
   era?: true
   condition?: true
   originality?: true
-  authenticity?: true
-  country?: true
   heightCm?: true
   widthCm?: true
   depthCm?: true
@@ -153,11 +148,10 @@ export type ObjectCountAggregateInputType = {
   category?: true
   title?: true
   description?: true
+  mainImage?: true
   era?: true
   condition?: true
   originality?: true
-  authenticity?: true
-  country?: true
   heightCm?: true
   widthCm?: true
   depthCm?: true
@@ -258,12 +252,11 @@ export type ObjectGroupByOutputType = {
   ownerId: string
   category: $Enums.Category
   title: string
-  description: string
+  description: string | null
+  mainImage: string
   era: string | null
   condition: string | null
   originality: string | null
-  authenticity: string | null
-  country: string | null
   heightCm: runtime.Decimal | null
   widthCm: runtime.Decimal | null
   depthCm: runtime.Decimal | null
@@ -300,12 +293,11 @@ export type ObjectWhereInput = {
   ownerId?: Prisma.StringFilter<"Object"> | string
   category?: Prisma.EnumCategoryFilter<"Object"> | $Enums.Category
   title?: Prisma.StringFilter<"Object"> | string
-  description?: Prisma.StringFilter<"Object"> | string
+  description?: Prisma.StringNullableFilter<"Object"> | string | null
+  mainImage?: Prisma.StringFilter<"Object"> | string
   era?: Prisma.StringNullableFilter<"Object"> | string | null
   condition?: Prisma.StringNullableFilter<"Object"> | string | null
   originality?: Prisma.StringNullableFilter<"Object"> | string | null
-  authenticity?: Prisma.StringNullableFilter<"Object"> | string | null
-  country?: Prisma.StringNullableFilter<"Object"> | string | null
   heightCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -323,12 +315,11 @@ export type ObjectOrderByWithRelationInput = {
   ownerId?: Prisma.SortOrder
   category?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  mainImage?: Prisma.SortOrder
   era?: Prisma.SortOrderInput | Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
   originality?: Prisma.SortOrderInput | Prisma.SortOrder
-  authenticity?: Prisma.SortOrderInput | Prisma.SortOrder
-  country?: Prisma.SortOrderInput | Prisma.SortOrder
   heightCm?: Prisma.SortOrderInput | Prisma.SortOrder
   widthCm?: Prisma.SortOrderInput | Prisma.SortOrder
   depthCm?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -349,12 +340,11 @@ export type ObjectWhereUniqueInput = Prisma.AtLeast<{
   ownerId?: Prisma.StringFilter<"Object"> | string
   category?: Prisma.EnumCategoryFilter<"Object"> | $Enums.Category
   title?: Prisma.StringFilter<"Object"> | string
-  description?: Prisma.StringFilter<"Object"> | string
+  description?: Prisma.StringNullableFilter<"Object"> | string | null
+  mainImage?: Prisma.StringFilter<"Object"> | string
   era?: Prisma.StringNullableFilter<"Object"> | string | null
   condition?: Prisma.StringNullableFilter<"Object"> | string | null
   originality?: Prisma.StringNullableFilter<"Object"> | string | null
-  authenticity?: Prisma.StringNullableFilter<"Object"> | string | null
-  country?: Prisma.StringNullableFilter<"Object"> | string | null
   heightCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -372,12 +362,11 @@ export type ObjectOrderByWithAggregationInput = {
   ownerId?: Prisma.SortOrder
   category?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  mainImage?: Prisma.SortOrder
   era?: Prisma.SortOrderInput | Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
   originality?: Prisma.SortOrderInput | Prisma.SortOrder
-  authenticity?: Prisma.SortOrderInput | Prisma.SortOrder
-  country?: Prisma.SortOrderInput | Prisma.SortOrder
   heightCm?: Prisma.SortOrderInput | Prisma.SortOrder
   widthCm?: Prisma.SortOrderInput | Prisma.SortOrder
   depthCm?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -399,12 +388,11 @@ export type ObjectScalarWhereWithAggregatesInput = {
   ownerId?: Prisma.StringWithAggregatesFilter<"Object"> | string
   category?: Prisma.EnumCategoryWithAggregatesFilter<"Object"> | $Enums.Category
   title?: Prisma.StringWithAggregatesFilter<"Object"> | string
-  description?: Prisma.StringWithAggregatesFilter<"Object"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Object"> | string | null
+  mainImage?: Prisma.StringWithAggregatesFilter<"Object"> | string
   era?: Prisma.StringNullableWithAggregatesFilter<"Object"> | string | null
   condition?: Prisma.StringNullableWithAggregatesFilter<"Object"> | string | null
   originality?: Prisma.StringNullableWithAggregatesFilter<"Object"> | string | null
-  authenticity?: Prisma.StringNullableWithAggregatesFilter<"Object"> | string | null
-  country?: Prisma.StringNullableWithAggregatesFilter<"Object"> | string | null
   heightCm?: Prisma.DecimalNullableWithAggregatesFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableWithAggregatesFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableWithAggregatesFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -417,12 +405,11 @@ export type ObjectCreateInput = {
   id?: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -440,12 +427,11 @@ export type ObjectUncheckedCreateInput = {
   ownerId: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -461,12 +447,11 @@ export type ObjectUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -484,12 +469,11 @@ export type ObjectUncheckedUpdateInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -506,12 +490,11 @@ export type ObjectCreateManyInput = {
   ownerId: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -524,12 +507,11 @@ export type ObjectUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -543,12 +525,11 @@ export type ObjectUncheckedUpdateManyInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -573,11 +554,10 @@ export type ObjectCountOrderByAggregateInput = {
   category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  mainImage?: Prisma.SortOrder
   era?: Prisma.SortOrder
   condition?: Prisma.SortOrder
   originality?: Prisma.SortOrder
-  authenticity?: Prisma.SortOrder
-  country?: Prisma.SortOrder
   heightCm?: Prisma.SortOrder
   widthCm?: Prisma.SortOrder
   depthCm?: Prisma.SortOrder
@@ -598,11 +578,10 @@ export type ObjectMaxOrderByAggregateInput = {
   category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  mainImage?: Prisma.SortOrder
   era?: Prisma.SortOrder
   condition?: Prisma.SortOrder
   originality?: Prisma.SortOrder
-  authenticity?: Prisma.SortOrder
-  country?: Prisma.SortOrder
   heightCm?: Prisma.SortOrder
   widthCm?: Prisma.SortOrder
   depthCm?: Prisma.SortOrder
@@ -617,11 +596,10 @@ export type ObjectMinOrderByAggregateInput = {
   category?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  mainImage?: Prisma.SortOrder
   era?: Prisma.SortOrder
   condition?: Prisma.SortOrder
   originality?: Prisma.SortOrder
-  authenticity?: Prisma.SortOrder
-  country?: Prisma.SortOrder
   heightCm?: Prisma.SortOrder
   widthCm?: Prisma.SortOrder
   depthCm?: Prisma.SortOrder
@@ -745,12 +723,11 @@ export type ObjectCreateWithoutOwnerInput = {
   id?: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -766,12 +743,11 @@ export type ObjectUncheckedCreateWithoutOwnerInput = {
   id?: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -817,12 +793,11 @@ export type ObjectScalarWhereInput = {
   ownerId?: Prisma.StringFilter<"Object"> | string
   category?: Prisma.EnumCategoryFilter<"Object"> | $Enums.Category
   title?: Prisma.StringFilter<"Object"> | string
-  description?: Prisma.StringFilter<"Object"> | string
+  description?: Prisma.StringNullableFilter<"Object"> | string | null
+  mainImage?: Prisma.StringFilter<"Object"> | string
   era?: Prisma.StringNullableFilter<"Object"> | string | null
   condition?: Prisma.StringNullableFilter<"Object"> | string | null
   originality?: Prisma.StringNullableFilter<"Object"> | string | null
-  authenticity?: Prisma.StringNullableFilter<"Object"> | string | null
-  country?: Prisma.StringNullableFilter<"Object"> | string | null
   heightCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -835,12 +810,11 @@ export type ObjectCreateWithoutImagesInput = {
   id?: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -857,12 +831,11 @@ export type ObjectUncheckedCreateWithoutImagesInput = {
   ownerId: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -893,12 +866,11 @@ export type ObjectUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -915,12 +887,11 @@ export type ObjectUncheckedUpdateWithoutImagesInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -935,12 +906,11 @@ export type ObjectCreateWithoutAuctionsInput = {
   id?: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -957,12 +927,11 @@ export type ObjectUncheckedCreateWithoutAuctionsInput = {
   ownerId: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -993,12 +962,11 @@ export type ObjectUpdateWithoutAuctionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1015,12 +983,11 @@ export type ObjectUncheckedUpdateWithoutAuctionsInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1035,12 +1002,11 @@ export type ObjectCreateWithoutFavoritesInput = {
   id?: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1057,12 +1023,11 @@ export type ObjectUncheckedCreateWithoutFavoritesInput = {
   ownerId: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1093,12 +1058,11 @@ export type ObjectUpdateWithoutFavoritesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1115,12 +1079,11 @@ export type ObjectUncheckedUpdateWithoutFavoritesInput = {
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1135,12 +1098,11 @@ export type ObjectCreateManyOwnerInput = {
   id?: string
   category: $Enums.Category
   title: string
-  description: string
+  description?: string | null
+  mainImage: string
   era?: string | null
   condition?: string | null
   originality?: string | null
-  authenticity?: string | null
-  country?: string | null
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1153,12 +1115,11 @@ export type ObjectUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1174,12 +1135,11 @@ export type ObjectUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1195,12 +1155,11 @@ export type ObjectUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.EnumCategoryFieldUpdateOperationsInput | $Enums.Category
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mainImage?: Prisma.StringFieldUpdateOperationsInput | string
   era?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originality?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  authenticity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1264,11 +1223,10 @@ export type ObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   category?: boolean
   title?: boolean
   description?: boolean
+  mainImage?: boolean
   era?: boolean
   condition?: boolean
   originality?: boolean
-  authenticity?: boolean
-  country?: boolean
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
@@ -1288,11 +1246,10 @@ export type ObjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   category?: boolean
   title?: boolean
   description?: boolean
+  mainImage?: boolean
   era?: boolean
   condition?: boolean
   originality?: boolean
-  authenticity?: boolean
-  country?: boolean
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
@@ -1308,11 +1265,10 @@ export type ObjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   category?: boolean
   title?: boolean
   description?: boolean
+  mainImage?: boolean
   era?: boolean
   condition?: boolean
   originality?: boolean
-  authenticity?: boolean
-  country?: boolean
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
@@ -1328,11 +1284,10 @@ export type ObjectSelectScalar = {
   category?: boolean
   title?: boolean
   description?: boolean
+  mainImage?: boolean
   era?: boolean
   condition?: boolean
   originality?: boolean
-  authenticity?: boolean
-  country?: boolean
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
@@ -1341,7 +1296,7 @@ export type ObjectSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "category" | "title" | "description" | "era" | "condition" | "originality" | "authenticity" | "country" | "heightCm" | "widthCm" | "depthCm" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["object"]>
+export type ObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "category" | "title" | "description" | "mainImage" | "era" | "condition" | "originality" | "heightCm" | "widthCm" | "depthCm" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["object"]>
 export type ObjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Object$imagesArgs<ExtArgs>
@@ -1369,12 +1324,11 @@ export type $ObjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     ownerId: string
     category: $Enums.Category
     title: string
-    description: string
+    description: string | null
+    mainImage: string
     era: string | null
     condition: string | null
     originality: string | null
-    authenticity: string | null
-    country: string | null
     heightCm: runtime.Decimal | null
     widthCm: runtime.Decimal | null
     depthCm: runtime.Decimal | null
@@ -1813,11 +1767,10 @@ export interface ObjectFieldRefs {
   readonly category: Prisma.FieldRef<"Object", 'Category'>
   readonly title: Prisma.FieldRef<"Object", 'String'>
   readonly description: Prisma.FieldRef<"Object", 'String'>
+  readonly mainImage: Prisma.FieldRef<"Object", 'String'>
   readonly era: Prisma.FieldRef<"Object", 'String'>
   readonly condition: Prisma.FieldRef<"Object", 'String'>
   readonly originality: Prisma.FieldRef<"Object", 'String'>
-  readonly authenticity: Prisma.FieldRef<"Object", 'String'>
-  readonly country: Prisma.FieldRef<"Object", 'String'>
   readonly heightCm: Prisma.FieldRef<"Object", 'Decimal'>
   readonly widthCm: Prisma.FieldRef<"Object", 'Decimal'>
   readonly depthCm: Prisma.FieldRef<"Object", 'Decimal'>

@@ -1,8 +1,17 @@
 # Auctions Module — Design (2026-07-08)
 
 The `auctions` module for GalleryQ. An **Auction** is a timed review-gated event on an
-**AVAILABLE** `Object`. Scope for this iteration: **create → admin review → public browse**.
+`Object`. Scope for this iteration: **create → admin review → public browse**.
 Bidding, closing/settlement, and the scheduler are separate later modules.
+
+> **Revision (2026-07-08, after Figma review):** the flow was unified to match the mobile
+> create-auction wizard. `POST /auctions` now creates the **Object + Auction together in one
+> request** (Category → Images → Details → Set Value → Duration → Review); the standalone
+> `objects` module was **removed**. `Save as Draft` is supported (`DRAFT` → `submit` →
+> `PENDING_REVIEW`, plus `DELETE` for drafts). `durationDays` presets are **1/3/7/10**.
+> Set Value collects only `startingPrice` + `minBidIncrement` (no `reservePrice` input, no
+> second-chance field). `Object.description` is now nullable. Everything below describing a
+> separate `objectId`-based create / preset 3/5/7/10 is superseded by this note.
 
 ## Decisions (agreed in brainstorming)
 

@@ -7,7 +7,6 @@ import { MailModule } from './modules/mail/mail.module';
 import { UploadsModule } from './modules/uploads/uploads.module';
 import { WhatsappModule } from './modules/whatsapp/whatsapp.module';
 import { SellerVerificationModule } from './modules/seller-verification/seller-verification.module';
-import { ObjectsModule } from './modules/objects/objects.module';
 import { AuctionsModule } from './modules/auctions/auctions.module';
 
 @Module({
@@ -20,7 +19,6 @@ import { AuctionsModule } from './modules/auctions/auctions.module';
     CategoriesModule,
     UploadsModule,
     SellerVerificationModule,
-    ObjectsModule,
     AuctionsModule,
   ],
 })

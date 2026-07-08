@@ -36,6 +36,13 @@ const PUBLIC_STATUSES: AuctionStatus[] = [
   AuctionStatus.UNSOLD,
 ];
 
+// الحالات التي يجوز فيها التعديل (قبل الإطلاق)
+const EDITABLE_STATUSES: AuctionStatus[] = [
+  AuctionStatus.DRAFT,
+  AuctionStatus.PENDING_REVIEW,
+  AuctionStatus.REJECTED,
+];
+
 @Injectable()
 export class AuctionsService {
   constructor(
@@ -45,37 +52,43 @@ export class AuctionsService {
 
   // ======================= Seller =======================
 
-  // إنشاء مزاد من قطعة AVAILABLE يملكها البائع → PENDING_REVIEW
+  // إنشاء المزاد بالكامل: القطعة (Object) + المزاد (Auction) في transaction واحد
   async create(sellerId: string, dto: CreateAuctionDTO) {
-    const object = await this.prisma.object.findUnique({
-      where: { id: dto.objectId },
-    });
-    if (!object) throw new NotFoundException('Object not found');
-    if (object.ownerId !== sellerId) {
-      throw new ForbiddenException('Not the object owner');
-    }
-    if (object.status !== ObjectStatus.AVAILABLE) {
-      throw new BadRequestException('Object is not available for auction');
-    }
+    const {
+      images,
+      startingPrice,
+      minBidIncrement,
+      durationDays,
+      saveAsDraft,
+      ...objectScalars
+    } = dto;
+
+    const auctionStatus = saveAsDraft
+      ? AuctionStatus.DRAFT
+      : AuctionStatus.PENDING_REVIEW;
+    const objectStatus = saveAsDraft
+      ? ObjectStatus.DRAFT
+      : ObjectStatus.IN_AUCTION;
 
     return this.prisma.$transaction(async (tx) => {
-      // حجز القطعة ذرّياً (يمنع إنشاء مزادين لنفس القطعة في آنٍ واحد)
-      const claimed = await tx.object.updateMany({
-        where: { id: object.id, status: ObjectStatus.AVAILABLE },
-        data: { status: ObjectStatus.IN_AUCTION },
+      const object = await tx.object.create({
+        data: {
+          ...objectScalars,
+          ownerId: sellerId,
+          status: objectStatus,
+          images: images?.length
+            ? { create: images.map((url, position) => ({ url, position })) }
+            : undefined,
+        },
       });
-      if (claimed.count === 0) {
-        throw new BadRequestException('Object is not available for auction');
-      }
 
       return tx.auction.create({
         data: {
           objectId: object.id,
-          startingPrice: dto.startingPrice,
-          reservePrice: dto.reservePrice,
-          minBidIncrement: dto.minBidIncrement, // undefined → القيمة الافتراضية 50
-          durationDays: dto.durationDays,
-          status: AuctionStatus.PENDING_REVIEW,
+          startingPrice,
+          minBidIncrement, // undefined → القيمة الافتراضية 50
+          durationDays,
+          status: auctionStatus,
         },
         include: OBJECT_INCLUDE,
       });
@@ -91,7 +104,7 @@ export class AuctionsService {
     });
   }
 
-  // تعديل التسعير/المدّة قبل الإطلاق (PENDING_REVIEW أو REJECTED فقط)
+  // تعديل بيانات القطعة + المزاد قبل الإطلاق (DRAFT/PENDING_REVIEW/REJECTED)
   async update(id: string, user: SafeUser, dto: UpdateAuctionDTO) {
     const auction = await this.prisma.auction.findUnique({
       where: { id },
@@ -99,45 +112,91 @@ export class AuctionsService {
     });
     if (!auction) throw new NotFoundException('Auction not found');
     this.assertOwnerOrAdmin(auction.object.ownerId, user);
-
-    if (
-      auction.status !== AuctionStatus.PENDING_REVIEW &&
-      auction.status !== AuctionStatus.REJECTED
-    ) {
-      throw new BadRequestException(
-        'Only pending or rejected auctions can be edited',
-      );
+    if (!EDITABLE_STATUSES.includes(auction.status)) {
+      throw new BadRequestException('This auction can no longer be edited');
     }
 
-    // فحص reserve >= starting على القيم المدمجة (الحالية + التعديل)
-    const startingPrice = dto.startingPrice ?? Number(auction.startingPrice);
-    const reserve =
-      dto.reservePrice === undefined
-        ? auction.reservePrice === null
-          ? null
-          : Number(auction.reservePrice)
-        : dto.reservePrice;
-    if (reserve !== null && reserve < startingPrice) {
-      throw new BadRequestException('reservePrice must be >= startingPrice');
-    }
+    const { images, startingPrice, minBidIncrement, durationDays, ...objectScalars } =
+      dto;
 
-    return this.prisma.auction.update({
-      where: { id },
-      data: {
-        startingPrice: dto.startingPrice,
-        reservePrice: dto.reservePrice, // null = مسح، undefined = إبقاء
-        minBidIncrement: dto.minBidIncrement,
-        durationDays: dto.durationDays,
-        // fix-and-resubmit: المرفوض يعود PENDING_REVIEW مع مسح بيانات المراجعة
-        ...(auction.status === AuctionStatus.REJECTED && {
-          status: AuctionStatus.PENDING_REVIEW,
-          rejectionReason: null,
-          reviewedById: null,
-          reviewedAt: null,
-        }),
-      },
-      include: OBJECT_INCLUDE,
+    return this.prisma.$transaction(async (tx) => {
+      // حقول القطعة (تفاصيل/تصنيف/صور)
+      if (Object.keys(objectScalars).length > 0 || images !== undefined) {
+        await tx.object.update({
+          where: { id: auction.objectId },
+          data: {
+            ...objectScalars,
+            ...(images !== undefined && {
+              images: {
+                deleteMany: {},
+                create: images.map((url, position) => ({ url, position })),
+              },
+            }),
+          },
+        });
+      }
+
+      // حقول المزاد + إعادة المرفوض للمراجعة (fix-and-resubmit)
+      return tx.auction.update({
+        where: { id },
+        data: {
+          startingPrice,
+          minBidIncrement,
+          durationDays,
+          ...(auction.status === AuctionStatus.REJECTED && {
+            status: AuctionStatus.PENDING_REVIEW,
+            rejectionReason: null,
+            reviewedById: null,
+            reviewedAt: null,
+          }),
+        },
+        include: OBJECT_INCLUDE,
+      });
     });
+  }
+
+  // إرسال المسودّة للمراجعة: DRAFT → PENDING_REVIEW (Object → IN_AUCTION)
+  async submit(id: string, user: SafeUser) {
+    const auction = await this.prisma.auction.findUnique({
+      where: { id },
+      include: { object: true },
+    });
+    if (!auction) throw new NotFoundException('Auction not found');
+    this.assertOwnerOrAdmin(auction.object.ownerId, user);
+    if (auction.status !== AuctionStatus.DRAFT) {
+      throw new BadRequestException('Only draft auctions can be submitted');
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      await tx.object.update({
+        where: { id: auction.objectId },
+        data: { status: ObjectStatus.IN_AUCTION },
+      });
+      return tx.auction.update({
+        where: { id },
+        data: { status: AuctionStatus.PENDING_REVIEW },
+        include: OBJECT_INCLUDE,
+      });
+    });
+  }
+
+  // حذف مسودّة (يمسح القطعة وصورها معها) — DRAFT فقط
+  async remove(id: string, user: SafeUser) {
+    const auction = await this.prisma.auction.findUnique({
+      where: { id },
+      include: { object: true },
+    });
+    if (!auction) throw new NotFoundException('Auction not found');
+    this.assertOwnerOrAdmin(auction.object.ownerId, user);
+    if (auction.status !== AuctionStatus.DRAFT) {
+      throw new BadRequestException('Only draft auctions can be deleted');
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.auction.delete({ where: { id } });
+      await tx.object.delete({ where: { id: auction.objectId } });
+    });
+    return { message: 'Draft auction deleted successfully.' };
   }
 
   // إلغاء المزاد → CANCELLED وإرجاع القطعة AVAILABLE
@@ -152,7 +211,7 @@ export class AuctionsService {
     const isOwner = auction.object.ownerId === user.id;
     if (!isAdmin && !isOwner) throw new ForbiddenException();
 
-    // البائع: PENDING/REJECTED فقط. الأدمن: أي مزاد غير منتهٍ نهائياً.
+    // البائع: PENDING/REJECTED فقط (المسودّة تُحذف). الأدمن: أي مزاد غير منتهٍ نهائياً.
     const cancellable = isAdmin
       ? auction.status !== AuctionStatus.CANCELLED &&
         auction.status !== AuctionStatus.SOLD
@@ -168,9 +227,11 @@ export class AuctionsService {
         data: { status: AuctionStatus.CANCELLED },
         include: OBJECT_INCLUDE,
       });
-      // تحرير القطعة إن كانت مرتبطة بهذا المزاد
       await tx.object.updateMany({
-        where: { id: auction.objectId, status: ObjectStatus.IN_AUCTION },
+        where: {
+          id: auction.objectId,
+          status: { in: [ObjectStatus.IN_AUCTION, ObjectStatus.DRAFT] },
+        },
         data: { status: ObjectStatus.AVAILABLE },
       });
       return cancelled;
@@ -187,9 +248,7 @@ export class AuctionsService {
 
     const objectFilter: Prisma.ObjectWhereInput = {};
     if (query.category) objectFilter.category = query.category;
-    if (query.q) {
-      objectFilter.title = { contains: query.q, mode: 'insensitive' };
-    }
+    if (query.q) objectFilter.title = { contains: query.q, mode: 'insensitive' };
 
     const where: Prisma.AuctionWhereInput = {
       status: AuctionStatus.LIVE,
@@ -267,7 +326,6 @@ export class AuctionsService {
       include: OBJECT_INCLUDE,
     });
 
-    // إشعار البائع (لا يُفشل الطلب إن غاب مفتاح البريد)
     await this.mail.sendAuctionApproved(
       auction.object.owner.email,
       auction.object.owner.fullName,

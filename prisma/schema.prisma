@@ -267,18 +267,17 @@ model Object {
   category Category
 
   title       String
-  description String
-  images      ObjectImage[]
+  description String? // اختياري — قد لا تُجمَع في خطوة Details
+  mainImage   String // الصورة الرئيسية (الغلاف) — تظهر بالواجهة (صورة واحدة)
+  images      ObjectImage[] // صور إضافية توضح المنتج (حتى 10)
 
   // تفاصيل القطعة (من Create › Details + Product)
-  era          String? // مثل 18th Century
-  condition    String?
-  originality  String?
-  authenticity String?
-  country      String?
-  heightCm     Decimal? @db.Decimal(8, 2)
-  widthCm      Decimal? @db.Decimal(8, 2)
-  depthCm      Decimal? @db.Decimal(8, 2)
+  era         String? // مثل 18th Century
+  condition   String?
+  originality String?
+  heightCm    Decimal? @db.Decimal(8, 2)
+  widthCm     Decimal? @db.Decimal(8, 2)
+  depthCm     Decimal? @db.Decimal(8, 2)
 
   status ObjectStatus @default(DRAFT)
 

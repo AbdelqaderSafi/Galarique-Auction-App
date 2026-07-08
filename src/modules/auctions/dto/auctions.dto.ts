@@ -6,61 +6,114 @@ import type {
   ObjectImage,
 } from 'generated/prisma/client';
 
+// إنشاء المزاد بالكامل — كل خطوات الـ wizard (Category → Images → Details → Set Value → Duration → Review)
 export class CreateAuctionDTO {
-  @ApiProperty({
-    format: 'uuid',
-    description: 'Id of an AVAILABLE object the seller owns',
-    example: '3f1c2b7e-0a1d-4c9a-9f2e-8b7a6c5d4e3f',
-  })
-  objectId!: string;
+  // 1. Category
+  @ApiProperty({ enum: Category, example: Category.ART })
+  category!: Category;
 
-  @ApiProperty({ example: 1000, description: 'Opening price (USD)' })
+  // 2. Images (ارفعها عبر /uploads أولاً)
+  @ApiProperty({
+    description: 'Main/cover image URL shown in the UI',
+    example: 'https://ik.imagekit.io/demo/cover.jpg',
+  })
+  mainImage!: string;
+
+  @ApiPropertyOptional({
+    type: [String],
+    description: 'Additional product image URLs (up to 10)',
+    example: ['https://ik.imagekit.io/demo/1.jpg'],
+  })
+  images?: string[];
+
+  // 3. Details
+  @ApiProperty({ example: 'Still Life with Flowers' })
+  title!: string;
+
+  @ApiPropertyOptional({ example: 'A rare 17th century oil painting.' })
+  description?: string;
+
+  @ApiPropertyOptional({ example: '18th Century' })
+  era?: string;
+
+  @ApiPropertyOptional({ example: 'Excellent' })
+  condition?: string;
+
+  @ApiPropertyOptional({ example: 'Original' })
+  originality?: string;
+
+  @ApiPropertyOptional({ example: 120.5 })
+  heightCm?: number;
+
+  @ApiPropertyOptional({ example: 80 })
+  widthCm?: number;
+
+  @ApiPropertyOptional({ example: 3 })
+  depthCm?: number;
+
+  // 4. Set Value
+  @ApiProperty({ example: 1000, description: 'Starting price / min to sell (USD)' })
   startingPrice!: number;
 
-  @ApiPropertyOptional({
-    example: 1500,
-    description: 'Reserve price (>= startingPrice); hidden from buyers',
-  })
-  reservePrice?: number;
-
-  @ApiPropertyOptional({
-    example: 50,
-    default: 50,
-    description: 'Minimum bid increment (USD)',
-  })
+  @ApiPropertyOptional({ example: 50, default: 50, description: 'Fixed bid increment (USD)' })
   minBidIncrement?: number;
 
-  @ApiProperty({
-    enum: [3, 5, 7, 10],
-    example: 7,
-    description: 'Auction duration in days (starts on admin approval)',
-  })
+  // 5. Duration
+  @ApiProperty({ enum: [1, 3, 7, 10], example: 7, description: 'Auction duration in days' })
   durationDays!: number;
+
+  // 6. Review — Save as Draft (true) or submit for review (false/omitted)
+  @ApiPropertyOptional({ default: false, description: 'Save as draft instead of submitting' })
+  saveAsDraft?: boolean;
 }
 
+// تعديل قبل الإطلاق — كل الحقول اختيارية (بدون saveAsDraft)
 export class UpdateAuctionDTO {
-  @ApiPropertyOptional({ example: 1000 })
+  @ApiPropertyOptional({ enum: Category })
+  category?: Category;
+
+  @ApiPropertyOptional({ description: 'Replaces the main/cover image' })
+  mainImage?: string;
+
+  @ApiPropertyOptional({ type: [String], description: 'Replaces the additional images (up to 10)' })
+  images?: string[];
+
+  @ApiPropertyOptional()
+  title?: string;
+
+  @ApiPropertyOptional({ nullable: true })
+  description?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  era?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  condition?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  originality?: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  heightCm?: number | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  widthCm?: number | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  depthCm?: number | null;
+
+  @ApiPropertyOptional()
   startingPrice?: number;
 
-  @ApiPropertyOptional({
-    example: 1500,
-    nullable: true,
-    description: 'Send null to clear the reserve price',
-  })
-  reservePrice?: number | null;
-
-  @ApiPropertyOptional({ example: 50 })
+  @ApiPropertyOptional()
   minBidIncrement?: number;
 
-  @ApiPropertyOptional({ enum: [3, 5, 7, 10], example: 5 })
+  @ApiPropertyOptional({ enum: [1, 3, 7, 10] })
   durationDays?: number;
 }
 
 export class RejectAuctionDTO {
-  @ApiProperty({
-    example: 'Images are too low quality to authenticate the item.',
-    description: 'Reason shown to the seller',
-  })
+  @ApiProperty({ example: 'Images are too low quality to authenticate the item.' })
   reason!: string;
 }
 

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -35,6 +36,8 @@ import {
   ApiCreateAuction,
   ApiListMyAuctions,
   ApiUpdateAuction,
+  ApiSubmitAuction,
+  ApiDeleteAuction,
   ApiCancelAuction,
   ApiBrowseAuctions,
   ApiGetAuction,
@@ -48,7 +51,7 @@ import {
 export class AuctionsController {
   constructor(private readonly auctionsService: AuctionsService) {}
 
-  // ---- Public browse (before :id so /admin isn't captured as an id) ----
+  // ---- Public browse (before :id so /admin & /mine aren't captured as ids) ----
 
   @Get()
   @IsPublic(true)
@@ -122,6 +125,27 @@ export class AuctionsController {
     @Body(new ZodValidationPipe(updateAuctionSchema)) dto: UpdateAuctionDTO,
   ): Promise<AuctionResponseDTO> {
     return this.auctionsService.update(id, req.user!, dto);
+  }
+
+  @Post(':id/submit')
+  @HttpCode(200)
+  @Roles([Role.SELLER, Role.ADMIN])
+  @ApiSubmitAuction()
+  submit(
+    @Req() req: Request,
+    @Param('id') id: string,
+  ): Promise<AuctionResponseDTO> {
+    return this.auctionsService.submit(id, req.user!);
+  }
+
+  @Delete(':id')
+  @Roles([Role.SELLER, Role.ADMIN])
+  @ApiDeleteAuction()
+  remove(
+    @Req() req: Request,
+    @Param('id') id: string,
+  ): Promise<{ message: string }> {
+    return this.auctionsService.remove(id, req.user!);
   }
 
   @Post(':id/cancel')

@@ -24,13 +24,15 @@ export const ApiCreateAuction = () =>
   applyDecorators(
     ApiBearerAuth('access-token'),
     ApiOperation({
-      summary: 'Create an auction from an AVAILABLE object (seller only)',
+      summary:
+        'Create an auction (object + auction) via the wizard, seller only',
     }),
     ApiBody({ type: CreateAuctionDTO }),
-    ApiCreatedResponse({ description: 'Auction created (status PENDING_REVIEW)' }),
-    ApiBadRequestResponse({ description: 'Object not available / invalid input' }),
-    ApiNotFoundResponse({ description: 'Object not found' }),
-    ApiForbiddenResponse({ description: 'Not the owner / seller role required' }),
+    ApiCreatedResponse({
+      description: 'Created (DRAFT if saveAsDraft, else PENDING_REVIEW)',
+    }),
+    ApiBadRequestResponse({ description: 'Invalid input' }),
+    ApiForbiddenResponse({ description: 'Seller role required' }),
   );
 
 export const ApiListMyAuctions = () =>
@@ -44,12 +46,33 @@ export const ApiUpdateAuction = () =>
   applyDecorators(
     ApiBearerAuth('access-token'),
     ApiOperation({
-      summary: 'Edit an auction before it goes live (pending/rejected only)',
+      summary:
+        'Edit object + auction fields before launch (draft/pending/rejected)',
     }),
     ApiParam({ name: 'id', description: 'Auction id' }),
     ApiBody({ type: UpdateAuctionDTO }),
     ApiOkResponse({ description: 'Updated auction (rejected → back to pending)' }),
     ApiBadRequestResponse({ description: 'Not editable in its current status' }),
+    ApiForbiddenResponse({ description: 'Not the owner' }),
+  );
+
+export const ApiSubmitAuction = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({ summary: 'Submit a draft for admin review (DRAFT → PENDING_REVIEW)' }),
+    ApiParam({ name: 'id', description: 'Auction id' }),
+    ApiOkResponse({ description: 'Auction is now PENDING_REVIEW' }),
+    ApiBadRequestResponse({ description: 'Auction is not a draft' }),
+    ApiForbiddenResponse({ description: 'Not the owner' }),
+  );
+
+export const ApiDeleteAuction = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({ summary: 'Delete a draft auction (also deletes its object)' }),
+    ApiParam({ name: 'id', description: 'Auction id' }),
+    ApiOkResponse({ description: 'Draft deleted' }),
+    ApiBadRequestResponse({ description: 'Only draft auctions can be deleted' }),
     ApiForbiddenResponse({ description: 'Not the owner' }),
   );
 

@@ -19,6 +19,10 @@ export interface EnvVariables {
   IMAGEKIT_PRIVATE_KEY: string;
   IMAGEKIT_URL_ENDPOINT: string;
 
+  // المدفوعات (Stripe) — شحن المحفظة (Checkout + webhook) والسحب (Connect)
+  STRIPE_SECRET_KEY: string;
+  STRIPE_WEBHOOK_SECRET: string;
+
   // واتساب (Baileys) — مجلد جلسة الاتصال (اختياري، الافتراضي ./wa-auth)
   WHATSAPP_AUTH_DIR?: string;
   // رقم واتساب البوت (دولي بدون +) — لتفعيل الربط بكود اقتران بدل QR

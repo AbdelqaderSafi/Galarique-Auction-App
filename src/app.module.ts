@@ -8,6 +8,7 @@ import { UploadsModule } from './modules/uploads/uploads.module';
 import { WhatsappModule } from './modules/whatsapp/whatsapp.module';
 import { SellerVerificationModule } from './modules/seller-verification/seller-verification.module';
 import { AuctionsModule } from './modules/auctions/auctions.module';
+import { WalletModule } from './modules/wallet/wallet.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuctionsModule } from './modules/auctions/auctions.module';
     UploadsModule,
     SellerVerificationModule,
     AuctionsModule,
+    WalletModule,
   ],
 })
 export class AppModule {}

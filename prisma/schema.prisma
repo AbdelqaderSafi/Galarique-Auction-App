@@ -222,6 +222,9 @@ model WalletTransaction {
   refId    String? // مرجع (auctionId / orderId)
   note     String?
 
+  // معرّف حدث Stripe — فريد لمنع شحن نفس الحدث مرتين (idempotency للـ webhook)
+  stripeEventId String? @unique
+
   createdAt DateTime @default(now())
 
   @@index([walletId, createdAt])

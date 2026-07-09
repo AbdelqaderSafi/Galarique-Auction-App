@@ -1882,6 +1882,7 @@ export const WalletTransactionScalarFieldEnum = {
   amount: 'amount',
   refId: 'refId',
   note: 'note',
+  stripeEventId: 'stripeEventId',
   createdAt: 'createdAt'
 } as const
 

@@ -5,6 +5,7 @@ import {
   ApiOkResponse,
   ApiCreatedResponse,
   ApiBadRequestResponse,
+  ApiNotFoundResponse,
   ApiUnauthorizedResponse,
   ApiServiceUnavailableResponse,
   ApiBearerAuth,
@@ -47,6 +48,20 @@ export const ApiTopUp = () =>
     ApiBadRequestResponse({ description: 'amount must be a positive number' }),
     ApiUnauthorizedResponse({ description: 'Login required' }),
     ApiServiceUnavailableResponse({ description: 'Stripe is not configured' }),
+  );
+
+export const ApiTopUpStatus = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({
+      summary:
+        'Check a top-up session status after returning from Checkout (paid + credited)',
+    }),
+    ApiQuery({ name: 'session_id', required: true }),
+    ApiOkResponse({ description: '{ paid, credited, amount }' }),
+    ApiBadRequestResponse({ description: 'session_id is required' }),
+    ApiNotFoundResponse({ description: 'Session not found / not yours' }),
+    ApiUnauthorizedResponse({ description: 'Login required' }),
   );
 
 export const ApiStripeWebhook = () =>

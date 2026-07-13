@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import Stripe from 'stripe';
 import {
@@ -18,6 +19,7 @@ import type {
   CheckoutResponse,
   ConnectLinkResponse,
   ConnectStatusResponse,
+  TopUpStatusResponse,
   TransactionsResponse,
   WalletResponse,
   WalletTransactionResponse,
@@ -85,6 +87,40 @@ export class WalletService {
       );
     }
     return { checkoutUrl: session.url };
+  }
+
+  // للعميل بعد الرجوع من صفحة الدفع: هل الجلسة مدفوعة؟ وهل اتشحنت بالمحفظة؟
+  // (المصدر الرسمي للشحن هو الـ webhook؛ هذا للتأكيد من جهة الموبايل فقط)
+  async getTopUpStatus(
+    userId: string,
+    sessionId: string,
+  ): Promise<TopUpStatusResponse> {
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await this.stripe.retrieveCheckoutSession(sessionId);
+    } catch {
+      throw new NotFoundException('Checkout session not found.');
+    }
+
+    // الجلسة لازم تخص نفس المستخدم — لا نكشف حالة جلسات الآخرين
+    if (session.metadata?.userId !== userId) {
+      throw new NotFoundException('Checkout session not found.');
+    }
+
+    const paid = session.payment_status === 'paid';
+
+    // اتشحنت فعلاً؟ = عندنا حركة TOPUP مرجعها هذه الجلسة (الـ webhook عالجها)
+    const txn = await this.prisma.walletTransaction.findFirst({
+      where: { refId: session.id, type: WalletTxnType.TOPUP },
+    });
+
+    const amount =
+      txn?.amount.toFixed(2) ??
+      (session.amount_total != null
+        ? new Prisma.Decimal(session.amount_total).div(100).toFixed(2)
+        : null);
+
+    return { paid, credited: !!txn, amount };
   }
 
   // يتحقّق من التوقيع ثم يعالج الحدث — التأكيد يعتمد على الـ webhook لا على العميل

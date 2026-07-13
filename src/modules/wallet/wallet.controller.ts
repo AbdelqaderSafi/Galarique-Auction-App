@@ -20,6 +20,7 @@ import type {
   CheckoutResponse,
   ConnectLinkResponse,
   ConnectStatusResponse,
+  TopUpStatusResponse,
   TransactionsResponse,
   WalletResponse,
   WebhookResponse,
@@ -31,6 +32,7 @@ import {
   ApiGetWallet,
   ApiGetTransactions,
   ApiTopUp,
+  ApiTopUpStatus,
   ApiStripeWebhook,
   ApiConnectOnboard,
   ApiConnectStatus,
@@ -70,6 +72,19 @@ export class WalletController {
     @Body() dto: TopUpDto,
   ): Promise<CheckoutResponse> {
     return this.walletService.createTopUp(req.user!.id, dto.amount);
+  }
+
+  // للموبايل بعد الرجوع من صفحة الدفع — يتحقّق من حالة الجلسة (paid/credited)
+  @Get('topup/status')
+  @ApiTopUpStatus()
+  topupStatus(
+    @Req() req: Request,
+    @Query('session_id') sessionId?: string,
+  ): Promise<TopUpStatusResponse> {
+    if (!sessionId) {
+      throw new BadRequestException('session_id query param is required.');
+    }
+    return this.walletService.getTopUpStatus(req.user!.id, sessionId);
   }
 
   // عام — Stripe ينادينا بدون JWT؛ الأمان عبر توقيع Stripe والـ raw body

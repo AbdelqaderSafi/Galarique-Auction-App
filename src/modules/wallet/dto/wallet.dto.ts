@@ -46,6 +46,12 @@ export type TransactionsResponse = {
 
 export type CheckoutResponse = { checkoutUrl: string };
 
+export type TopUpStatusResponse = {
+  paid: boolean; // الدفع تمّ فعلاً عند Stripe
+  credited: boolean; // اتشحن بالمحفظة (الـ webhook عالج الحدث)
+  amount: string | null; // المبلغ بالدولار (إن توفّر)
+};
+
 export type ConnectLinkResponse = { url: string };
 
 export type ConnectStatusResponse = {

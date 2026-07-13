@@ -40,6 +40,14 @@ export class StripeService {
     });
   }
 
+  // جلب جلسة Checkout بالـ id — للتحقق من حالة الدفع من جهة العميل
+  async retrieveCheckoutSession(
+    sessionId: string,
+  ): Promise<Stripe.Checkout.Session> {
+    const stripe = this.getClient();
+    return stripe.checkout.sessions.retrieve(sessionId);
+  }
+
   // التحقق من توقيع الـ webhook باستخدام STRIPE_WEBHOOK_SECRET
   constructEvent(payload: Buffer, signature: string): Stripe.Event {
     const stripe = this.getClient();

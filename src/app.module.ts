@@ -9,6 +9,7 @@ import { WhatsappModule } from './modules/whatsapp/whatsapp.module';
 import { SellerVerificationModule } from './modules/seller-verification/seller-verification.module';
 import { AuctionsModule } from './modules/auctions/auctions.module';
 import { WalletModule } from './modules/wallet/wallet.module';
+import { BidsModule } from './modules/bids/bids.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
     SellerVerificationModule,
     AuctionsModule,
     WalletModule,
+    BidsModule,
   ],
 })
 export class AppModule {}

@@ -79,6 +79,24 @@ export class MailService {
     await this.send({ to, subject, html, text });
   }
 
+  async sendOutbid(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+    newPrice: string,
+  ): Promise<void> {
+    const subject = `You've been outbid on ${auctionTitle}`;
+    const html = this.buildOutbidHtml(fullName, auctionTitle, newPrice);
+    const text =
+      `Hi ${fullName},\n\n` +
+      `Someone placed a higher bid on "${auctionTitle}".\n` +
+      `The current bid is now $${newPrice}.\n\n` +
+      `Place a higher bid in the app to take the lead again.\n\n` +
+      `Bid Smart. Win Big.`;
+
+    await this.send({ to, subject, html, text });
+  }
+
   private async send(options: {
     to: string;
     subject: string;
@@ -201,6 +219,25 @@ export class MailService {
     </p>
     <p style="font-size: 13px; color: #6b7280;">
       You can edit the auction in the app and resubmit it for review.
+    </p>
+  </div>`;
+  }
+
+  private buildOutbidHtml(
+    fullName: string,
+    auctionTitle: string,
+    newPrice: string,
+  ): string {
+    return `
+  <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
+    <h2 style="margin: 0 0 16px;">Bid Smart. Win Big.</h2>
+    <p>Hi ${fullName},</p>
+    <p>You've been outbid on <strong>${auctionTitle}</strong>.</p>
+    <p style="background: #fff7ed; border-radius: 8px; padding: 12px 16px; color: #9a3412;">
+      The current bid is now <strong>$${newPrice}</strong>.
+    </p>
+    <p style="font-size: 13px; color: #6b7280;">
+      Place a higher bid in the app to take the lead again.
     </p>
   </div>`;
   }

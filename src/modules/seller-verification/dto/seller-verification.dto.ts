@@ -13,4 +13,5 @@ export class VerifyPhoneDTO {
   code!: string;
 }
 
-export type SellerMessageResponseDTO = { message: string };
+// code يُرجَّع فقط في وضع المحاكاة (SELLER_OTP_SIMULATE=true) ليعرضه التطبيق
+export type SellerMessageResponseDTO = { message: string; code?: string };

@@ -66,8 +66,13 @@ export class SellerVerificationService {
       codeHash,
       expiresAt,
     });
-    await this.whatsapp.sendOtp(phone, code);
 
+    // وضع المحاكاة: نرجّع الكود في الـ response ليعرضه التطبيق (بدون واتساب)
+    if (this.isSimulate()) {
+      return { message: 'Verification code generated (simulation mode).', code };
+    }
+
+    await this.whatsapp.sendOtp(phone, code);
     return { message: 'A verification code has been sent to your WhatsApp.' };
   }
 
@@ -135,11 +140,20 @@ export class SellerVerificationService {
       codeHash,
       expiresAt,
     });
-    await this.whatsapp.sendOtp(pending.phone, code);
 
+    if (this.isSimulate()) {
+      return { message: 'A new verification code generated (simulation mode).', code };
+    }
+
+    await this.whatsapp.sendOtp(pending.phone, code);
     return {
       message: 'A new verification code has been sent to your WhatsApp.',
     };
+  }
+
+  // وضع المحاكاة: يُفعّل بـ SELLER_OTP_SIMULATE=true — يرجّع الكود بدل إرساله عبر واتساب
+  private isSimulate(): boolean {
+    return this.config.get<string>('SELLER_OTP_SIMULATE') === 'true';
   }
 
   // رمز عشوائي من 6 أرقام (آمن تشفيرياً)

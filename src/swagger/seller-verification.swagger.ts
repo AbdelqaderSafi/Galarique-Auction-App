@@ -24,7 +24,11 @@ export const ApiRequestVerification = () =>
         'Request a WhatsApp OTP to verify a Palestinian phone and become a seller',
     }),
     ApiBody({ type: RequestVerificationDTO }),
-    ApiOkResponse({ description: 'Verification code sent via WhatsApp' }),
+    ApiOkResponse({
+      description:
+        'Code sent via WhatsApp. In simulation mode (SELLER_OTP_SIMULATE=true) ' +
+        'the response also includes the code: { message, code }.',
+    }),
     ApiBadRequestResponse({ description: 'Invalid Palestinian mobile number' }),
     ApiConflictResponse({ description: 'Already a seller / phone already in use' }),
   );

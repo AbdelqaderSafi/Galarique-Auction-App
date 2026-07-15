@@ -29,6 +29,8 @@ export interface EnvVariables {
   WHATSAPP_PAIRING_NUMBER?: string;
   // تعطيل اتصال واتساب أثناء التطوير ("false")؛ الافتراضي مُفعّل
   WHATSAPP_ENABLED?: string;
+  // وضع محاكاة توثيق البائع ("true"): يرجّع الكود في الـ response بدل واتساب
+  SELLER_OTP_SIMULATE?: string;
 }
 
 // الحقول الحسّاسة التي يجب ألّا تُعاد أبداً في أي response

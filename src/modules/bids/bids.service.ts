@@ -8,20 +8,13 @@ import { AuctionStatus, Prisma } from 'generated/prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { WalletService } from '../wallet/wallet.service';
 import { MailService } from '../mail/mail.service';
+import { PUBLIC_STATUSES } from '../auctions/auctions.service';
 import type { SafeUser } from 'src/types/declartion-mergin';
 import type {
   AuctionBidsResponse,
   MyBidsResponse,
   PlaceBidResponse,
 } from './dto/bids.dto';
-
-// الحالات التي يجوز عرض مزايداتها للعامة (نفس منطق auctions)
-const PUBLIC_STATUSES: AuctionStatus[] = [
-  AuctionStatus.LIVE,
-  AuctionStatus.ENDED,
-  AuctionStatus.SOLD,
-  AuctionStatus.UNSOLD,
-];
 
 @Injectable()
 export class BidsService {

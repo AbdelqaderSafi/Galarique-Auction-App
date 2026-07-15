@@ -29,7 +29,7 @@ const OBJECT_INCLUDE = {
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 // الحالات التي يجوز عرضها للعامة (لا تُسرّب المسودّات/قيد المراجعة)
-const PUBLIC_STATUSES: AuctionStatus[] = [
+export const PUBLIC_STATUSES: AuctionStatus[] = [
   AuctionStatus.LIVE,
   AuctionStatus.ENDED,
   AuctionStatus.SOLD,

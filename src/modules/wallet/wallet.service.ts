@@ -339,26 +339,28 @@ export class WalletService {
       return false; // محجوز أصلاً — لا نحجز ثانية
     }
 
-    if (wallet.balance.lessThan(this.DEPOSIT_AMOUNT)) {
-      throw new BadRequestException(
-        `Insufficient balance for the $50 bid deposit. Needed: $${this.DEPOSIT_AMOUNT.toFixed(
-          2,
-        )}, available: $${wallet.balance.toFixed(2)}. Top up your wallet.`,
-      );
-    }
-
-    await tx.wallet.update({
-      where: { id: wallet.id },
+    // خصم ذرّي محمي — يمنع سباق مزايدة نفس المستخدم على مزادين مختلفين بالتزامن
+    const debit = await tx.wallet.updateMany({
+      where: { id: wallet.id, balance: { gte: this.DEPOSIT_AMOUNT } },
       data: {
         balance: { decrement: this.DEPOSIT_AMOUNT },
         lockedBalance: { increment: this.DEPOSIT_AMOUNT },
       },
     });
+    if (debit.count === 0) {
+      // إعادة قراءة الرصيد الحالي لعرض رسالة دقيقة
+      const fresh = await tx.wallet.findUniqueOrThrow({ where: { id: wallet.id } });
+      throw new BadRequestException(
+        `Insufficient balance for the $50 bid deposit. Needed: $${this.DEPOSIT_AMOUNT.toFixed(
+          2,
+        )}, available: $${fresh.balance.toFixed(2)}. Top up your wallet.`,
+      );
+    }
 
     // صف واحد لكل (مزاد، مستخدم) — نبدّل RELEASED→HELD أو ننشئه
     await tx.auctionDeposit.upsert({
       where: { auctionId_userId: { auctionId, userId } },
-      create: { auctionId, userId, status: 'HELD' },
+      create: { auctionId, userId, status: 'HELD', amount: this.DEPOSIT_AMOUNT },
       update: { status: 'HELD' },
     });
 

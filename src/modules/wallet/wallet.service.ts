@@ -30,6 +30,8 @@ import type {
 @Injectable()
 export class WalletService {
   private readonly logger = new Logger(WalletService.name);
+  // العربون الثابت لكل مزايدة أولى بمزاد
+  private readonly DEPOSIT_AMOUNT = new Prisma.Decimal(50);
 
   constructor(
     private readonly prisma: DatabaseService,
@@ -313,6 +315,103 @@ export class WalletService {
         }`,
       );
     }
+  }
+
+  // ===== Bid deposits (called by the bids module inside its transaction) =====
+
+  // يحجز عربون $50 للمزايد الحالي (idempotent: لا يحجز مرتين لنفس المزاد)
+  // يرجّع true لو انحجز الآن، false لو كان محجوزاً أصلاً. يرمي 400 لو الرصيد أقل من 50.
+  async holdBidDeposit(
+    tx: Prisma.TransactionClient,
+    userId: string,
+    auctionId: string,
+  ): Promise<boolean> {
+    const wallet = await tx.wallet.upsert({
+      where: { userId },
+      create: { userId },
+      update: {},
+    });
+
+    const existing = await tx.auctionDeposit.findUnique({
+      where: { auctionId_userId: { auctionId, userId } },
+    });
+    if (existing?.status === 'HELD') {
+      return false; // محجوز أصلاً — لا نحجز ثانية
+    }
+
+    if (wallet.balance.lessThan(this.DEPOSIT_AMOUNT)) {
+      throw new BadRequestException(
+        `Insufficient balance for the $50 bid deposit. Needed: $${this.DEPOSIT_AMOUNT.toFixed(
+          2,
+        )}, available: $${wallet.balance.toFixed(2)}. Top up your wallet.`,
+      );
+    }
+
+    await tx.wallet.update({
+      where: { id: wallet.id },
+      data: {
+        balance: { decrement: this.DEPOSIT_AMOUNT },
+        lockedBalance: { increment: this.DEPOSIT_AMOUNT },
+      },
+    });
+
+    // صف واحد لكل (مزاد، مستخدم) — نبدّل RELEASED→HELD أو ننشئه
+    await tx.auctionDeposit.upsert({
+      where: { auctionId_userId: { auctionId, userId } },
+      create: { auctionId, userId, status: 'HELD' },
+      update: { status: 'HELD' },
+    });
+
+    await tx.walletTransaction.create({
+      data: {
+        walletId: wallet.id,
+        type: WalletTxnType.DEPOSIT_HOLD,
+        amount: this.DEPOSIT_AMOUNT,
+        refId: auctionId,
+        note: 'Bid deposit hold ($50)',
+      },
+    });
+
+    return true;
+  }
+
+  // يُرجِع عربون المزايد المُتجاوَز فوراً (locked → balance). no-op لو مش HELD.
+  async releaseBidDeposit(
+    tx: Prisma.TransactionClient,
+    userId: string,
+    auctionId: string,
+  ): Promise<void> {
+    const deposit = await tx.auctionDeposit.findUnique({
+      where: { auctionId_userId: { auctionId, userId } },
+    });
+    if (!deposit || deposit.status !== 'HELD') {
+      return;
+    }
+
+    const wallet = await tx.wallet.findUniqueOrThrow({ where: { userId } });
+
+    await tx.wallet.update({
+      where: { id: wallet.id },
+      data: {
+        lockedBalance: { decrement: this.DEPOSIT_AMOUNT },
+        balance: { increment: this.DEPOSIT_AMOUNT },
+      },
+    });
+
+    await tx.auctionDeposit.update({
+      where: { auctionId_userId: { auctionId, userId } },
+      data: { status: 'RELEASED' },
+    });
+
+    await tx.walletTransaction.create({
+      data: {
+        walletId: wallet.id,
+        type: WalletTxnType.DEPOSIT_RELEASE,
+        amount: this.DEPOSIT_AMOUNT,
+        refId: auctionId,
+        note: 'Bid deposit released (outbid)',
+      },
+    });
   }
 
   // ===== Helpers =====

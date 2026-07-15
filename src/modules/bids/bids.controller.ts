@@ -7,7 +7,6 @@ import {
   Post,
   Query,
   Req,
-  UsePipes,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { IsPublic } from 'src/decorators/public.decorator';
@@ -36,11 +35,10 @@ export class BidsController {
   @Post('auctions/:id/bids')
   @HttpCode(201)
   @ApiPlaceBid()
-  @UsePipes(new ZodValidationPipe(placeBidSchema))
   place(
     @Req() req: Request,
     @Param('id') id: string,
-    @Body() dto: PlaceBidDto,
+    @Body(new ZodValidationPipe(placeBidSchema)) dto: PlaceBidDto,
   ): Promise<PlaceBidResponse> {
     return this.bidsService.place(id, req.user!, dto.amount);
   }

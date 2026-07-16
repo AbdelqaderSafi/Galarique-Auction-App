@@ -54,6 +54,7 @@ enum DepositStatus {
   HELD // محجوز
   RELEASED // أُرجِع
   FORFEITED // صودِر (تخلّف عن الدفع)
+  APPLIED // احتُسب من ثمن الشراء
 }
 
 // حالة الطلب — دورة Escrow مبسّطة (بدون شحن)
@@ -88,6 +89,8 @@ enum WalletTxnType {
   DEPOSIT_HOLD // حجز عربون $50
   DEPOSIT_RELEASE // إرجاع العربون
   DEPOSIT_FORFEIT // مصادرة العربون
+  PURCHASE // خصم ثمن الشراء من المشتري
+  SALE // إيداع ثمن البيع للبائع
   ESCROW_IN // دفع المشتري → الحجز
   ESCROW_RELEASE // الحجز → محفظة البائع (بعد الاستلام/التحرير التلقائي)
   REFUND // استرجاع للمشتري
@@ -415,6 +418,7 @@ model Order {
   @@index([buyerId, status])
   @@index([sellerId, status])
   @@index([status, autoReleaseAt]) // لمهمة التحرير التلقائي
+  @@index([status, paymentDeadline]) // لمهمة انتهاء المهلة (كل دقيقة)
 }
 
 // نزاع على طلب — تحسمه الإدارة (تحرير للبائع أو استرداد للمشتري)

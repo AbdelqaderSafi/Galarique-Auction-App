@@ -10,6 +10,8 @@ import { SellerVerificationModule } from './modules/seller-verification/seller-v
 import { AuctionsModule } from './modules/auctions/auctions.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { BidsModule } from './modules/bids/bids.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { SchedulerModule } from './modules/scheduler/scheduler.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { BidsModule } from './modules/bids/bids.module';
     AuctionsModule,
     WalletModule,
     BidsModule,
+    OrdersModule,
+    SchedulerModule,
   ],
 })
 export class AppModule {}

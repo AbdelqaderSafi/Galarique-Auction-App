@@ -97,6 +97,117 @@ export class MailService {
     await this.send({ to, subject, html, text });
   }
 
+  async sendPaymentRequired(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+    amountDue: string,
+    deadline: Date,
+  ): Promise<void> {
+    const subject = `You won ${auctionTitle} — payment needed`;
+    const html = this.buildSettlementHtml(
+      fullName,
+      `You won <strong>${auctionTitle}</strong>! Your $50 deposit covers part of it — <strong>$${amountDue}</strong> is still due.`,
+      `Top up your wallet and pay before ${deadline.toUTCString()}, or the item goes to the next bidder and your deposit is forfeited.`,
+      '#fff7ed',
+      '#9a3412',
+    );
+    const text =
+      `Hi ${fullName},\n\n` +
+      `You won "${auctionTitle}". Amount due: $${amountDue}.\n` +
+      `Pay from your wallet before ${deadline.toUTCString()}, or the item is offered to the next bidder and your $50 deposit is forfeited.\n\n` +
+      `Bid Smart. Win Big.`;
+    await this.send({ to, subject, html, text });
+  }
+
+  async sendOrderPaid(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+    amount: string,
+  ): Promise<void> {
+    const subject = `You won ${auctionTitle} — payment complete`;
+    const html = this.buildSettlementHtml(
+      fullName,
+      `Congratulations — <strong>${auctionTitle}</strong> is yours for <strong>$${amount}</strong>.`,
+      'Payment is complete. Contact the seller by email to arrange the handover.',
+      '#f0fdf4',
+      '#166534',
+    );
+    const text =
+      `Hi ${fullName},\n\n` +
+      `You won "${auctionTitle}" for $${amount} and payment is complete.\n` +
+      `Contact the seller by email to arrange the handover.\n\n` +
+      `Bid Smart. Win Big.`;
+    await this.send({ to, subject, html, text });
+  }
+
+  async sendItemSold(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+    amount: string,
+    buyerEmail: string,
+  ): Promise<void> {
+    const subject = `Your item sold: ${auctionTitle}`;
+    const html = this.buildSettlementHtml(
+      fullName,
+      `<strong>${auctionTitle}</strong> sold for <strong>$${amount}</strong> — the funds are in your wallet.`,
+      `Contact the buyer at <a href="mailto:${buyerEmail}">${buyerEmail}</a> to arrange the handover.`,
+      '#f0fdf4',
+      '#166534',
+    );
+    const text =
+      `Hi ${fullName},\n\n` +
+      `"${auctionTitle}" sold for $${amount}. The funds are in your wallet.\n` +
+      `Contact the buyer at ${buyerEmail} to arrange the handover.\n\n` +
+      `Bid Smart. Win Big.`;
+    await this.send({ to, subject, html, text });
+  }
+
+  async sendSecondChance(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+    amount: string,
+    deadline: Date,
+  ): Promise<void> {
+    const subject = `Second chance: ${auctionTitle} is available`;
+    const html = this.buildSettlementHtml(
+      fullName,
+      `The winning bidder for <strong>${auctionTitle}</strong> didn't pay — it's yours at your bid of <strong>$${amount}</strong> if you want it.`,
+      `This offer is optional. Pay from your wallet before ${deadline.toUTCString()} to claim it; ignore it and nothing happens.`,
+      '#eff6ff',
+      '#1e40af',
+    );
+    const text =
+      `Hi ${fullName},\n\n` +
+      `The winning bidder for "${auctionTitle}" didn't pay. You can buy it at your bid of $${amount}.\n` +
+      `This is optional — pay from your wallet before ${deadline.toUTCString()} to claim it.\n\n` +
+      `Bid Smart. Win Big.`;
+    await this.send({ to, subject, html, text });
+  }
+
+  async sendAuctionUnsold(
+    to: string,
+    fullName: string,
+    auctionTitle: string,
+  ): Promise<void> {
+    const subject = `Your auction ended unsold: ${auctionTitle}`;
+    const html = this.buildSettlementHtml(
+      fullName,
+      `<strong>${auctionTitle}</strong> ended without a completed sale.`,
+      'The item is back in your collection — you can list it again any time.',
+      '#f3f4f6',
+      '#374151',
+    );
+    const text =
+      `Hi ${fullName},\n\n` +
+      `"${auctionTitle}" ended without a completed sale. The item is back in your collection and you can list it again any time.\n\n` +
+      `Bid Smart. Win Big.`;
+    await this.send({ to, subject, html, text });
+  }
+
   private async send(options: {
     to: string;
     subject: string;
@@ -239,6 +350,25 @@ export class MailService {
     <p style="font-size: 13px; color: #6b7280;">
       Place a higher bid in the app to take the lead again.
     </p>
+  </div>`;
+  }
+
+  private buildSettlementHtml(
+    fullName: string,
+    lead: string,
+    calloutHtml: string,
+    calloutBg: string,
+    calloutColor: string,
+  ): string {
+    return `
+  <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
+    <h2 style="margin: 0 0 16px;">Bid Smart. Win Big.</h2>
+    <p>Hi ${fullName},</p>
+    <p>${lead}</p>
+    <p style="background: ${calloutBg}; border-radius: 8px; padding: 12px 16px; color: ${calloutColor};">
+      ${calloutHtml}
+    </p>
+    <p style="font-size: 13px; color: #6b7280;">GalleryQ</p>
   </div>`;
   }
 

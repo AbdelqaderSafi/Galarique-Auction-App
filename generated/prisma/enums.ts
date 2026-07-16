@@ -54,7 +54,8 @@ export type AuctionStatus = (typeof AuctionStatus)[keyof typeof AuctionStatus]
 export const DepositStatus = {
   HELD: 'HELD',
   RELEASED: 'RELEASED',
-  FORFEITED: 'FORFEITED'
+  FORFEITED: 'FORFEITED',
+  APPLIED: 'APPLIED'
 } as const
 
 export type DepositStatus = (typeof DepositStatus)[keyof typeof DepositStatus]
@@ -97,6 +98,8 @@ export const WalletTxnType = {
   DEPOSIT_HOLD: 'DEPOSIT_HOLD',
   DEPOSIT_RELEASE: 'DEPOSIT_RELEASE',
   DEPOSIT_FORFEIT: 'DEPOSIT_FORFEIT',
+  PURCHASE: 'PURCHASE',
+  SALE: 'SALE',
   ESCROW_IN: 'ESCROW_IN',
   ESCROW_RELEASE: 'ESCROW_RELEASE',
   REFUND: 'REFUND'

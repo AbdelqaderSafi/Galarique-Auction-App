@@ -12,6 +12,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
 import { BidsModule } from './modules/bids/bids.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { SchedulerModule } from './modules/scheduler/scheduler.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { SchedulerModule } from './modules/scheduler/scheduler.module';
     BidsModule,
     OrdersModule,
     SchedulerModule,
+    FavoritesModule,
   ],
 })
 export class AppModule {}

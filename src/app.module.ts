@@ -13,6 +13,7 @@ import { BidsModule } from './modules/bids/bids.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { SchedulerModule } from './modules/scheduler/scheduler.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
+import { RealtimeModule } from './modules/realtime/realtime.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
     OrdersModule,
     SchedulerModule,
     FavoritesModule,
+    RealtimeModule,
   ],
 })
 export class AppModule {}

@@ -9,6 +9,7 @@ import {
 } from 'generated/prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { MailService } from '../mail/mail.service';
+import { RealtimeService } from '../realtime/realtime.service';
 import { DEPOSIT_AMOUNT, PAYMENT_WINDOW_MS, OrdersService } from './orders.service';
 
 const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
@@ -33,6 +34,7 @@ export class SettlementService {
     private readonly prisma: DatabaseService,
     private readonly orders: OrdersService,
     private readonly mail: MailService,
+    private readonly realtime: RealtimeService,
   ) {}
 
   // ===== المهمة أ: إغلاق المزادات المستحقّة =====
@@ -108,6 +110,11 @@ export class SettlementService {
         },
       });
 
+      const winner = await tx.user.findUnique({
+        where: { id: auction.currentWinnerId },
+        select: { fullName: true },
+      });
+
       return {
         kind: 'ordered' as const,
         orderId: order.id,
@@ -115,12 +122,21 @@ export class SettlementService {
         title: auction.object.title,
         amountDue: amountDue.toFixed(2),
         deadline: order.paymentDeadline,
+        currentPrice: amount.toFixed(2),
+        winnerName: winner?.fullName ?? null,
       };
     });
 
     if (!outcome) return false;
 
     if (outcome.kind === 'unsold') {
+      // بث الإغلاق لكل الفاتحين شاشة المزاد
+      this.realtime.publishToAuction(auctionId, {
+        type: 'closed',
+        status: 'UNSOLD',
+        currentPrice: '0.00',
+        winnerName: null,
+      });
       void this.safeMail(() =>
         this.mail.sendAuctionUnsold(
           outcome.seller.email,
@@ -130,6 +146,21 @@ export class SettlementService {
       );
       return true;
     }
+
+    // في فائز: بث الإغلاق للمزاد + إشعار الفائز الشخصي
+    this.realtime.publishToAuction(auctionId, {
+      type: 'closed',
+      status: 'ENDED',
+      currentPrice: outcome.currentPrice,
+      winnerName: outcome.winnerName,
+    });
+    this.realtime.publishToUser(outcome.buyerId, {
+      type: 'won',
+      auctionId,
+      orderId: outcome.orderId,
+      amountDue: outcome.amountDue,
+      paymentDeadline: outcome.deadline.toISOString(),
+    });
 
     // محاولة خصم فوري — خارج ترانزاكشن الإغلاق (payOrder يفتح ترانزاكشن خاص به).
     // نجحت → payOrder بعث إيميلات الدفع. فشلت (رصيد ناقص) → اطلب منه يدفع خلال 72 ساعة.

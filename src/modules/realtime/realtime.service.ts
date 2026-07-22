@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, MessageEvent } from '@nestjs/common';
 import { Observable, Subject, interval, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import type { AuctionEvent, BidEvent, UserEvent } from './realtime.types';

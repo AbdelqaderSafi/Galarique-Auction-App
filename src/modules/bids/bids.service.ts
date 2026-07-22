@@ -8,6 +8,7 @@ import { AuctionStatus, Prisma } from 'generated/prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { WalletService } from '../wallet/wallet.service';
 import { MailService } from '../mail/mail.service';
+import { RealtimeService } from '../realtime/realtime.service';
 import { PUBLIC_STATUSES } from '../auctions/auctions.service';
 import type { SafeUser } from 'src/types/declartion-mergin';
 import type {
@@ -22,6 +23,7 @@ export class BidsService {
     private readonly prisma: DatabaseService,
     private readonly wallet: WalletService,
     private readonly mail: MailService,
+    private readonly realtime: RealtimeService,
   ) {}
 
   // وضع مزايدة — كل الخطوات داخل transaction واحد مع قفل صف المزاد
@@ -121,6 +123,27 @@ export class BidsService {
         result.auctionTitle,
         result.updated.currentPrice.toFixed(2),
       );
+    }
+
+    // 11) بث لحظي — مزايدة جديدة لكل الفاتحين شاشة المزاد + إشعار المتجاوَز
+    this.realtime.publishBid(auctionId, {
+      type: 'bid',
+      bidId: result.bid.id,
+      amount: result.bid.amount.toFixed(2),
+      bidderName: bidder.fullName,
+      currentPrice: result.updated.currentPrice.toFixed(2),
+      endTime: result.updated.endTime
+        ? result.updated.endTime.toISOString()
+        : null,
+      createdAt: result.bid.createdAt.toISOString(),
+    });
+    if (result.previousWinnerId) {
+      this.realtime.publishToUser(result.previousWinnerId, {
+        type: 'outbid',
+        auctionId,
+        auctionTitle: result.auctionTitle,
+        newPrice: result.updated.currentPrice.toFixed(2),
+      });
     }
 
     return {

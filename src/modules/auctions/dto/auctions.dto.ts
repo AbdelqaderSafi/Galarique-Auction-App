@@ -154,6 +154,14 @@ export class BrowseAuctionsQueryDTO {
   limit?: number;
 }
 
+export class SellerAuctionsQueryDTO {
+  @ApiPropertyOptional({ default: 1, minimum: 1 })
+  page?: number;
+
+  @ApiPropertyOptional({ default: 20, minimum: 1, maximum: 50 })
+  limit?: number;
+}
+
 // ---- Response shapes ----
 export type AuctionObject = ArtObject & { images: ObjectImage[] };
 export type AuctionResponseDTO = Auction & { object: AuctionObject };

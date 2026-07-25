@@ -18,6 +18,7 @@ import type {
   BrowseAuctionsQueryDTO,
   CreateAuctionData,
   PaginatedAuctionsDTO,
+  SellerAuctionsQueryDTO,
   UpdateAuctionDTO,
 } from './dto/auctions.dto';
 
@@ -287,6 +288,33 @@ export class AuctionsService {
 
     const { _count, ...rest } = auction;
     return { ...rest, viewsCount: rest.viewsCount + 1, bidCount: _count.bids };
+  }
+
+  // كل مزادات بائع معيّن (عام) — LIVE + ما انتهى (ENDED/SOLD/UNSOLD)، الأحدث أولاً
+  async findBySeller(
+    sellerId: string,
+    query: SellerAuctionsQueryDTO,
+  ): Promise<PaginatedAuctionsDTO> {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 20;
+
+    const where: Prisma.AuctionWhereInput = {
+      status: { in: PUBLIC_STATUSES },
+      object: { ownerId: sellerId },
+    };
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.auction.findMany({
+        where,
+        include: OBJECT_INCLUDE,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.auction.count({ where }),
+    ]);
+
+    return { items, total, page, limit };
   }
 
   // ======================= Admin =======================

@@ -28,12 +28,14 @@ import {
   BrowseAuctionsQueryDTO,
   PaginatedAuctionsDTO,
   RejectAuctionDTO,
+  SellerAuctionsQueryDTO,
   UpdateAuctionDTO,
 } from './dto/auctions.dto';
 import {
   browseAuctionsQuerySchema,
   createAuctionBodySchema,
   rejectAuctionSchema,
+  sellerAuctionsQuerySchema,
   updateAuctionSchema,
   type CreateAuctionBody,
 } from './util/auctions.validation.schema';
@@ -64,6 +66,7 @@ import {
   ApiDeleteAuction,
   ApiCancelAuction,
   ApiBrowseAuctions,
+  ApiSellerAuctions,
   ApiGetAuction,
   ApiPendingAuctions,
   ApiApproveAuction,
@@ -90,6 +93,18 @@ export class AuctionsController {
     query: BrowseAuctionsQueryDTO,
   ): Promise<PaginatedAuctionsDTO> {
     return this.auctionsService.browse(query);
+  }
+
+  // مزادات بائع معيّن (عام) — LIVE + ما انتهى (ENDED/SOLD/UNSOLD)
+  @Get('seller/:sellerId')
+  @IsPublic(true)
+  @ApiSellerAuctions()
+  findBySeller(
+    @Param('sellerId') sellerId: string,
+    @Query(new ZodValidationPipe(sellerAuctionsQuerySchema))
+    query: SellerAuctionsQueryDTO,
+  ): Promise<PaginatedAuctionsDTO> {
+    return this.auctionsService.findBySeller(sellerId, query);
   }
 
   // ---- Seller ----

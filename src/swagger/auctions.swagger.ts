@@ -106,6 +106,18 @@ export const ApiBrowseAuctions = () =>
     ApiOkResponse({ description: '{ items, total, page, limit }' }),
   );
 
+export const ApiSellerAuctions = () =>
+  applyDecorators(
+    ApiOperation({
+      summary:
+        "A seller's public auctions — LIVE + already-ended (ENDED/SOLD/UNSOLD), newest first",
+    }),
+    ApiParam({ name: 'sellerId', description: 'Seller (owner) user id' }),
+    ApiQuery({ name: 'page', required: false, example: 1 }),
+    ApiQuery({ name: 'limit', required: false, example: 20 }),
+    ApiOkResponse({ description: '{ items, total, page, limit }' }),
+  );
+
 export const ApiGetAuction = () =>
   applyDecorators(
     ApiOperation({ summary: 'Get a public auction detail (with bid count)' }),

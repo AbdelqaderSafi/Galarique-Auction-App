@@ -1,6 +1,6 @@
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { AuctionStatus, ObjectStatus, Role } from 'generated/prisma/client';
-import { AuctionsService } from './auctions.service';
+import { AuctionsService, PUBLIC_STATUSES } from './auctions.service';
 import { MailService } from '../mail/mail.service';
 import {
   createMockDatabaseService,
@@ -339,6 +339,60 @@ describe('AuctionsService', () => {
           orderBy: [{ endTime: 'asc' }],
         }),
       );
+    });
+  });
+
+  describe('findBySeller', () => {
+    it('filters by ownerId + public statuses only, newest first, with default pagination', async () => {
+      prisma.auction.findMany.mockResolvedValue([] as any);
+      prisma.auction.count.mockResolvedValue(0);
+
+      const result = await service.findBySeller('seller-1', {} as any);
+
+      expect(prisma.auction.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { status: { in: PUBLIC_STATUSES }, object: { ownerId: 'seller-1' } },
+          orderBy: { createdAt: 'desc' },
+          skip: 0,
+          take: 20,
+        }),
+      );
+      expect(result).toEqual({ items: [], total: 0, page: 1, limit: 20 });
+    });
+
+    it('never leaks DRAFT/PENDING_REVIEW/REJECTED/CANCELLED auctions (only public statuses)', async () => {
+      prisma.auction.findMany.mockResolvedValue([] as any);
+      prisma.auction.count.mockResolvedValue(0);
+
+      await service.findBySeller('seller-1', {} as any);
+
+      const call = prisma.auction.findMany.mock.calls[0][0] as any;
+      expect(call.where.status.in).not.toContain(AuctionStatus.DRAFT);
+      expect(call.where.status.in).not.toContain(AuctionStatus.PENDING_REVIEW);
+      expect(call.where.status.in).not.toContain(AuctionStatus.REJECTED);
+      expect(call.where.status.in).not.toContain(AuctionStatus.CANCELLED);
+    });
+
+    it('applies custom page/limit as skip/take and echoes them back', async () => {
+      prisma.auction.findMany.mockResolvedValue([{ id: 'a1' }] as any);
+      prisma.auction.count.mockResolvedValue(25);
+
+      const result = await service.findBySeller('seller-1', { page: 3, limit: 5 } as any);
+
+      expect(prisma.auction.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ skip: 10, take: 5 }),
+      );
+      expect(result).toEqual({ items: [{ id: 'a1' }], total: 25, page: 3, limit: 5 });
+    });
+
+    it('returns an empty list (not a 404) for a seller with no public auctions', async () => {
+      prisma.auction.findMany.mockResolvedValue([] as any);
+      prisma.auction.count.mockResolvedValue(0);
+
+      const result = await service.findBySeller('unknown-seller', {} as any);
+
+      expect(result.items).toEqual([]);
+      expect(result.total).toBe(0);
     });
   });
 });

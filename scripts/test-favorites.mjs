@@ -1,14 +1,15 @@
 // Live HTTP test matrix for the favorites/follows module. Run with: node scripts/test-favorites.mjs
 // Requires the server running on :3000 and seed-favorites-test.ts already run.
-const BASE = 'http://localhost:3000';
+const BASE = process.env.BASE_URL || 'http://localhost:3000';
 
-// From the latest seed-favorites-test run:
+// From the latest seed-favorites-test run (or pass SEED_JSON env var to override):
+const seed = process.env.SEED_JSON ? JSON.parse(process.env.SEED_JSON) : null;
 const IDS = {
-  sellerId: '73fe3650-d11a-4fae-a9d7-5488aecc4150',
-  plainId: '9fa9acd6-1695-4c89-8e2c-573423f55784',
-  actorId: '76c90e23-2dcc-4e1a-b971-31fed3c2152f',
-  liveAuctionId: '6a728adf-5f2e-4b3c-9a9d-9862beb344a4',
-  draftAuctionId: '044059fc-f259-4c7b-84e8-a5d8834f4de8',
+  sellerId: seed?.sellerId ?? '73fe3650-d11a-4fae-a9d7-5488aecc4150',
+  plainId: seed?.plainId ?? '9fa9acd6-1695-4c89-8e2c-573423f55784',
+  actorId: seed?.actorId ?? '76c90e23-2dcc-4e1a-b971-31fed3c2152f',
+  liveAuctionId: seed?.liveAuctionId ?? '6a728adf-5f2e-4b3c-9a9d-9862beb344a4',
+  draftAuctionId: seed?.draftAuctionId ?? '044059fc-f259-4c7b-84e8-a5d8834f4de8',
   randomId: '00000000-0000-0000-0000-000000000000',
 };
 const USERS = {

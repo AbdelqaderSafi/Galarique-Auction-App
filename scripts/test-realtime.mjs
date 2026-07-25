@@ -6,7 +6,7 @@
 import 'dotenv/config';
 import pg from 'pg';
 
-const BASE = 'http://localhost:3000';
+const BASE = process.env.BASE_URL || 'http://localhost:3000';
 
 const results = [];
 function check(name, ok, detail) {

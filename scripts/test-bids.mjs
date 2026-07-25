@@ -1,11 +1,12 @@
 // Live HTTP test matrix for the bids module. Run with: node scripts/test-bids.mjs
 // Requires the server running on :3000 and seed-bids-test.ts already run.
-const BASE = 'http://localhost:3000';
+const BASE = process.env.BASE_URL || 'http://localhost:3000';
 
-// From the latest seed-bids-test run:
+// From the latest seed-bids-test run (or pass SEED_JSON env var to override):
+const seed = process.env.SEED_JSON ? JSON.parse(process.env.SEED_JSON) : null;
 const IDS = {
-  liveAuctionId: '57d6a128-d1f7-44f6-b613-d15ea6f5695b',
-  draftAuctionId: '958918b6-e7b2-4dee-9e36-ac0575aa1a6f',
+  liveAuctionId: seed?.liveAuctionId ?? '57d6a128-d1f7-44f6-b613-d15ea6f5695b',
+  draftAuctionId: seed?.draftAuctionId ?? '958918b6-e7b2-4dee-9e36-ac0575aa1a6f',
   randomId: '00000000-0000-0000-0000-000000000000',
 };
 const USERS = {

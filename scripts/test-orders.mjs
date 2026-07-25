@@ -4,29 +4,30 @@ import 'dotenv/config';
 import pg from 'pg';
 const { Client } = pg;
 
-const BASE = 'http://localhost:3000';
+const BASE = process.env.BASE_URL || 'http://localhost:3000';
 const PASSWORD = 'Test1234!';
 
-// From the latest seed-orders-test run:
+// From the latest seed-orders-test run (or pass SEED_JSON env var to override):
+const seed = process.env.SEED_JSON ? JSON.parse(process.env.SEED_JSON) : null;
 const IDS = {
-  seller: 'd931b10c-e737-4080-96f4-b7e71cee8ef9',
-  winner: '8500d637-d456-4b57-a623-ab9f67428b1d',
-  poor: '3e6c6858-d288-424b-a6c6-667c1d34ed17',
-  defaulter: '38a6cbd2-4b00-461a-ac2f-d9e8e357acf7',
-  second: 'e111e3b9-c97e-4779-932f-3c0822389bc5',
-  cheapWinner: 'ee640992-3e14-4e9d-860e-9982e22f60c4',
-  retryPoor: '8369d32c-7878-4546-8941-b30c91ef62b4',
-  defaulter2: '15f5064d-60ca-49eb-b489-3df82fab5f16',
-  second2: '0ec02e2e-913a-4c14-afb6-6af5d8902beb',
+  seller: seed?.ids?.seller ?? 'd931b10c-e737-4080-96f4-b7e71cee8ef9',
+  winner: seed?.ids?.winner ?? '8500d637-d456-4b57-a623-ab9f67428b1d',
+  poor: seed?.ids?.poor ?? '3e6c6858-d288-424b-a6c6-667c1d34ed17',
+  defaulter: seed?.ids?.defaulter ?? '38a6cbd2-4b00-461a-ac2f-d9e8e357acf7',
+  second: seed?.ids?.second ?? 'e111e3b9-c97e-4779-932f-3c0822389bc5',
+  cheapWinner: seed?.ids?.cheapWinner ?? 'ee640992-3e14-4e9d-860e-9982e22f60c4',
+  retryPoor: seed?.ids?.retryPoor ?? '8369d32c-7878-4546-8941-b30c91ef62b4',
+  defaulter2: seed?.ids?.defaulter2 ?? '15f5064d-60ca-49eb-b489-3df82fab5f16',
+  second2: seed?.ids?.second2 ?? '0ec02e2e-913a-4c14-afb6-6af5d8902beb',
 };
 const AUCTIONS = {
-  noBids: '967838d2-1896-4d92-bc7b-3fd8f3a045a7',
-  fundedWinner: 'b0f1dedf-e8a7-42a2-99a9-6c303d176236',
-  unfundedWinner: '6e565875-48ee-460c-ab80-f707a08268b6',
-  defaultThenSecond: '2c04efe7-17fa-4535-862e-492a5c895aa5',
-  cheap: '94923a71-d213-4080-8750-faf5c283deac',
-  unfundedRetry: 'e120a2b3-2b10-46f9-ab2d-78af59b222d6',
-  defaultThenLapse: 'b20d82c6-fa41-4958-a1e2-514455fc284a',
+  noBids: seed?.auctions?.noBids ?? '967838d2-1896-4d92-bc7b-3fd8f3a045a7',
+  fundedWinner: seed?.auctions?.fundedWinner ?? 'b0f1dedf-e8a7-42a2-99a9-6c303d176236',
+  unfundedWinner: seed?.auctions?.unfundedWinner ?? '6e565875-48ee-460c-ab80-f707a08268b6',
+  defaultThenSecond: seed?.auctions?.defaultThenSecond ?? '2c04efe7-17fa-4535-862e-492a5c895aa5',
+  cheap: seed?.auctions?.cheap ?? '94923a71-d213-4080-8750-faf5c283deac',
+  unfundedRetry: seed?.auctions?.unfundedRetry ?? 'e120a2b3-2b10-46f9-ab2d-78af59b222d6',
+  defaultThenLapse: seed?.auctions?.defaultThenLapse ?? 'b20d82c6-fa41-4958-a1e2-514455fc284a',
 };
 const EMAILS = {
   seller: 'seller.orders@test.local',

@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { randomUUID } from 'crypto';
 import pg from 'pg';
 const { Client } = pg;
-const BASE = 'http://localhost:3000';
+const BASE = process.env.BASE_URL || 'http://localhost:3000';
 
 async function main() {
   const client = new Client({ connectionString: process.env.DATABASE_URL });

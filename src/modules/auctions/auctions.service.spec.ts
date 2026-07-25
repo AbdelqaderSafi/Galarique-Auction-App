@@ -1,0 +1,344 @@
+import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { AuctionStatus, ObjectStatus, Role } from 'generated/prisma/client';
+import { AuctionsService } from './auctions.service';
+import { MailService } from '../mail/mail.service';
+import {
+  createMockDatabaseService,
+  resetMockDatabaseService,
+  type MockDatabaseService,
+} from '../../test-utils/prisma-mock';
+import type { SafeUser } from 'src/types/declartion-mergin';
+
+describe('AuctionsService', () => {
+  let prisma: MockDatabaseService;
+  let mail: jest.Mocked<MailService>;
+  let service: AuctionsService;
+
+  const owner: SafeUser = { id: 'seller-1', roles: [Role.SELLER] } as SafeUser;
+  const otherUser: SafeUser = { id: 'other-1', roles: [Role.BUYER] } as SafeUser;
+  const admin: SafeUser = { id: 'admin-1', roles: [Role.ADMIN] } as SafeUser;
+
+  beforeEach(() => {
+    prisma = createMockDatabaseService();
+    mail = {
+      sendAuctionApproved: jest.fn(),
+      sendAuctionRejected: jest.fn(),
+    } as unknown as jest.Mocked<MailService>;
+    service = new AuctionsService(prisma, mail);
+  });
+
+  afterEach(() => {
+    resetMockDatabaseService(prisma);
+    jest.clearAllMocks();
+  });
+
+  describe('create', () => {
+    it('creates the Object + Auction as PENDING_REVIEW/IN_AUCTION when saveAsDraft is falsy', async () => {
+      prisma.object.create.mockResolvedValue({ id: 'object-1' } as any);
+      prisma.auction.create.mockResolvedValue({ id: 'auction-1', status: AuctionStatus.PENDING_REVIEW } as any);
+
+      await service.create(owner.id, {
+        title: 'Vase',
+        category: 'ART',
+        startingPrice: 100,
+        minBidIncrement: 10,
+        durationDays: 7,
+      } as any);
+
+      expect(prisma.object.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ ownerId: owner.id, status: ObjectStatus.IN_AUCTION }) }),
+      );
+      expect(prisma.auction.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ status: AuctionStatus.PENDING_REVIEW }) }),
+      );
+    });
+
+    it('creates as DRAFT/DRAFT when saveAsDraft is true', async () => {
+      prisma.object.create.mockResolvedValue({ id: 'object-1' } as any);
+      prisma.auction.create.mockResolvedValue({ id: 'auction-1', status: AuctionStatus.DRAFT } as any);
+
+      await service.create(owner.id, {
+        title: 'Vase',
+        category: 'ART',
+        startingPrice: 100,
+        durationDays: 7,
+        saveAsDraft: true,
+      } as any);
+
+      expect(prisma.object.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ status: ObjectStatus.DRAFT }) }),
+      );
+      expect(prisma.auction.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ status: AuctionStatus.DRAFT }) }),
+      );
+    });
+  });
+
+  describe('update', () => {
+    it('throws 404 for a missing auction', async () => {
+      prisma.auction.findUnique.mockResolvedValue(null);
+      await expect(service.update('a1', owner, {} as any)).rejects.toThrow(NotFoundException);
+    });
+
+    it('forbids a non-owner, non-admin from editing', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        object: { ownerId: owner.id },
+      } as any);
+      await expect(service.update('a1', otherUser, {} as any)).rejects.toThrow(ForbiddenException);
+    });
+
+    it('allows an admin to edit regardless of ownership', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.auction.update.mockResolvedValue({ id: 'a1' } as any);
+
+      await expect(service.update('a1', admin, { startingPrice: 200 } as any)).resolves.toBeDefined();
+    });
+
+    it('rejects editing an auction that is LIVE (not in an editable status)', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.LIVE,
+        object: { ownerId: owner.id },
+      } as any);
+      await expect(service.update('a1', owner, {} as any)).rejects.toThrow(
+        'This auction can no longer be edited',
+      );
+    });
+
+    it('auto-resubmits a REJECTED auction to PENDING_REVIEW and clears the rejection reason', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.REJECTED,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.auction.update.mockResolvedValue({ id: 'a1', status: AuctionStatus.PENDING_REVIEW } as any);
+
+      await service.update('a1', owner, { startingPrice: 150 } as any);
+
+      expect(prisma.auction.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            status: AuctionStatus.PENDING_REVIEW,
+            rejectionReason: null,
+            reviewedById: null,
+            reviewedAt: null,
+          }),
+        }),
+      );
+    });
+  });
+
+  describe('submit', () => {
+    it('rejects submitting a non-DRAFT auction', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.PENDING_REVIEW,
+        object: { ownerId: owner.id },
+      } as any);
+      await expect(service.submit('a1', owner)).rejects.toThrow(
+        'Only draft auctions can be submitted',
+      );
+    });
+
+    it('moves DRAFT -> PENDING_REVIEW and Object -> IN_AUCTION', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.auction.update.mockResolvedValue({ id: 'a1', status: AuctionStatus.PENDING_REVIEW } as any);
+
+      await service.submit('a1', owner);
+
+      expect(prisma.object.update).toHaveBeenCalledWith({
+        where: { id: 'object-1' },
+        data: { status: ObjectStatus.IN_AUCTION },
+      });
+      expect(prisma.auction.update).toHaveBeenCalledWith(
+        expect.objectContaining({ data: { status: AuctionStatus.PENDING_REVIEW } }),
+      );
+    });
+  });
+
+  describe('remove', () => {
+    it('rejects deleting a non-DRAFT auction', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.PENDING_REVIEW,
+        object: { ownerId: owner.id },
+      } as any);
+      await expect(service.remove('a1', owner)).rejects.toThrow(
+        'Only draft auctions can be deleted',
+      );
+    });
+
+    it('deletes both the Auction and its Object for a DRAFT', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+
+      await service.remove('a1', owner);
+
+      expect(prisma.auction.delete).toHaveBeenCalledWith({ where: { id: 'a1' } });
+      expect(prisma.object.delete).toHaveBeenCalledWith({ where: { id: 'object-1' } });
+    });
+  });
+
+  describe('cancel', () => {
+    it('allows the seller to cancel a PENDING_REVIEW auction', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.PENDING_REVIEW,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.auction.update.mockResolvedValue({ status: AuctionStatus.CANCELLED } as any);
+
+      await expect(service.cancel('a1', owner)).resolves.toBeDefined();
+    });
+
+    it('forbids the seller from cancelling a LIVE auction (only admin can)', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.LIVE,
+        object: { ownerId: owner.id },
+      } as any);
+      await expect(service.cancel('a1', owner)).rejects.toThrow(
+        'This auction cannot be cancelled',
+      );
+    });
+
+    it('allows an admin to cancel a LIVE auction', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.LIVE,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.auction.update.mockResolvedValue({ status: AuctionStatus.CANCELLED } as any);
+
+      await expect(service.cancel('a1', admin)).resolves.toBeDefined();
+    });
+
+    it('forbids anyone from cancelling a SOLD auction, even an admin', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.SOLD,
+        object: { ownerId: owner.id },
+      } as any);
+      await expect(service.cancel('a1', admin)).rejects.toThrow(
+        'This auction cannot be cancelled',
+      );
+    });
+
+    it('forbids a stranger (not owner, not admin) from cancelling', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.PENDING_REVIEW,
+        object: { ownerId: owner.id },
+      } as any);
+      await expect(service.cancel('a1', otherUser)).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  describe('findPublic', () => {
+    it('throws 404 for a DRAFT auction (not a public status)', async () => {
+      prisma.auction.findUnique.mockResolvedValue({ status: AuctionStatus.DRAFT } as any);
+      await expect(service.findPublic('a1')).rejects.toThrow(NotFoundException);
+    });
+
+    it('increments viewsCount and returns bidCount for a LIVE auction', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.LIVE,
+        viewsCount: 5,
+        _count: { bids: 3 },
+      } as any);
+
+      const result = await service.findPublic('a1');
+
+      expect(prisma.auction.update).toHaveBeenCalledWith({
+        where: { id: 'a1' },
+        data: { viewsCount: { increment: 1 } },
+      });
+      expect(result.viewsCount).toBe(6);
+      expect(result.bidCount).toBe(3);
+    });
+  });
+
+  describe('approve / reject', () => {
+    it('rejects approving a non-PENDING_REVIEW auction', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        object: { owner: {} },
+      } as any);
+      await expect(service.approve('a1', admin.id)).rejects.toThrow(
+        'Only pending auctions can be approved',
+      );
+    });
+
+    it('approves: sets LIVE with startTime=now and endTime=now+durationDays, and emails the seller', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.PENDING_REVIEW,
+        durationDays: 3,
+        object: { title: 'Vase', owner: { email: 'seller@x.com', fullName: 'Seller' } },
+      } as any);
+      prisma.auction.update.mockImplementation((args: any) => Promise.resolve({ id: 'a1', ...args.data }));
+
+      const result = await service.approve('a1', admin.id);
+
+      const call = prisma.auction.update.mock.calls[0][0] as any;
+      const diffDays = (call.data.endTime.getTime() - call.data.startTime.getTime()) / (24 * 60 * 60 * 1000);
+      expect(diffDays).toBeCloseTo(3);
+      expect(call.data.status).toBe(AuctionStatus.LIVE);
+      expect(mail.sendAuctionApproved).toHaveBeenCalledWith('seller@x.com', 'Seller', 'Vase');
+    });
+
+    it('rejects: sets REJECTED with a reason and emails the seller', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.PENDING_REVIEW,
+        object: { title: 'Vase', owner: { email: 'seller@x.com', fullName: 'Seller' } },
+      } as any);
+      prisma.auction.update.mockResolvedValue({ id: 'a1', status: AuctionStatus.REJECTED } as any);
+
+      await service.reject('a1', admin.id, 'Blurry photos');
+
+      expect(prisma.auction.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ status: AuctionStatus.REJECTED, rejectionReason: 'Blurry photos' }),
+        }),
+      );
+      expect(mail.sendAuctionRejected).toHaveBeenCalledWith('seller@x.com', 'Seller', 'Vase', 'Blurry photos');
+    });
+  });
+
+  describe('browse', () => {
+    it('only ever queries LIVE auctions, applying category/search filters', async () => {
+      prisma.auction.findMany.mockResolvedValue([] as any);
+      prisma.auction.count.mockResolvedValue(0);
+
+      await service.browse({ category: 'ART', q: 'vase', page: 1, limit: 10 } as any);
+
+      expect(prisma.auction.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: {
+            status: AuctionStatus.LIVE,
+            object: { category: 'ART', title: { contains: 'vase', mode: 'insensitive' } },
+          },
+        }),
+      );
+    });
+
+    it('defaults to sorting by soonest-ending with no filters when the query is empty', async () => {
+      prisma.auction.findMany.mockResolvedValue([] as any);
+      prisma.auction.count.mockResolvedValue(0);
+
+      await service.browse({} as any);
+
+      expect(prisma.auction.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { status: AuctionStatus.LIVE },
+          orderBy: [{ endTime: 'asc' }],
+        }),
+      );
+    });
+  });
+});

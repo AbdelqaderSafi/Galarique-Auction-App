@@ -31,6 +31,9 @@ export type UserMinAggregateOutputType = {
   password: string | null
   provider: $Enums.AuthProvider | null
   providerId: string | null
+  username: string | null
+  dateOfBirth: Date | null
+  phoneNumber: string | null
   stripeCustomerId: string | null
   stripeConnectId: string | null
   createdAt: Date | null
@@ -44,6 +47,9 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   provider: $Enums.AuthProvider | null
   providerId: string | null
+  username: string | null
+  dateOfBirth: Date | null
+  phoneNumber: string | null
   stripeCustomerId: string | null
   stripeConnectId: string | null
   createdAt: Date | null
@@ -57,6 +63,9 @@ export type UserCountAggregateOutputType = {
   password: number
   provider: number
   providerId: number
+  username: number
+  dateOfBirth: number
+  phoneNumber: number
   roles: number
   stripeCustomerId: number
   stripeConnectId: number
@@ -73,6 +82,9 @@ export type UserMinAggregateInputType = {
   password?: true
   provider?: true
   providerId?: true
+  username?: true
+  dateOfBirth?: true
+  phoneNumber?: true
   stripeCustomerId?: true
   stripeConnectId?: true
   createdAt?: true
@@ -86,6 +98,9 @@ export type UserMaxAggregateInputType = {
   password?: true
   provider?: true
   providerId?: true
+  username?: true
+  dateOfBirth?: true
+  phoneNumber?: true
   stripeCustomerId?: true
   stripeConnectId?: true
   createdAt?: true
@@ -99,6 +114,9 @@ export type UserCountAggregateInputType = {
   password?: true
   provider?: true
   providerId?: true
+  username?: true
+  dateOfBirth?: true
+  phoneNumber?: true
   roles?: true
   stripeCustomerId?: true
   stripeConnectId?: true
@@ -186,6 +204,9 @@ export type UserGroupByOutputType = {
   password: string | null
   provider: $Enums.AuthProvider
   providerId: string | null
+  username: string | null
+  dateOfBirth: Date | null
+  phoneNumber: string | null
   roles: $Enums.Role[]
   stripeCustomerId: string | null
   stripeConnectId: string | null
@@ -221,6 +242,9 @@ export type UserWhereInput = {
   password?: Prisma.StringNullableFilter<"User"> | string | null
   provider?: Prisma.EnumAuthProviderFilter<"User"> | $Enums.AuthProvider
   providerId?: Prisma.StringNullableFilter<"User"> | string | null
+  username?: Prisma.StringNullableFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   roles?: Prisma.EnumRoleNullableListFilter<"User">
   stripeCustomerId?: Prisma.StringNullableFilter<"User"> | string | null
   stripeConnectId?: Prisma.StringNullableFilter<"User"> | string | null
@@ -252,6 +276,9 @@ export type UserOrderByWithRelationInput = {
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   roles?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -279,6 +306,7 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  username?: string
   stripeCustomerId?: string
   stripeConnectId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -288,6 +316,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringNullableFilter<"User"> | string | null
   provider?: Prisma.EnumAuthProviderFilter<"User"> | $Enums.AuthProvider
   providerId?: Prisma.StringNullableFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   roles?: Prisma.EnumRoleNullableListFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -308,7 +338,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   favoriteAuctions?: Prisma.FavoriteAuctionListRelationFilter
   following?: Prisma.FollowListRelationFilter
   followers?: Prisma.FollowListRelationFilter
-}, "id" | "email" | "stripeCustomerId" | "stripeConnectId">
+}, "id" | "email" | "username" | "stripeCustomerId" | "stripeConnectId">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -317,6 +347,9 @@ export type UserOrderByWithAggregationInput = {
   password?: Prisma.SortOrderInput | Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   roles?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -337,6 +370,9 @@ export type UserScalarWhereWithAggregatesInput = {
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   provider?: Prisma.EnumAuthProviderWithAggregatesFilter<"User"> | $Enums.AuthProvider
   providerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  username?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   roles?: Prisma.EnumRoleNullableListFilter<"User">
   stripeCustomerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   stripeConnectId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
@@ -351,6 +387,9 @@ export type UserCreateInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -382,6 +421,9 @@ export type UserUncheckedCreateInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -413,6 +455,9 @@ export type UserUpdateInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -444,6 +489,9 @@ export type UserUncheckedUpdateInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -475,6 +523,9 @@ export type UserCreateManyInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -489,6 +540,9 @@ export type UserUpdateManyMutationInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -503,6 +557,9 @@ export type UserUncheckedUpdateManyInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -525,6 +582,9 @@ export type UserCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   roles?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrder
@@ -539,6 +599,9 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -552,6 +615,9 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   providerId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   stripeCustomerId?: Prisma.SortOrder
   stripeConnectId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -582,6 +648,10 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type EnumAuthProviderFieldUpdateOperationsInput = {
   set?: $Enums.AuthProvider
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type UserUpdaterolesInput = {
@@ -842,6 +912,9 @@ export type UserCreateWithoutSellerProfileInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -872,6 +945,9 @@ export type UserUncheckedCreateWithoutSellerProfileInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -918,6 +994,9 @@ export type UserUpdateWithoutSellerProfileInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -948,6 +1027,9 @@ export type UserUncheckedUpdateWithoutSellerProfileInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -978,6 +1060,9 @@ export type UserCreateWithoutPasswordResetsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1008,6 +1093,9 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1054,6 +1142,9 @@ export type UserUpdateWithoutPasswordResetsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1084,6 +1175,9 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1114,6 +1208,9 @@ export type UserCreateWithoutPhoneVerificationsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1144,6 +1241,9 @@ export type UserUncheckedCreateWithoutPhoneVerificationsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1190,6 +1290,9 @@ export type UserUpdateWithoutPhoneVerificationsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1220,6 +1323,9 @@ export type UserUncheckedUpdateWithoutPhoneVerificationsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1250,6 +1356,9 @@ export type UserCreateWithoutWalletInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1280,6 +1389,9 @@ export type UserUncheckedCreateWithoutWalletInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1326,6 +1438,9 @@ export type UserUpdateWithoutWalletInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1356,6 +1471,9 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1386,6 +1504,9 @@ export type UserCreateWithoutWithdrawalsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1416,6 +1537,9 @@ export type UserUncheckedCreateWithoutWithdrawalsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1462,6 +1586,9 @@ export type UserUpdateWithoutWithdrawalsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1492,6 +1619,9 @@ export type UserUncheckedUpdateWithoutWithdrawalsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1522,6 +1652,9 @@ export type UserCreateWithoutObjectsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1552,6 +1685,9 @@ export type UserUncheckedCreateWithoutObjectsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1598,6 +1734,9 @@ export type UserUpdateWithoutObjectsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1628,6 +1767,9 @@ export type UserUncheckedUpdateWithoutObjectsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1658,6 +1800,9 @@ export type UserCreateWithoutWonAuctionsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1688,6 +1833,9 @@ export type UserUncheckedCreateWithoutWonAuctionsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1723,6 +1871,9 @@ export type UserCreateWithoutReviewedAuctionsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1753,6 +1904,9 @@ export type UserUncheckedCreateWithoutReviewedAuctionsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1799,6 +1953,9 @@ export type UserUpdateWithoutWonAuctionsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1829,6 +1986,9 @@ export type UserUncheckedUpdateWithoutWonAuctionsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1870,6 +2030,9 @@ export type UserUpdateWithoutReviewedAuctionsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1900,6 +2063,9 @@ export type UserUncheckedUpdateWithoutReviewedAuctionsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1930,6 +2096,9 @@ export type UserCreateWithoutBidsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -1960,6 +2129,9 @@ export type UserUncheckedCreateWithoutBidsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2006,6 +2178,9 @@ export type UserUpdateWithoutBidsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2036,6 +2211,9 @@ export type UserUncheckedUpdateWithoutBidsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2066,6 +2244,9 @@ export type UserCreateWithoutDepositsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2096,6 +2277,9 @@ export type UserUncheckedCreateWithoutDepositsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2142,6 +2326,9 @@ export type UserUpdateWithoutDepositsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2172,6 +2359,9 @@ export type UserUncheckedUpdateWithoutDepositsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2202,6 +2392,9 @@ export type UserCreateWithoutBuyerOrdersInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2232,6 +2425,9 @@ export type UserUncheckedCreateWithoutBuyerOrdersInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2267,6 +2463,9 @@ export type UserCreateWithoutSellerOrdersInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2297,6 +2496,9 @@ export type UserUncheckedCreateWithoutSellerOrdersInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2343,6 +2545,9 @@ export type UserUpdateWithoutBuyerOrdersInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2373,6 +2578,9 @@ export type UserUncheckedUpdateWithoutBuyerOrdersInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2414,6 +2622,9 @@ export type UserUpdateWithoutSellerOrdersInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2444,6 +2655,9 @@ export type UserUncheckedUpdateWithoutSellerOrdersInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2474,6 +2688,9 @@ export type UserCreateWithoutDisputesInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2504,6 +2721,9 @@ export type UserUncheckedCreateWithoutDisputesInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2550,6 +2770,9 @@ export type UserUpdateWithoutDisputesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2580,6 +2803,9 @@ export type UserUncheckedUpdateWithoutDisputesInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2610,6 +2836,9 @@ export type UserCreateWithoutFavoriteObjectsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2640,6 +2869,9 @@ export type UserUncheckedCreateWithoutFavoriteObjectsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2686,6 +2918,9 @@ export type UserUpdateWithoutFavoriteObjectsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2716,6 +2951,9 @@ export type UserUncheckedUpdateWithoutFavoriteObjectsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2746,6 +2984,9 @@ export type UserCreateWithoutFavoriteAuctionsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2776,6 +3017,9 @@ export type UserUncheckedCreateWithoutFavoriteAuctionsInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2822,6 +3066,9 @@ export type UserUpdateWithoutFavoriteAuctionsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2852,6 +3099,9 @@ export type UserUncheckedUpdateWithoutFavoriteAuctionsInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2882,6 +3132,9 @@ export type UserCreateWithoutFollowingInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2912,6 +3165,9 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2947,6 +3203,9 @@ export type UserCreateWithoutFollowersInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -2977,6 +3236,9 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   password?: string | null
   provider?: $Enums.AuthProvider
   providerId?: string | null
+  username?: string | null
+  dateOfBirth?: Date | string | null
+  phoneNumber?: string | null
   roles?: Prisma.UserCreaterolesInput | $Enums.Role[]
   stripeCustomerId?: string | null
   stripeConnectId?: string | null
@@ -3023,6 +3285,9 @@ export type UserUpdateWithoutFollowingInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3053,6 +3318,9 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3094,6 +3362,9 @@ export type UserUpdateWithoutFollowersInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3124,6 +3395,9 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider?: Prisma.EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roles?: Prisma.UserUpdaterolesInput | $Enums.Role[]
   stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripeConnectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3311,6 +3585,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   password?: boolean
   provider?: boolean
   providerId?: boolean
+  username?: boolean
+  dateOfBirth?: boolean
+  phoneNumber?: boolean
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
@@ -3343,6 +3620,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   provider?: boolean
   providerId?: boolean
+  username?: boolean
+  dateOfBirth?: boolean
+  phoneNumber?: boolean
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
@@ -3357,6 +3637,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   provider?: boolean
   providerId?: boolean
+  username?: boolean
+  dateOfBirth?: boolean
+  phoneNumber?: boolean
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
@@ -3371,6 +3654,9 @@ export type UserSelectScalar = {
   password?: boolean
   provider?: boolean
   providerId?: boolean
+  username?: boolean
+  dateOfBirth?: boolean
+  phoneNumber?: boolean
   roles?: boolean
   stripeCustomerId?: boolean
   stripeConnectId?: boolean
@@ -3378,7 +3664,7 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "roles" | "stripeCustomerId" | "stripeConnectId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "provider" | "providerId" | "username" | "dateOfBirth" | "phoneNumber" | "roles" | "stripeCustomerId" | "stripeConnectId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sellerProfile?: boolean | Prisma.User$sellerProfileArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
@@ -3430,6 +3716,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     password: string | null
     provider: $Enums.AuthProvider
     providerId: string | null
+    username: string | null
+    dateOfBirth: Date | null
+    phoneNumber: string | null
     roles: $Enums.Role[]
     stripeCustomerId: string | null
     stripeConnectId: string | null
@@ -3881,6 +4170,9 @@ export interface UserFieldRefs {
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly provider: Prisma.FieldRef<"User", 'AuthProvider'>
   readonly providerId: Prisma.FieldRef<"User", 'String'>
+  readonly username: Prisma.FieldRef<"User", 'String'>
+  readonly dateOfBirth: Prisma.FieldRef<"User", 'DateTime'>
+  readonly phoneNumber: Prisma.FieldRef<"User", 'String'>
   readonly roles: Prisma.FieldRef<"User", 'Role[]'>
   readonly stripeCustomerId: Prisma.FieldRef<"User", 'String'>
   readonly stripeConnectId: Prisma.FieldRef<"User", 'String'>

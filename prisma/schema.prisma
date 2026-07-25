@@ -108,6 +108,11 @@ model User {
   provider   AuthProvider @default(LOCAL)
   providerId String?
 
+  // إعدادات الحساب الاختيارية — المستخدم نفسه يضيفها/يعدّلها (بلا توثيق)
+  username    String?   @unique
+  dateOfBirth DateTime?
+  phoneNumber String?
+
   // الدور كمصفوفة، والافتراضي مشتري
   roles Role[] @default([BUYER])
 

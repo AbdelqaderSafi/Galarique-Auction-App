@@ -1,8 +1,9 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
-import { AuthProvider, Role } from 'generated/prisma/client';
+import { AuthProvider, Prisma, Role } from 'generated/prisma/client';
 import { removeFields } from '../utils/object.util';
 import type { UserResponseDTO } from '../auth/dto/auth.dto';
+import type { UpdateProfileInput } from './util/user.validation.schema';
 
 @Injectable()
 export class UserService {
@@ -55,5 +56,27 @@ export class UserService {
     user: Awaited<ReturnType<typeof this.findByEmail>>,
   ): UserResponseDTO['userData'] {
     return removeFields(user!, ['password']);
+  }
+
+  // إعدادات الحساب — username/dateOfBirth/phoneNumber، تعديل جزئي بلا توثيق
+  async updateProfile(
+    userId: string,
+    data: UpdateProfileInput,
+  ): Promise<UserResponseDTO['userData']> {
+    try {
+      const updated = await this.prisma.user.update({
+        where: { id: userId },
+        data,
+      });
+      return this.mapUserWithoutPassword(updated);
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException('Username already taken');
+      }
+      throw error;
+    }
   }
 }

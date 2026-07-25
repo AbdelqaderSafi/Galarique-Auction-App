@@ -21,6 +21,7 @@ import { IsPublic } from 'src/decorators/public.decorator';
 import { ZodValidationPipe } from 'src/pipes/zod.validation.pipe';
 import { AuctionsService } from './auctions.service';
 import { UploadsService } from '../uploads/uploads.service';
+import { SettlementService } from '../orders/settlement.service';
 import {
   AuctionDetailDTO,
   AuctionResponseDTO,
@@ -67,6 +68,7 @@ import {
   ApiPendingAuctions,
   ApiApproveAuction,
   ApiRejectAuction,
+  ApiForceEndAuction,
 } from 'src/swagger/auctions.swagger';
 
 @SwaggerAuctionsTag()
@@ -75,6 +77,7 @@ export class AuctionsController {
   constructor(
     private readonly auctionsService: AuctionsService,
     private readonly uploads: UploadsService,
+    private readonly settlement: SettlementService,
   ) {}
 
   // ---- Public browse (before :id so /admin & /mine aren't captured as ids) ----
@@ -160,6 +163,15 @@ export class AuctionsController {
     @Body(new ZodValidationPipe(rejectAuctionSchema)) dto: RejectAuctionDTO,
   ): Promise<AuctionResponseDTO> {
     return this.auctionsService.reject(id, req.user!.id, dto.reason);
+  }
+
+  // اختبار: إنهاء مزاد LIVE فورًا بدلاً من انتظار durationDays الحقيقية (لفريق الموبايل)
+  @Post(':id/force-end')
+  @HttpCode(200)
+  @Roles([Role.ADMIN])
+  @ApiForceEndAuction()
+  forceEnd(@Param('id') id: string): Promise<{ auctionId: string; closed: boolean }> {
+    return this.settlement.forceEndAuction(id);
   }
 
   // ---- Seller (mutations on a specific auction) ----

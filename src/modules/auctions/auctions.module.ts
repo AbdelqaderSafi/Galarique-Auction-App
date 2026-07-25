@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AuctionsController } from './auctions.controller';
 import { AuctionsService } from './auctions.service';
 import { UploadsModule } from '../uploads/uploads.module';
+import { OrdersModule } from '../orders/orders.module';
 
 @Module({
-  imports: [UploadsModule],
+  imports: [UploadsModule, OrdersModule],
   controllers: [AuctionsController],
   providers: [AuctionsService],
   exports: [AuctionsService],

@@ -142,3 +142,17 @@ export const ApiRejectAuction = () =>
     ApiBadRequestResponse({ description: 'Auction is not pending review' }),
     ApiForbiddenResponse({ description: 'Admin role required' }),
   );
+
+export const ApiForceEndAuction = () =>
+  applyDecorators(
+    ApiBearerAuth('access-token'),
+    ApiOperation({
+      summary:
+        'TESTING ONLY: immediately end a LIVE auction (skips waiting for durationDays) and run the same settlement as a real close — UNSOLD, or ENDED + Order for the mobile team to test without waiting',
+    }),
+    ApiParam({ name: 'id', description: 'Auction id' }),
+    ApiOkResponse({ description: '{ auctionId, closed: true }' }),
+    ApiBadRequestResponse({ description: 'Auction is not LIVE' }),
+    ApiNotFoundResponse({ description: 'Auction not found' }),
+    ApiForbiddenResponse({ description: 'Admin role required' }),
+  );

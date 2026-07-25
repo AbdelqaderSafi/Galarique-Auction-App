@@ -1,4 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   AuctionStatus,
   DepositStatus,
@@ -57,7 +62,23 @@ export class SettlementService {
     return closed;
   }
 
-  private async closeOne(auctionId: string): Promise<boolean> {
+  // إنهاء فوري يدوي لمزاد واحد — لاختبار فريق الموبايل بلا انتظار durationDays الحقيقي.
+  // بيمرّ بنفس مسار closeOne (UNSOLD/ENDED+Order+إيميلات+realtime) — بس بيتجاوز فحص endTime.
+  async forceEndAuction(auctionId: string): Promise<{ auctionId: string; closed: boolean }> {
+    const auction = await this.prisma.auction.findUnique({
+      where: { id: auctionId },
+      select: { status: true },
+    });
+    if (!auction) throw new NotFoundException('Auction not found');
+    if (auction.status !== AuctionStatus.LIVE) {
+      throw new BadRequestException('Only a LIVE auction can be force-ended');
+    }
+    const closed = await this.closeOne(auctionId, true);
+    return { auctionId, closed };
+  }
+
+  // force=true يتجاوز فحص endTime — للاختبار اليدوي (force-end) فقط، نفس خط الإغلاق تمامًا
+  private async closeOne(auctionId: string, force = false): Promise<boolean> {
     const outcome = await this.prisma.$transaction(async (tx) => {
       await tx.$queryRaw`SELECT id FROM "Auction" WHERE id = ${auctionId} FOR UPDATE`;
 
@@ -67,7 +88,8 @@ export class SettlementService {
       });
       // نسخة ثانية سبقتنا، أو تمدّد الوقت (anti-snipe) بين الاستعلام والقفل
       if (!auction || auction.status !== AuctionStatus.LIVE) return null;
-      if (!auction.endTime || auction.endTime > new Date()) return null;
+      if (!auction.endTime) return null;
+      if (!force && auction.endTime > new Date()) return null;
 
       // بلا مزايدات → UNSOLD والقطعة ترجع لصاحبها
       if (!auction.currentWinnerId) {

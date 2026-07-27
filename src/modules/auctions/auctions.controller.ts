@@ -27,6 +27,7 @@ import {
   AuctionResponseDTO,
   BrowseAuctionsQueryDTO,
   PaginatedAuctionsDTO,
+  PaginatedSellerAuctionsDTO,
   RejectAuctionDTO,
   SellerAuctionsQueryDTO,
   UpdateAuctionDTO,
@@ -103,7 +104,7 @@ export class AuctionsController {
     @Param('sellerId') sellerId: string,
     @Query(new ZodValidationPipe(sellerAuctionsQuerySchema))
     query: SellerAuctionsQueryDTO,
-  ): Promise<PaginatedAuctionsDTO> {
+  ): Promise<PaginatedSellerAuctionsDTO> {
     return this.auctionsService.findBySeller(sellerId, query);
   }
 

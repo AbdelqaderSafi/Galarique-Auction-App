@@ -172,3 +172,12 @@ export type PaginatedAuctionsDTO = {
   page: number;
   limit: number;
 };
+export type SellerAuctionResponseDTO = AuctionResponseDTO & {
+  sellerName: string;
+};
+export type PaginatedSellerAuctionsDTO = {
+  items: SellerAuctionResponseDTO[];
+  total: number;
+  page: number;
+  limit: number;
+};

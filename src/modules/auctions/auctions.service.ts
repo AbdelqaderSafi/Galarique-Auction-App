@@ -18,6 +18,7 @@ import type {
   BrowseAuctionsQueryDTO,
   CreateAuctionData,
   PaginatedAuctionsDTO,
+  PaginatedSellerAuctionsDTO,
   SellerAuctionsQueryDTO,
   UpdateAuctionDTO,
 } from './dto/auctions.dto';
@@ -25,6 +26,15 @@ import type {
 // نُرجع القطعة مع صورها مرتّبة مع كل مزاد
 const OBJECT_INCLUDE = {
   object: { include: { images: { orderBy: { position: 'asc' as const } } } },
+} satisfies Prisma.AuctionInclude;
+
+const SELLER_AUCTIONS_INCLUDE = {
+  object: {
+    include: {
+      images: { orderBy: { position: 'asc' as const } },
+      owner: { select: { fullName: true } },
+    },
+  },
 } satisfies Prisma.AuctionInclude;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -294,7 +304,7 @@ export class AuctionsService {
   async findBySeller(
     sellerId: string,
     query: SellerAuctionsQueryDTO,
-  ): Promise<PaginatedAuctionsDTO> {
+  ): Promise<PaginatedSellerAuctionsDTO> {
     const page = query.page ?? 1;
     const limit = query.limit ?? 20;
 
@@ -306,7 +316,7 @@ export class AuctionsService {
     const [items, total] = await this.prisma.$transaction([
       this.prisma.auction.findMany({
         where,
-        include: OBJECT_INCLUDE,
+        include: SELLER_AUCTIONS_INCLUDE,
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
         take: limit,
@@ -314,7 +324,15 @@ export class AuctionsService {
       this.prisma.auction.count({ where }),
     ]);
 
-    return { items, total, page, limit };
+    const mappedItems = items.map(
+      ({ object: { owner, ...object }, ...auction }) => ({
+        ...auction,
+        object,
+        sellerName: owner.fullName,
+      }),
+    );
+
+    return { items: mappedItems, total, page, limit };
   }
 
   // ======================= Admin =======================

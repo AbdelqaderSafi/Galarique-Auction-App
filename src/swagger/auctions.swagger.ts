@@ -115,7 +115,9 @@ export const ApiSellerAuctions = () =>
     ApiParam({ name: 'sellerId', description: 'Seller (owner) user id' }),
     ApiQuery({ name: 'page', required: false, example: 1 }),
     ApiQuery({ name: 'limit', required: false, example: 20 }),
-    ApiOkResponse({ description: '{ items, total, page, limit }' }),
+    ApiOkResponse({
+      description: '{ items (each includes sellerName), total, page, limit }',
+    }),
   );
 
 export const ApiGetAuction = () =>

@@ -343,6 +343,27 @@ describe('AuctionsService', () => {
   });
 
   describe('findBySeller', () => {
+    it('returns sellerName on every auction without exposing the nested owner', async () => {
+      prisma.auction.findMany.mockResolvedValue([
+        {
+          id: 'a1',
+          object: {
+            id: 'object-1',
+            owner: { fullName: 'Seller One' },
+            images: [],
+          },
+        },
+      ] as any);
+      prisma.auction.count.mockResolvedValue(1);
+
+      const result = await service.findBySeller('seller-1', {});
+
+      expect(result.items[0]).toEqual(
+        expect.objectContaining({ id: 'a1', sellerName: 'Seller One' }),
+      );
+      expect('owner' in result.items[0].object).toBe(false);
+    });
+
     it('filters by ownerId + public statuses only, newest first, with default pagination', async () => {
       prisma.auction.findMany.mockResolvedValue([] as any);
       prisma.auction.count.mockResolvedValue(0);
@@ -374,15 +395,38 @@ describe('AuctionsService', () => {
     });
 
     it('applies custom page/limit as skip/take and echoes them back', async () => {
-      prisma.auction.findMany.mockResolvedValue([{ id: 'a1' }] as any);
+      prisma.auction.findMany.mockResolvedValue([
+        {
+          id: 'a1',
+          object: {
+            id: 'object-1',
+            owner: { fullName: 'Seller One' },
+            images: [],
+          },
+        },
+      ] as any);
       prisma.auction.count.mockResolvedValue(25);
 
-      const result = await service.findBySeller('seller-1', { page: 3, limit: 5 } as any);
+      const result = await service.findBySeller('seller-1', {
+        page: 3,
+        limit: 5,
+      });
 
       expect(prisma.auction.findMany).toHaveBeenCalledWith(
         expect.objectContaining({ skip: 10, take: 5 }),
       );
-      expect(result).toEqual({ items: [{ id: 'a1' }], total: 25, page: 3, limit: 5 });
+      expect(result).toEqual({
+        items: [
+          {
+            id: 'a1',
+            object: { id: 'object-1', images: [] },
+            sellerName: 'Seller One',
+          },
+        ],
+        total: 25,
+        page: 3,
+        limit: 5,
+      });
     });
 
     it('returns an empty list (not a 404) for a seller with no public auctions', async () => {

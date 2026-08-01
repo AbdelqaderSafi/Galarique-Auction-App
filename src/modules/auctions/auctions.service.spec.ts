@@ -1,7 +1,8 @@
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
-import { AuctionStatus, ObjectStatus, Role } from 'generated/prisma/client';
+import { AuctionStatus, ObjectStatus, OrderStatus, Role } from 'generated/prisma/client';
 import { AuctionsService, PUBLIC_STATUSES } from './auctions.service';
 import { MailService } from '../mail/mail.service';
+import { WalletService } from '../wallet/wallet.service';
 import {
   createMockDatabaseService,
   resetMockDatabaseService,
@@ -12,6 +13,7 @@ import type { SafeUser } from 'src/types/declartion-mergin';
 describe('AuctionsService', () => {
   let prisma: MockDatabaseService;
   let mail: jest.Mocked<MailService>;
+  let wallet: jest.Mocked<WalletService>;
   let service: AuctionsService;
 
   const owner: SafeUser = { id: 'seller-1', roles: [Role.SELLER] } as SafeUser;
@@ -24,7 +26,10 @@ describe('AuctionsService', () => {
       sendAuctionApproved: jest.fn(),
       sendAuctionRejected: jest.fn(),
     } as unknown as jest.Mocked<MailService>;
-    service = new AuctionsService(prisma, mail);
+    wallet = {
+      releaseBidDeposit: jest.fn(),
+    } as unknown as jest.Mocked<WalletService>;
+    service = new AuctionsService(prisma, mail, wallet);
   });
 
   afterEach(() => {
@@ -189,15 +194,49 @@ describe('AuctionsService', () => {
   });
 
   describe('cancel', () => {
-    it('allows the seller to cancel a PENDING_REVIEW auction', async () => {
+    // الإلغاء صار يقرأ المزاد مرّتين: مرّة للتفويض ومرّة داخل الـ transaction بعد القفل
+    const mockAuctionForCancel = (status: AuctionStatus, held: string[] = []) => {
       prisma.auction.findUnique.mockResolvedValue({
-        status: AuctionStatus.PENDING_REVIEW,
+        status,
         objectId: 'object-1',
         object: { ownerId: owner.id },
       } as any);
+      prisma.auctionDeposit.findMany.mockResolvedValue(
+        held.map((userId) => ({ userId })) as any,
+      );
       prisma.auction.update.mockResolvedValue({ status: AuctionStatus.CANCELLED } as any);
+    };
+
+    it('allows the seller to cancel a PENDING_REVIEW auction', async () => {
+      mockAuctionForCancel(AuctionStatus.PENDING_REVIEW);
 
       await expect(service.cancel('a1', owner)).resolves.toBeDefined();
+    });
+
+    it('releases every still-HELD deposit so no $50 is stranded in lockedBalance', async () => {
+      mockAuctionForCancel(AuctionStatus.LIVE, ['leader-1']);
+
+      await service.cancel('a1', admin);
+
+      // ملاحظة: نفحص الوسائط عبر mock.calls لأن expect.anything() يفشل مع
+      // بروكسي jest-mock-extended (يولّد asymmetricMatch تلقائياً فيُفسَّر كـ matcher)
+      expect(wallet.releaseBidDeposit).toHaveBeenCalledTimes(1);
+      const [txArg, userIdArg, auctionIdArg] =
+        wallet.releaseBidDeposit.mock.calls[0];
+      expect(txArg).toBeDefined(); // مرّرنا الـ tx لا العميل العام
+      expect(userIdArg).toBe('leader-1');
+      expect(auctionIdArg).toBe('a1');
+    });
+
+    it('cancels any open AWAITING_PAYMENT order so the scheduler cannot charge the buyer afterwards', async () => {
+      mockAuctionForCancel(AuctionStatus.ENDED);
+
+      await service.cancel('a1', admin);
+
+      expect(prisma.order.updateMany).toHaveBeenCalledWith({
+        where: { auctionId: 'a1', status: OrderStatus.AWAITING_PAYMENT },
+        data: { status: OrderStatus.CANCELLED },
+      });
     });
 
     it('forbids the seller from cancelling a LIVE auction (only admin can)', async () => {
@@ -211,12 +250,7 @@ describe('AuctionsService', () => {
     });
 
     it('allows an admin to cancel a LIVE auction', async () => {
-      prisma.auction.findUnique.mockResolvedValue({
-        status: AuctionStatus.LIVE,
-        objectId: 'object-1',
-        object: { ownerId: owner.id },
-      } as any);
-      prisma.auction.update.mockResolvedValue({ status: AuctionStatus.CANCELLED } as any);
+      mockAuctionForCancel(AuctionStatus.LIVE);
 
       await expect(service.cancel('a1', admin)).resolves.toBeDefined();
     });

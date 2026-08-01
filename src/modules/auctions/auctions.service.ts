@@ -6,12 +6,15 @@ import {
 } from '@nestjs/common';
 import {
   AuctionStatus,
+  DepositStatus,
   ObjectStatus,
+  OrderStatus,
   Prisma,
   Role,
 } from 'generated/prisma/client';
 import { DatabaseService } from '../database/database.service';
 import { MailService } from '../mail/mail.service';
+import { WalletService } from '../wallet/wallet.service';
 import type { SafeUser } from 'src/types/declartion-mergin';
 import type {
   AuctionDetailDTO,
@@ -59,6 +62,7 @@ export class AuctionsService {
   constructor(
     private readonly prisma: DatabaseService,
     private readonly mail: MailService,
+    private readonly wallet: WalletService,
   ) {}
 
   // ======================= Seller =======================
@@ -223,17 +227,47 @@ export class AuctionsService {
     const isOwner = auction.object.ownerId === user.id;
     if (!isAdmin && !isOwner) throw new ForbiddenException();
 
-    // البائع: PENDING/REJECTED فقط (المسودّة تُحذف). الأدمن: أي مزاد غير منتهٍ نهائياً.
-    const cancellable = isAdmin
-      ? auction.status !== AuctionStatus.CANCELLED &&
-        auction.status !== AuctionStatus.SOLD
-      : auction.status === AuctionStatus.PENDING_REVIEW ||
-        auction.status === AuctionStatus.REJECTED;
-    if (!cancellable) {
+    // فحص مبكّر لرسالة خطأ سريعة؛ الفحص المُلزِم يتكرّر داخل الـ transaction بعد القفل
+    if (!this.isCancellable(auction.status, isAdmin)) {
       throw new BadRequestException('This auction cannot be cancelled');
     }
 
     return this.prisma.$transaction(async (tx) => {
+      // قفل صف المزاد — يمنع سباق الإلغاء مع مزايدة جارية أو مع إغلاق السكدولر
+      await tx.$queryRaw`SELECT id FROM "Auction" WHERE id = ${id} FOR UPDATE`;
+
+      // إعادة فحص الحالة بعد القفل (قد تكون تغيّرت بين القراءة والقفل)
+      const fresh = await tx.auction.findUnique({
+        where: { id },
+        select: { status: true },
+      });
+      if (!fresh) throw new NotFoundException('Auction not found');
+      if (!this.isCancellable(fresh.status, isAdmin)) {
+        throw new BadRequestException('This auction cannot be cancelled');
+      }
+
+      // أي طلب دفع مفتوح يُلغى مع المزاد — وإلا يلتقطه السكدولر لاحقاً
+      // (retryWinnerPayments) فيخصم من المشتري ويرجّع المزاد SOLD بعد إلغائه
+      await tx.order.updateMany({
+        where: { auctionId: id, status: OrderStatus.AWAITING_PAYMENT },
+        data: { status: OrderStatus.CANCELLED },
+      });
+
+      // أي عربون ما زال محجوزاً على هذا المزاد يعود لصاحبه فوراً،
+      // وإلا بقي $50 عالقاً في lockedBalance للأبد (لا جوب يعالج CANCELLED)
+      const heldDeposits = await tx.auctionDeposit.findMany({
+        where: { auctionId: id, status: DepositStatus.HELD },
+        select: { userId: true },
+      });
+      for (const { userId } of heldDeposits) {
+        await this.wallet.releaseBidDeposit(
+          tx,
+          userId,
+          id,
+          'Bid deposit released (auction cancelled)',
+        );
+      }
+
       const cancelled = await tx.auction.update({
         where: { id },
         data: { status: AuctionStatus.CANCELLED },
@@ -248,6 +282,14 @@ export class AuctionsService {
       });
       return cancelled;
     });
+  }
+
+  // البائع: PENDING/REJECTED فقط. الأدمن: أي مزاد غير منتهٍ نهائياً.
+  private isCancellable(status: AuctionStatus, isAdmin: boolean): boolean {
+    return isAdmin
+      ? status !== AuctionStatus.CANCELLED && status !== AuctionStatus.SOLD
+      : status === AuctionStatus.PENDING_REVIEW ||
+          status === AuctionStatus.REJECTED;
   }
 
   // ======================= Public =======================

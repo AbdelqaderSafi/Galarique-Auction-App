@@ -256,27 +256,53 @@ export class WalletService {
       );
     }
 
-    // 2) خصم ذرّي محمي — يمنع سباق السحب المزدوج
+    // 2) الخصم + سجل السحب معاً في transaction واحد — فلا يمكن أن ينخصم رصيد
+    //    بلا صف Withdrawal يقابله (كان الانقطاع بين الاثنين يُبخّر المال بلا أثر).
+    //    الخصم شرطي (balance >= amount) فيبقى محصّناً ضد السحب المزدوج المتزامن.
     await this.getOrCreateWallet(userId);
-    const debit = await this.prisma.wallet.updateMany({
-      where: { userId, balance: { gte: amountDec } },
-      data: { balance: { decrement: amountDec } },
+    const withdrawal = await this.prisma.$transaction(async (tx) => {
+      const debit = await tx.wallet.updateMany({
+        where: { userId, balance: { gte: amountDec } },
+        data: { balance: { decrement: amountDec } },
+      });
+      if (debit.count === 0) {
+        throw new BadRequestException('Insufficient balance.');
+      }
+      return tx.withdrawal.create({
+        data: { userId, amount: amountDec, status: WithdrawalStatus.PENDING },
+      });
     });
-    if (debit.count === 0) {
-      throw new BadRequestException('Insufficient balance.');
-    }
 
-    // 3) سجل السحب PENDING
-    const withdrawal = await this.prisma.withdrawal.create({
-      data: { userId, amount: amountDec, status: WithdrawalStatus.PENDING },
-    });
-
-    // 4) التحويل الفعلي عبر Stripe
+    // 3) التحويل الفعلي — المفتاح الذرّي يمنع تحويلاً ثانياً عند إعادة المحاولة
+    let transfer: Stripe.Transfer;
     try {
-      const transfer = await this.stripe.createTransfer(
+      transfer = await this.stripe.createTransfer(
         cents,
         user.stripeConnectId,
+        withdrawal.id,
       );
+    } catch (error) {
+      // فشل التحويل نفسه: المال لم يغادر أبداً → إرجاع الرصيد آمن
+      await this.prisma.$transaction(async (tx) => {
+        await tx.wallet.update({
+          where: { userId },
+          data: { balance: { increment: amountDec } },
+        });
+        await tx.withdrawal.update({
+          where: { id: withdrawal.id },
+          data: { status: WithdrawalStatus.FAILED },
+        });
+      });
+      throw new BadRequestException(
+        `Withdrawal failed: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
+
+    // 4) التحويل نجح — المال غادر فعلاً. من هنا لا نُرجِع الرصيد مهما حصل،
+    //    وإلا قبض المستخدم مرتين (كاش من Stripe + رصيد في المحفظة).
+    try {
       await this.prisma.$transaction(async (tx) => {
         await tx.withdrawal.update({
           where: { id: withdrawal.id },
@@ -296,25 +322,19 @@ export class WalletService {
           },
         });
       });
-      return { withdrawalId: withdrawal.id, status: WithdrawalStatus.PAID };
     } catch (error) {
-      // فشل التحويل → نُرجِع الرصيد ونضع الحالة FAILED
-      await this.prisma.$transaction(async (tx) => {
-        await tx.wallet.update({
-          where: { userId },
-          data: { balance: { increment: amountDec } },
-        });
-        await tx.withdrawal.update({
-          where: { id: withdrawal.id },
-          data: { status: WithdrawalStatus.FAILED },
-        });
-      });
-      throw new BadRequestException(
-        `Withdrawal failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+      // نادرة: التحويل تم لكن فشل تسجيله. لا إرجاع للرصيد —
+      // نسجّلها بوضوح لتُصالَح يدوياً عبر withdrawal.id + transfer.id
+      this.logger.error(
+        `CRITICAL: Stripe transfer ${transfer.id} succeeded but recording it failed ` +
+          `(withdrawal ${withdrawal.id}, user ${userId}, $${amountDec.toFixed(2)}). ` +
+          `Balance already debited — do NOT refund. Reconcile manually. Cause: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
       );
     }
+
+    return { withdrawalId: withdrawal.id, status: WithdrawalStatus.PAID };
   }
 
   // ===== Bid deposits (called by the bids module inside its transaction) =====
@@ -378,10 +398,12 @@ export class WalletService {
   }
 
   // يُرجِع عربون المزايد المُتجاوَز فوراً (locked → balance). no-op لو مش HELD.
+  // note اختياري: المزايدة تتركه على الافتراضي، والإلغاء الإداري يمرّر سببه الصحيح.
   async releaseBidDeposit(
     tx: Prisma.TransactionClient,
     userId: string,
     auctionId: string,
+    note = 'Bid deposit released (outbid)',
   ): Promise<void> {
     const deposit = await tx.auctionDeposit.findUnique({
       where: { auctionId_userId: { auctionId, userId } },
@@ -411,7 +433,7 @@ export class WalletService {
         type: WalletTxnType.DEPOSIT_RELEASE,
         amount: this.DEPOSIT_AMOUNT,
         refId: auctionId,
-        note: 'Bid deposit released (outbid)',
+        note,
       },
     });
   }

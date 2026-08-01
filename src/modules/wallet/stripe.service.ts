@@ -91,17 +91,23 @@ export class StripeService {
     return stripe.accounts.retrieve(accountId);
   }
 
-  // تحويل الرصيد إلى الحساب المرتبط (السحب الفوري)
+  // تحويل الرصيد إلى الحساب المرتبط (السحب الفوري).
+  // idempotencyKey (= withdrawal.id) يضمن أن إعادة المحاولة بعد انقطاع شبكة
+  // لا تُنشئ تحويلاً ثانياً — Stripe تُرجِع نفس التحويل الأصلي.
   async createTransfer(
     amountCents: number,
     destination: string,
+    idempotencyKey?: string,
   ): Promise<Stripe.Transfer> {
     const stripe = this.getClient();
-    return stripe.transfers.create({
-      amount: amountCents,
-      currency: 'usd',
-      destination,
-    });
+    return stripe.transfers.create(
+      {
+        amount: amountCents,
+        currency: 'usd',
+        destination,
+      },
+      idempotencyKey ? { idempotencyKey } : undefined,
+    );
   }
 
   // يُنشأ مرّة واحدة؛ يرمي خطأً واضحاً إن كان مفتاح Stripe ناقصاً

@@ -117,9 +117,12 @@ function buildAuctionForm(overrides = {}) {
     title: '[SYS] Test Painting',
     description: 'A system-test auction created end-to-end.',
     startingPrice: '100',
-    minBidIncrement: '25',
     durationDays: '1',
     saveAsDraft: 'true',
+    customFields: JSON.stringify([
+      { label: 'Artist', value: 'Van Gogh' },
+      { label: 'Edition', value: '12/100' },
+    ]),
     ...overrides,
   };
   const parts = [];
@@ -330,6 +333,46 @@ async function main() {
     `got ${r.status}: ${JSON.stringify(r.json)}`);
   const auction1 = r.json?.id;
 
+  check('POST auctions', 'minBidIncrement is fixed at 10 (not a seller input)',
+    Number(r.json?.minBidIncrement) === 10, `got ${r.json?.minBidIncrement}`);
+  check('POST auctions', 'seller-defined customFields are stored in order',
+    JSON.stringify(r.json?.object?.customFields) ===
+      JSON.stringify([{ label: 'Artist', value: 'Van Gogh' }, { label: 'Edition', value: '12/100' }]),
+    `got ${JSON.stringify(r.json?.object?.customFields)}`);
+
+  // minBidIncrement is ignored even if a client still sends it
+  r = await req('POST', '/auctions', {
+    token: buyerToken,
+    form: buildAuctionForm({ title: '[SYS] Ignored Increment', minBidIncrement: '25' }),
+  });
+  check('POST auctions', 'a client-sent minBidIncrement is ignored -> still 10',
+    r.status === 201 && Number(r.json?.minBidIncrement) === 10,
+    `got ${r.status}: ${r.json?.minBidIncrement}`);
+  await req('DELETE', `/auctions/${r.json?.id}`, { token: buyerToken });
+
+  // customFields validation (limits + malformed JSON)
+  r = await req('POST', '/auctions', {
+    token: buyerToken,
+    form: buildAuctionForm({ customFields: '[{"label":"a","value":"1"},{"label":"A","value":"2"}]' }),
+  });
+  check('POST auctions', 'duplicate customFields labels -> 400', r.status === 400, `got ${r.status}`);
+
+  r = await req('POST', '/auctions', {
+    token: buyerToken,
+    form: buildAuctionForm({
+      customFields: JSON.stringify(
+        Array.from({ length: 6 }, (_, i) => ({ label: `F${i}`, value: 'x' })),
+      ),
+    }),
+  });
+  check('POST auctions', 'more than 5 customFields -> 400', r.status === 400, `got ${r.status}`);
+
+  r = await req('POST', '/auctions', {
+    token: buyerToken,
+    form: buildAuctionForm({ customFields: 'not-json' }),
+  });
+  check('POST auctions', 'malformed customFields JSON -> 400', r.status === 400, `got ${r.status}`);
+
   r = await req('GET', '/auctions/mine', { token: buyerToken });
   check('GET auctions/mine', 'seller sees the new draft', r.status === 200 && r.json?.some((a) => a.id === auction1),
     `got ${r.status}, count ${r.json?.length}`);
@@ -356,6 +399,37 @@ async function main() {
   check('PATCH auctions/:id', 'seller edits a REJECTED auction -> auto-resubmits to PENDING_REVIEW',
     r.status === 200 && r.json?.status === 'PENDING_REVIEW' && r.json?.object?.title.endsWith('(fixed)'),
     `got ${r.status}: ${JSON.stringify({ status: r.json?.status, title: r.json?.object?.title })}`);
+
+  check('PATCH auctions/:id', 'an untouched customFields survives an unrelated edit',
+    JSON.stringify(r.json?.object?.customFields) ===
+      JSON.stringify([{ label: 'Artist', value: 'Van Gogh' }, { label: 'Edition', value: '12/100' }]),
+    `got ${JSON.stringify(r.json?.object?.customFields)}`);
+
+  r = await req('PATCH', `/auctions/${auction1}`, {
+    token: buyerToken,
+    body: { customFields: [{ label: 'Provenance', value: 'Private collection, Paris' }] },
+  });
+  check('PATCH auctions/:id', 'customFields are replaced wholesale',
+    r.status === 200 &&
+      JSON.stringify(r.json?.object?.customFields) ===
+        JSON.stringify([{ label: 'Provenance', value: 'Private collection, Paris' }]),
+    `got ${r.status}: ${JSON.stringify(r.json?.object?.customFields)}`);
+
+  r = await req('PATCH', `/auctions/${auction1}`, { token: buyerToken, body: { minBidIncrement: 25 } });
+  check('PATCH auctions/:id', 'minBidIncrement cannot be changed after creation -> stays 10',
+    r.status === 200 && Number(r.json?.minBidIncrement) === 10,
+    `got ${r.status}: ${r.json?.minBidIncrement}`);
+
+  r = await req('PATCH', `/auctions/${auction1}`, {
+    token: buyerToken,
+    body: { customFields: [{ label: 'x'.repeat(31), value: 'too long a label' }] },
+  });
+  check('PATCH auctions/:id', 'a customFields label over 30 chars -> 400', r.status === 400, `got ${r.status}`);
+
+  r = await req('PATCH', `/auctions/${auction1}`, { token: buyerToken, body: { customFields: [] } });
+  check('PATCH auctions/:id', 'an empty array clears customFields',
+    r.status === 200 && Array.isArray(r.json?.object?.customFields) && r.json.object.customFields.length === 0,
+    `got ${r.status}: ${JSON.stringify(r.json?.object?.customFields)}`);
 
   r = await req('POST', `/auctions/${auction1}/approve`, { token: adminToken });
   check('POST auctions/:id/approve', 'admin approves -> LIVE', r.status === 200 && r.json?.status === 'LIVE',

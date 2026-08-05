@@ -100,8 +100,11 @@ describe('Auction lifecycle (integration)', () => {
       .field('category', 'ART')
       .field('title', 'Antique Vase')
       .field('startingPrice', '100')
-      .field('minBidIncrement', '10')
       .field('durationDays', '7')
+      .field(
+        'customFields',
+        JSON.stringify([{ label: 'Artist', value: 'Van Gogh' }]),
+      )
       .attach('mainImage', Buffer.from('fake-image-bytes'), {
         filename: 'main.png',
         contentType: 'image/png',
@@ -174,6 +177,11 @@ describe('Auction lifecycle (integration)', () => {
     const createRes = await createDraftlessAuction(seller.token);
     expect(createRes.status).toBe(201);
     expect(createRes.body.status).toBe('PENDING_REVIEW');
+    // البائع لا يُدخل minBidIncrement — ثابت $10، والحقول المخصّصة تُحفظ كما أرسلها
+    expect(Number(createRes.body.minBidIncrement)).toBe(10);
+    expect(createRes.body.object.customFields).toEqual([
+      { label: 'Artist', value: 'Van Gogh' },
+    ]);
     const auctionId = createRes.body.id as string;
 
     // A buyer cannot bid on a not-yet-approved auction

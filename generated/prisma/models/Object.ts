@@ -87,6 +87,7 @@ export type ObjectCountAggregateOutputType = {
   heightCm: number
   widthCm: number
   depthCm: number
+  customFields: number
   status: number
   createdAt: number
   updatedAt: number
@@ -155,6 +156,7 @@ export type ObjectCountAggregateInputType = {
   heightCm?: true
   widthCm?: true
   depthCm?: true
+  customFields?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -260,6 +262,7 @@ export type ObjectGroupByOutputType = {
   heightCm: runtime.Decimal | null
   widthCm: runtime.Decimal | null
   depthCm: runtime.Decimal | null
+  customFields: runtime.JsonValue
   status: $Enums.ObjectStatus
   createdAt: Date
   updatedAt: Date
@@ -301,6 +304,7 @@ export type ObjectWhereInput = {
   heightCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonFilter<"Object">
   status?: Prisma.EnumObjectStatusFilter<"Object"> | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFilter<"Object"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Object"> | Date | string
@@ -323,6 +327,7 @@ export type ObjectOrderByWithRelationInput = {
   heightCm?: Prisma.SortOrderInput | Prisma.SortOrder
   widthCm?: Prisma.SortOrderInput | Prisma.SortOrder
   depthCm?: Prisma.SortOrderInput | Prisma.SortOrder
+  customFields?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -348,6 +353,7 @@ export type ObjectWhereUniqueInput = Prisma.AtLeast<{
   heightCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonFilter<"Object">
   status?: Prisma.EnumObjectStatusFilter<"Object"> | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFilter<"Object"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Object"> | Date | string
@@ -370,6 +376,7 @@ export type ObjectOrderByWithAggregationInput = {
   heightCm?: Prisma.SortOrderInput | Prisma.SortOrder
   widthCm?: Prisma.SortOrderInput | Prisma.SortOrder
   depthCm?: Prisma.SortOrderInput | Prisma.SortOrder
+  customFields?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -396,6 +403,7 @@ export type ObjectScalarWhereWithAggregatesInput = {
   heightCm?: Prisma.DecimalNullableWithAggregatesFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableWithAggregatesFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableWithAggregatesFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonWithAggregatesFilter<"Object">
   status?: Prisma.EnumObjectStatusWithAggregatesFilter<"Object"> | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Object"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Object"> | Date | string
@@ -413,6 +421,7 @@ export type ObjectCreateInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -435,6 +444,7 @@ export type ObjectUncheckedCreateInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -455,6 +465,7 @@ export type ObjectUpdateInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -477,6 +488,7 @@ export type ObjectUncheckedUpdateInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -498,6 +510,7 @@ export type ObjectCreateManyInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -515,6 +528,7 @@ export type ObjectUpdateManyMutationInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -533,6 +547,7 @@ export type ObjectUncheckedUpdateManyInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -561,6 +576,7 @@ export type ObjectCountOrderByAggregateInput = {
   heightCm?: Prisma.SortOrder
   widthCm?: Prisma.SortOrder
   depthCm?: Prisma.SortOrder
+  customFields?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -731,6 +747,7 @@ export type ObjectCreateWithoutOwnerInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -751,6 +768,7 @@ export type ObjectUncheckedCreateWithoutOwnerInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -801,6 +819,7 @@ export type ObjectScalarWhereInput = {
   heightCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.DecimalNullableFilter<"Object"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonFilter<"Object">
   status?: Prisma.EnumObjectStatusFilter<"Object"> | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFilter<"Object"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Object"> | Date | string
@@ -818,6 +837,7 @@ export type ObjectCreateWithoutImagesInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -839,6 +859,7 @@ export type ObjectUncheckedCreateWithoutImagesInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -874,6 +895,7 @@ export type ObjectUpdateWithoutImagesInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -895,6 +917,7 @@ export type ObjectUncheckedUpdateWithoutImagesInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -914,6 +937,7 @@ export type ObjectCreateWithoutAuctionsInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -935,6 +959,7 @@ export type ObjectUncheckedCreateWithoutAuctionsInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -970,6 +995,7 @@ export type ObjectUpdateWithoutAuctionsInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -991,6 +1017,7 @@ export type ObjectUncheckedUpdateWithoutAuctionsInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1010,6 +1037,7 @@ export type ObjectCreateWithoutFavoritesInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1031,6 +1059,7 @@ export type ObjectUncheckedCreateWithoutFavoritesInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1066,6 +1095,7 @@ export type ObjectUpdateWithoutFavoritesInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1087,6 +1117,7 @@ export type ObjectUncheckedUpdateWithoutFavoritesInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1106,6 +1137,7 @@ export type ObjectCreateManyOwnerInput = {
   heightCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: $Enums.ObjectStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1123,6 +1155,7 @@ export type ObjectUpdateWithoutOwnerInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1143,6 +1176,7 @@ export type ObjectUncheckedUpdateWithoutOwnerInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1163,6 +1197,7 @@ export type ObjectUncheckedUpdateManyWithoutOwnerInput = {
   heightCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   widthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   depthCm?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  customFields?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.EnumObjectStatusFieldUpdateOperationsInput | $Enums.ObjectStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1230,6 +1265,7 @@ export type ObjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
+  customFields?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1253,6 +1289,7 @@ export type ObjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
+  customFields?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1272,6 +1309,7 @@ export type ObjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
+  customFields?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1291,12 +1329,13 @@ export type ObjectSelectScalar = {
   heightCm?: boolean
   widthCm?: boolean
   depthCm?: boolean
+  customFields?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "category" | "title" | "description" | "mainImage" | "era" | "condition" | "originality" | "heightCm" | "widthCm" | "depthCm" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["object"]>
+export type ObjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "category" | "title" | "description" | "mainImage" | "era" | "condition" | "originality" | "heightCm" | "widthCm" | "depthCm" | "customFields" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["object"]>
 export type ObjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Object$imagesArgs<ExtArgs>
@@ -1332,6 +1371,7 @@ export type $ObjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     heightCm: runtime.Decimal | null
     widthCm: runtime.Decimal | null
     depthCm: runtime.Decimal | null
+    customFields: runtime.JsonValue
     status: $Enums.ObjectStatus
     createdAt: Date
     updatedAt: Date
@@ -1774,6 +1814,7 @@ export interface ObjectFieldRefs {
   readonly heightCm: Prisma.FieldRef<"Object", 'Decimal'>
   readonly widthCm: Prisma.FieldRef<"Object", 'Decimal'>
   readonly depthCm: Prisma.FieldRef<"Object", 'Decimal'>
+  readonly customFields: Prisma.FieldRef<"Object", 'Json'>
   readonly status: Prisma.FieldRef<"Object", 'ObjectStatus'>
   readonly createdAt: Prisma.FieldRef<"Object", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Object", 'DateTime'>

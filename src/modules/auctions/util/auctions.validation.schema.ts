@@ -16,9 +16,50 @@ const CATEGORY_VALUES = [
 export const DURATION_PRESETS = [1, 3, 7, 10] as const;
 
 const price = z.number().positive().max(100_000_000);
-const increment = z.number().positive().max(1_000_000);
 const shortText = z.string().trim().max(60);
 const dimension = z.number().positive().max(100_000);
+
+// حقول إضافية يسمّيها البائع بنفسه (اسم + قيمة نصية) — من شاشة Details
+export const MAX_CUSTOM_FIELDS = 5;
+const MAX_LABEL_LEN = 30;
+const MAX_VALUE_LEN = 120;
+
+const customField = z.object({
+  label: z.string().trim().min(1).max(MAX_LABEL_LEN),
+  value: z.string().trim().min(1).max(MAX_VALUE_LEN),
+});
+
+const hasUniqueLabels = (fields: { label: string }[]) => {
+  const seen = new Set(fields.map((f) => f.label.toLowerCase()));
+  return seen.size === fields.length;
+};
+
+// يصل كنص JSON من multipart (POST) وكمصفوفة فعلية من JSON (PATCH) — نقبل الاثنين
+export const customFieldsSchema = z
+  .union([z.string(), z.array(z.unknown())])
+  .transform((raw, ctx) => {
+    if (typeof raw !== 'string') return raw;
+    try {
+      return JSON.parse(raw) as unknown[];
+    } catch {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'customFields must be a valid JSON array',
+      });
+      return z.NEVER;
+    }
+  })
+  .pipe(
+    z
+      .array(customField)
+      .max(MAX_CUSTOM_FIELDS, {
+        message: `customFields must contain at most ${MAX_CUSTOM_FIELDS} items`,
+      })
+      .refine(hasUniqueLabels, {
+        message: 'customFields labels must be unique',
+      }),
+  );
+
 const durationDays = z
   .number()
   .int()
@@ -56,7 +97,7 @@ export const createAuctionBodySchema = z.preprocess(
     widthCm: z.coerce.number().positive().max(100_000).optional(),
     depthCm: z.coerce.number().positive().max(100_000).optional(),
     startingPrice: z.coerce.number().positive().max(100_000_000),
-    minBidIncrement: z.coerce.number().positive().max(1_000_000).optional(),
+    customFields: customFieldsSchema.optional(),
     durationDays: z
       .coerce.number()
       .int()
@@ -82,7 +123,7 @@ export const updateAuctionSchema = z.object({
   widthCm: dimension.nullable().optional(),
   depthCm: dimension.nullable().optional(),
   startingPrice: price.optional(),
-  minBidIncrement: increment.optional(),
+  customFields: customFieldsSchema.optional(),
   durationDays: durationDays.optional(),
 });
 

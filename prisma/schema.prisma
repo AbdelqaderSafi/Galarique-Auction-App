@@ -290,6 +290,9 @@ model Object {
   widthCm     Decimal? @db.Decimal(8, 2)
   depthCm     Decimal? @db.Decimal(8, 2)
 
+  // حقول يسمّيها البائع بنفسه عند الإنشاء — [{ label, value }] (حتى 5)
+  customFields Json @default("[]")
+
   status ObjectStatus @default(DRAFT)
 
   auctions  Auction[]
@@ -321,7 +324,7 @@ model Auction {
 
   // التسعير (من Set Value + ثغرات نضيفها بالباك اند)
   startingPrice   Decimal  @db.Decimal(12, 2) // سعر الافتتاح = أقل سعر للبيع
-  minBidIncrement Decimal  @default(50) @db.Decimal(12, 2) // الحد الأدنى للزيادة
+  minBidIncrement Decimal  @default(10) @db.Decimal(12, 2) // الحد الأدنى للزيادة — ثابت، لا يُدخله البائع
   currentPrice    Decimal  @default(0) @db.Decimal(12, 2) // أعلى مزايدة حالياً
 
   currentWinner   User?   @relation("AuctionWinner", fields: [currentWinnerId], references: [id])

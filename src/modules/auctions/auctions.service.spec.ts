@@ -46,7 +46,6 @@ describe('AuctionsService', () => {
         title: 'Vase',
         category: 'ART',
         startingPrice: 100,
-        minBidIncrement: 10,
         durationDays: 7,
       } as any);
 
@@ -55,6 +54,42 @@ describe('AuctionsService', () => {
       );
       expect(prisma.auction.create).toHaveBeenCalledWith(
         expect.objectContaining({ data: expect.objectContaining({ status: AuctionStatus.PENDING_REVIEW }) }),
+      );
+    });
+
+    // minBidIncrement ثابت $10 من @default في الداتابيس — يجب ألّا يُكتب أبداً من الكود،
+    // حتى لو تسلّل في الـ dto، وإلا صار البائع قادراً على تحديده
+    it('never writes minBidIncrement — it stays the DB default', async () => {
+      prisma.object.create.mockResolvedValue({ id: 'object-1' } as any);
+      prisma.auction.create.mockResolvedValue({ id: 'auction-1' } as any);
+
+      await service.create(owner.id, {
+        title: 'Vase',
+        category: 'ART',
+        startingPrice: 100,
+        durationDays: 7,
+        minBidIncrement: 999,
+      } as any);
+
+      const data = prisma.auction.create.mock.calls[0][0].data as Record<string, unknown>;
+      expect(data).not.toHaveProperty('minBidIncrement');
+    });
+
+    it('passes the seller-defined customFields through to the Object', async () => {
+      prisma.object.create.mockResolvedValue({ id: 'object-1' } as any);
+      prisma.auction.create.mockResolvedValue({ id: 'auction-1' } as any);
+
+      const customFields = [{ label: 'Artist', value: 'Van Gogh' }];
+      await service.create(owner.id, {
+        title: 'Vase',
+        category: 'ART',
+        startingPrice: 100,
+        durationDays: 7,
+        customFields,
+      } as any);
+
+      expect(prisma.object.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ customFields }) }),
       );
     });
 
@@ -133,6 +168,41 @@ describe('AuctionsService', () => {
             reviewedAt: null,
           }),
         }),
+      );
+    });
+
+    it('replaces customFields on the Object and never writes minBidIncrement', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.object.update.mockResolvedValue({ id: 'object-1' } as any);
+      prisma.auction.update.mockResolvedValue({ id: 'a1' } as any);
+
+      const customFields = [{ label: 'Signature', value: 'Bottom right' }];
+      await service.update('a1', owner, { customFields, minBidIncrement: 999 } as any);
+
+      expect(prisma.object.update).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ customFields }) }),
+      );
+      const data = prisma.auction.update.mock.calls[0][0].data as Record<string, unknown>;
+      expect(data).not.toHaveProperty('minBidIncrement');
+    });
+
+    it('clears customFields when an empty array is sent', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.object.update.mockResolvedValue({ id: 'object-1' } as any);
+      prisma.auction.update.mockResolvedValue({ id: 'a1' } as any);
+
+      await service.update('a1', owner, { customFields: [] } as any);
+
+      expect(prisma.object.update).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ customFields: [] }) }),
       );
     });
   });

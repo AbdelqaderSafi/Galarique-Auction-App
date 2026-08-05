@@ -49,12 +49,17 @@ export class CreateAuctionDTO {
   @ApiPropertyOptional({ example: 3 })
   depthCm?: number;
 
-  // 4. Set Value
+  @ApiPropertyOptional({
+    type: 'string',
+    example: '[{"label":"Artist","value":"Van Gogh"}]',
+    description:
+      'Seller-defined extra fields, as a JSON string (multipart). Up to 5 items; label ≤ 30 chars, value ≤ 120 chars, labels must be unique.',
+  })
+  customFields?: string;
+
+  // 4. Set Value (minBidIncrement is fixed at $10 — not accepted from the seller)
   @ApiProperty({ example: 1000, description: 'Starting price / min to sell (USD)' })
   startingPrice!: number;
-
-  @ApiPropertyOptional({ example: 50, default: 50, description: 'Fixed bid increment (USD)' })
-  minBidIncrement?: number;
 
   // 5. Duration
   @ApiProperty({ enum: [1, 3, 7, 10], example: 7, description: 'Auction duration in days' })
@@ -64,6 +69,9 @@ export class CreateAuctionDTO {
   @ApiPropertyOptional({ default: false, description: 'Save as draft instead of submitting' })
   saveAsDraft?: boolean;
 }
+
+// حقل إضافي يسمّيه البائع بنفسه (اسم + قيمة نصية)
+export type CustomField = { label: string; value: string };
 
 // مدخل خدمة الإنشاء بعد رفع الصور (روابط جاهزة)
 export type CreateAuctionData = {
@@ -76,10 +84,10 @@ export type CreateAuctionData = {
   heightCm?: number;
   widthCm?: number;
   depthCm?: number;
+  customFields?: CustomField[];
   mainImage: string;
   images: string[];
   startingPrice: number;
-  minBidIncrement?: number;
   durationDays: number;
   saveAsDraft: boolean;
 };
@@ -119,11 +127,20 @@ export class UpdateAuctionDTO {
   @ApiPropertyOptional({ nullable: true })
   depthCm?: number | null;
 
-  @ApiPropertyOptional()
-  startingPrice?: number;
+  @ApiPropertyOptional({
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: { label: { type: 'string' }, value: { type: 'string' } },
+    },
+    example: [{ label: 'Artist', value: 'Van Gogh' }],
+    description:
+      'Replaces the seller-defined extra fields (send [] to clear them). Up to 5 items.',
+  })
+  customFields?: CustomField[];
 
   @ApiPropertyOptional()
-  minBidIncrement?: number;
+  startingPrice?: number;
 
   @ApiPropertyOptional({ enum: [1, 3, 7, 10] })
   durationDays?: number;

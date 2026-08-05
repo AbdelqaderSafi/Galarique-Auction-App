@@ -70,14 +70,8 @@ export class AuctionsService {
   // إنشاء المزاد بالكامل: القطعة (Object) + المزاد (Auction) في transaction واحد
   // (الصور تكون مرفوعة مسبقاً كروابط في dto.mainImage / dto.images)
   async create(sellerId: string, dto: CreateAuctionData) {
-    const {
-      images,
-      startingPrice,
-      minBidIncrement,
-      durationDays,
-      saveAsDraft,
-      ...objectScalars
-    } = dto;
+    const { images, startingPrice, durationDays, saveAsDraft, ...objectScalars } =
+      dto;
 
     const auctionStatus = saveAsDraft
       ? AuctionStatus.DRAFT
@@ -98,11 +92,11 @@ export class AuctionsService {
         },
       });
 
+      // minBidIncrement غير مذكور عمداً — ثابت $10 من @default في schema.prisma
       return tx.auction.create({
         data: {
           objectId: object.id,
           startingPrice,
-          minBidIncrement, // undefined → القيمة الافتراضية 50
           durationDays,
           status: auctionStatus,
         },
@@ -132,8 +126,7 @@ export class AuctionsService {
       throw new BadRequestException('This auction can no longer be edited');
     }
 
-    const { images, startingPrice, minBidIncrement, durationDays, ...objectScalars } =
-      dto;
+    const { images, startingPrice, durationDays, ...objectScalars } = dto;
 
     return this.prisma.$transaction(async (tx) => {
       // حقول القطعة (تفاصيل/تصنيف/صور)
@@ -157,7 +150,6 @@ export class AuctionsService {
         where: { id },
         data: {
           startingPrice,
-          minBidIncrement,
           durationDays,
           ...(auction.status === AuctionStatus.REJECTED && {
             status: AuctionStatus.PENDING_REVIEW,

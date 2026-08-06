@@ -25,6 +25,7 @@ import type {
   SellerAuctionsQueryDTO,
   UpdateAuctionDTO,
 } from './dto/auctions.dto';
+import { minIncrementFor } from './util/bid-increment.util';
 
 // نُرجع القطعة مع صورها مرتّبة مع كل مزاد
 const OBJECT_INCLUDE = {
@@ -97,6 +98,8 @@ export class AuctionsService {
         data: {
           objectId: object.id,
           startingPrice,
+          // الشريحة التي يفتح فيها المزاد — يعيد bids حسابها بعد كل مزايدة
+          minBidIncrement: minIncrementFor(startingPrice),
           durationDays,
           status: auctionStatus,
         },
@@ -150,6 +153,11 @@ export class AuctionsService {
         where: { id },
         data: {
           startingPrice,
+          // تغيّر سعر الافتتاح قد ينقل المزاد لشريحة زيادة أخرى
+          // (التعديل مسموح قبل الإطلاق فقط، فـ currentPrice ما زال 0)
+          ...(startingPrice !== undefined && {
+            minBidIncrement: minIncrementFor(startingPrice),
+          }),
           durationDays,
           ...(auction.status === AuctionStatus.REJECTED && {
             status: AuctionStatus.PENDING_REVIEW,

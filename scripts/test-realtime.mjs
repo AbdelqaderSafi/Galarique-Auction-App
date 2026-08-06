@@ -113,6 +113,12 @@ async function main() {
     !!bidEvent && bidEvent.type === 'bid' && bidEvent.amount === '100.00',
     JSON.stringify(bidEvent),
   );
+  // the increment is tiered, so a listener cannot cache it from the initial REST read
+  check(
+    'bid event carries the current increment tier (price 100 -> 10)',
+    bidEvent?.minBidIncrement === '10.00',
+    JSON.stringify(bidEvent),
+  );
 
   // ================= 2) personal stream receives `outbid` =================
   const outbidPromise = collectSse('/me/stream', TOKEN_A, (d) => d.type === 'outbid', 5000);

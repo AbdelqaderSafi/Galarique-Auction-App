@@ -57,9 +57,9 @@ describe('AuctionsService', () => {
       );
     });
 
-    // minBidIncrement ثابت $10 من @default في الداتابيس — يجب ألّا يُكتب أبداً من الكود،
+    // minBidIncrement يأتي من جدول الشرائح حسب سعر الافتتاح — لا من العميل،
     // حتى لو تسلّل في الـ dto، وإلا صار البائع قادراً على تحديده
-    it('never writes minBidIncrement — it stays the DB default', async () => {
+    it('seeds minBidIncrement from the startingPrice tier, ignoring any client value', async () => {
       prisma.object.create.mockResolvedValue({ id: 'object-1' } as any);
       prisma.auction.create.mockResolvedValue({ id: 'auction-1' } as any);
 
@@ -71,9 +71,32 @@ describe('AuctionsService', () => {
         minBidIncrement: 999,
       } as any);
 
-      const data = prisma.auction.create.mock.calls[0][0].data as Record<string, unknown>;
-      expect(data).not.toHaveProperty('minBidIncrement');
+      const data = prisma.auction.create.mock.calls[0][0].data as any;
+      expect(data.minBidIncrement.toNumber()).toBe(10); // شريحة الـ100
     });
+
+    it.each([
+      [10, 1],
+      [25, 2],
+      [500, 10],
+      [2500, 50],
+    ])(
+      'opens an auction started at $%p in the $%p increment tier',
+      async (startingPrice, expected) => {
+        prisma.object.create.mockResolvedValue({ id: 'object-1' } as any);
+        prisma.auction.create.mockResolvedValue({ id: 'auction-1' } as any);
+
+        await service.create(owner.id, {
+          title: 'Vase',
+          category: 'ART',
+          startingPrice,
+          durationDays: 7,
+        } as any);
+
+        const data = prisma.auction.create.mock.calls[0][0].data as any;
+        expect(data.minBidIncrement.toNumber()).toBe(expected);
+      },
+    );
 
     it('passes the seller-defined customFields through to the Object', async () => {
       prisma.object.create.mockResolvedValue({ id: 'object-1' } as any);
@@ -186,8 +209,24 @@ describe('AuctionsService', () => {
       expect(prisma.object.update).toHaveBeenCalledWith(
         expect.objectContaining({ data: expect.objectContaining({ customFields }) }),
       );
+      // لم يتغيّر سعر الافتتاح → لا سبب لإعادة كتابة الشريحة، وقيمة العميل تُتجاهَل
       const data = prisma.auction.update.mock.calls[0][0].data as Record<string, unknown>;
       expect(data).not.toHaveProperty('minBidIncrement');
+    });
+
+    // تغيير سعر الافتتاح قبل الإطلاق قد ينقل المزاد لشريحة أخرى
+    it('re-seeds the increment tier when startingPrice changes', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        status: AuctionStatus.DRAFT,
+        objectId: 'object-1',
+        object: { ownerId: owner.id },
+      } as any);
+      prisma.auction.update.mockResolvedValue({ id: 'a1' } as any);
+
+      await service.update('a1', owner, { startingPrice: 3000 } as any);
+
+      const data = prisma.auction.update.mock.calls[0][0].data as any;
+      expect(data.minBidIncrement.toNumber()).toBe(50);
     });
 
     it('clears customFields when an empty array is sent', async () => {

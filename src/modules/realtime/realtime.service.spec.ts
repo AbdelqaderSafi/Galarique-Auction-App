@@ -9,6 +9,7 @@ const sampleBid: BidEvent = {
   amount: '1500.00',
   bidderName: 'Ahmad K.',
   currentPrice: '1500.00',
+  minBidIncrement: '50.00', // شريحة ما فوق 1000
   endTime: '2026-07-21T18:30:00.000Z',
   createdAt: '2026-07-21T18:29:12.000Z',
 };

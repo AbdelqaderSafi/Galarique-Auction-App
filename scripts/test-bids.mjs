@@ -113,8 +113,14 @@ async function main() {
   check('wallet', 'A re-held (50/50), no duplicate deposit', wa2?.balance === '50.00' && wa2?.lockedBalance === '50.00', JSON.stringify(wa2));
   check('wallet', 'B released again (100/0)', wb2?.balance === '100.00' && wb2?.lockedBalance === '0.00', JSON.stringify(wb2));
 
+  // currentPrice 200 sits in the $10 tier, so the floor is 210 — NOT the stale 50
+  // still stored on this seeded row (the tier table is the only source of truth)
   r = await req('POST', P, { token: t.B, body: { amount: 200 } });
-  check('POST bid', 'B below floor (needs 250) -> 400', r.status === 400, `got ${r.status}: ${r.json?.message}`);
+  check('POST bid', 'B below floor (needs 210) -> 400', r.status === 400, `got ${r.status}: ${r.json?.message}`);
+
+  r = await req('POST', P, { token: t.B, body: { amount: 205 } });
+  check('POST bid', 'floor comes from the price tier, not the stored increment -> "Minimum bid is $210.00"',
+    r.status === 400 && /210\.00/.test(r.json?.message ?? ''), `got ${r.status}: ${r.json?.message}`);
 
   // ---- GET /auctions/:id/bids (public) ----
   r = await req('GET', P); // no token, public

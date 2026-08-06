@@ -10,6 +10,7 @@ import { WalletService } from '../wallet/wallet.service';
 import { MailService } from '../mail/mail.service';
 import { RealtimeService } from '../realtime/realtime.service';
 import { PUBLIC_STATUSES } from '../auctions/auctions.service';
+import { minIncrementFor } from '../auctions/util/bid-increment.util';
 import type { SafeUser } from 'src/types/declartion-mergin';
 import type {
   AuctionBidsResponse,
@@ -64,11 +65,12 @@ export class BidsService {
         throw new BadRequestException("You're already the highest bidder");
       }
 
-      // 5) أرضية السعر
+      // 5) أرضية السعر — الزيادة تُحسب من الجدول المتدرّج، لا من العمود المخزّن
+      // (العمود نسخة للقراءة قد تكون قديمة؛ الدالة هي المرجع)
       const isFirstBid = auction.currentWinnerId === null;
       const floor = isFirstBid
         ? auction.startingPrice
-        : auction.currentPrice.add(auction.minBidIncrement);
+        : auction.currentPrice.add(minIncrementFor(auction.currentPrice));
       if (amountDec.lessThan(floor)) {
         throw new BadRequestException(`Minimum bid is $${floor.toFixed(2)}`);
       }
@@ -98,6 +100,8 @@ export class BidsService {
         data: {
           currentPrice: amountDec,
           currentWinnerId: bidder.id,
+          // شريحة السعر الجديد — قد تكون تغيّرت إذا عبرت المزايدة حدّ 25/100/1000
+          minBidIncrement: minIncrementFor(amountDec),
           ...(extend && { endTime: newEndTime }),
         },
       });
@@ -132,6 +136,8 @@ export class BidsService {
       amount: result.bid.amount.toFixed(2),
       bidderName: bidder.fullName,
       currentPrice: result.updated.currentPrice.toFixed(2),
+      // الزيادة متدرّجة: تتغيّر عند عبور 25/100/1000، فلا يكفي أن يخزّنها العميل مرة واحدة
+      minBidIncrement: result.updated.minBidIncrement.toFixed(2),
       endTime: result.updated.endTime
         ? result.updated.endTime.toISOString()
         : null,
@@ -150,6 +156,7 @@ export class BidsService {
       bidId: result.bid.id,
       amount: result.bid.amount.toFixed(2),
       currentPrice: result.updated.currentPrice.toFixed(2),
+      minBidIncrement: result.updated.minBidIncrement.toFixed(2),
       endTime: result.updated.endTime,
       isHighest: true,
       depositHeld: result.depositHeld,

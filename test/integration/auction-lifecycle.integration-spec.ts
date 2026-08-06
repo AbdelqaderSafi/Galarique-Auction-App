@@ -177,7 +177,8 @@ describe('Auction lifecycle (integration)', () => {
     const createRes = await createDraftlessAuction(seller.token);
     expect(createRes.status).toBe(201);
     expect(createRes.body.status).toBe('PENDING_REVIEW');
-    // البائع لا يُدخل minBidIncrement — ثابت $10، والحقول المخصّصة تُحفظ كما أرسلها
+    // البائع لا يُدخل minBidIncrement — يأتي من شريحة سعر الافتتاح (100 → 10)،
+    // والحقول المخصّصة تُحفظ كما أرسلها
     expect(Number(createRes.body.minBidIncrement)).toBe(10);
     expect(createRes.body.object.customFields).toEqual([
       { label: 'Artist', value: 'Van Gogh' },
@@ -217,6 +218,13 @@ describe('Auction lifecycle (integration)', () => {
       .set('Authorization', `Bearer ${buyerB.token}`)
       .send({ amount: 150 });
     expect(bidB.status).toBe(201);
+    // 150 ما زال ضمن شريحة الـ10 → الأرضية التالية 160، و155 تُرفض
+    expect(bidB.body.minBidIncrement).toBe('10.00');
+    const tooLow = await request(server())
+      .post(`/auctions/${auctionId}/bids`)
+      .set('Authorization', `Bearer ${buyerA.token}`)
+      .send({ amount: 155 });
+    expect(tooLow.status).toBe(400);
 
     const walletA2 = await request(server())
       .get('/wallet')

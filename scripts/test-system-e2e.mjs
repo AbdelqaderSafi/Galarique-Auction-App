@@ -333,7 +333,7 @@ async function main() {
     `got ${r.status}: ${JSON.stringify(r.json)}`);
   const auction1 = r.json?.id;
 
-  check('POST auctions', 'minBidIncrement is fixed at 10 (not a seller input)',
+  check('POST auctions', 'minBidIncrement comes from the startingPrice tier (100 -> 10)',
     Number(r.json?.minBidIncrement) === 10, `got ${r.json?.minBidIncrement}`);
   check('POST auctions', 'seller-defined customFields are stored in order',
     JSON.stringify(r.json?.object?.customFields) ===
@@ -345,10 +345,22 @@ async function main() {
     token: buyerToken,
     form: buildAuctionForm({ title: '[SYS] Ignored Increment', minBidIncrement: '25' }),
   });
-  check('POST auctions', 'a client-sent minBidIncrement is ignored -> still 10',
+  check('POST auctions', 'a client-sent minBidIncrement is ignored -> tier wins (10)',
     r.status === 201 && Number(r.json?.minBidIncrement) === 10,
     `got ${r.status}: ${r.json?.minBidIncrement}`);
   await req('DELETE', `/auctions/${r.json?.id}`, { token: buyerToken });
+
+  // the increment tier follows the starting price: <25 -> 1, 25-100 -> 2, 100-1000 -> 10, >=1000 -> 50
+  for (const [startingPrice, expected] of [['10', 1], ['25', 2], ['99.99', 2], ['100', 10], ['1000', 50], ['4500', 50]]) {
+    r = await req('POST', '/auctions', {
+      token: buyerToken,
+      form: buildAuctionForm({ title: `[SYS] Tier ${startingPrice}`, startingPrice }),
+    });
+    check('POST auctions', `startingPrice ${startingPrice} -> increment tier ${expected}`,
+      r.status === 201 && Number(r.json?.minBidIncrement) === expected,
+      `got ${r.status}: ${r.json?.minBidIncrement}`);
+    await req('DELETE', `/auctions/${r.json?.id}`, { token: buyerToken });
+  }
 
   // customFields validation (limits + malformed JSON)
   r = await req('POST', '/auctions', {
@@ -416,7 +428,17 @@ async function main() {
     `got ${r.status}: ${JSON.stringify(r.json?.object?.customFields)}`);
 
   r = await req('PATCH', `/auctions/${auction1}`, { token: buyerToken, body: { minBidIncrement: 25 } });
-  check('PATCH auctions/:id', 'minBidIncrement cannot be changed after creation -> stays 10',
+  check('PATCH auctions/:id', 'a client-sent minBidIncrement is ignored -> stays 10',
+    r.status === 200 && Number(r.json?.minBidIncrement) === 10,
+    `got ${r.status}: ${r.json?.minBidIncrement}`);
+
+  // but editing the starting price before launch does move the auction to another tier
+  r = await req('PATCH', `/auctions/${auction1}`, { token: buyerToken, body: { startingPrice: 2500 } });
+  check('PATCH auctions/:id', 'raising startingPrice to 2500 re-seeds the tier -> 50',
+    r.status === 200 && Number(r.json?.minBidIncrement) === 50,
+    `got ${r.status}: ${r.json?.minBidIncrement}`);
+  r = await req('PATCH', `/auctions/${auction1}`, { token: buyerToken, body: { startingPrice: 100 } });
+  check('PATCH auctions/:id', 'lowering startingPrice back to 100 re-seeds the tier -> 10',
     r.status === 200 && Number(r.json?.minBidIncrement) === 10,
     `got ${r.status}: ${r.json?.minBidIncrement}`);
 

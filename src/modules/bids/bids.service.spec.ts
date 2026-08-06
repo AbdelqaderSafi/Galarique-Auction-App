@@ -112,7 +112,7 @@ describe('BidsService', () => {
       expect(wallet.holdBidDeposit).not.toHaveBeenCalled();
     });
 
-    it('rejects a later bid below currentPrice + minBidIncrement', async () => {
+    it('rejects a later bid below currentPrice + the tier increment', async () => {
       prisma.auction.findUnique.mockResolvedValue({
         ...baseAuction,
         currentWinnerId: bidderB.id,
@@ -121,6 +121,82 @@ describe('BidsService', () => {
 
       await expect(service.place(baseAuction.id, bidderA, 105)).rejects.toThrow(
         'Minimum bid is $110.00',
+      );
+    });
+
+    // العمود نسخة للقراءة قد تتقادم؛ التحقق يجب أن يعتمد على جدول الشرائح وحده
+    it('derives the floor from the price tier, ignoring a stale stored minBidIncrement', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        ...baseAuction,
+        currentWinnerId: bidderB.id,
+        currentPrice: new Prisma.Decimal(30), // شريحة الـ2
+        minBidIncrement: new Prisma.Decimal(50), // قيمة قديمة متروكة بالعمود
+      } as any);
+
+      // لو قرأ العمود لكانت الأرضية 80؛ الصحيح 30 + 2
+      await expect(service.place(baseAuction.id, bidderA, 31)).rejects.toThrow(
+        'Minimum bid is $32.00',
+      );
+    });
+
+    it('applies the tier of the price being raised from, not the new price', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        ...baseAuction,
+        currentWinnerId: bidderB.id,
+        currentPrice: new Prisma.Decimal(99), // شريحة الـ2 → الأرضية 101
+      } as any);
+      wallet.holdBidDeposit.mockResolvedValue(true);
+      prisma.bid.create.mockResolvedValue({
+        id: 'bid-tier',
+        amount: new Prisma.Decimal(101),
+        createdAt: new Date(),
+      } as any);
+      prisma.auction.update.mockImplementation((args: any) =>
+        Promise.resolve({ ...baseAuction, ...args.data }),
+      );
+      prisma.user.findUnique.mockResolvedValue({
+        email: 'b@test.local',
+        fullName: bidderB.fullName,
+      } as any);
+
+      await expect(
+        service.place(baseAuction.id, bidderA, 100),
+      ).rejects.toThrow('Minimum bid is $101.00');
+
+      await expect(
+        service.place(baseAuction.id, bidderA, 101),
+      ).resolves.toMatchObject({ currentPrice: '101.00' });
+    });
+
+    // عبور حدّ الشريحة يجب أن يُحدِّث العمود، وإلا عرض الموبايل زيادة قديمة
+    it('rewrites minBidIncrement to the new tier when the bid crosses a boundary', async () => {
+      prisma.auction.findUnique.mockResolvedValue({
+        ...baseAuction,
+        currentWinnerId: bidderB.id,
+        currentPrice: new Prisma.Decimal(900), // شريحة الـ10
+      } as any);
+      wallet.holdBidDeposit.mockResolvedValue(true);
+      prisma.bid.create.mockResolvedValue({
+        id: 'bid-cross',
+        amount: new Prisma.Decimal(1200),
+        createdAt: new Date(),
+      } as any);
+      prisma.auction.update.mockImplementation((args: any) =>
+        Promise.resolve({ ...baseAuction, ...args.data }),
+      );
+      prisma.user.findUnique.mockResolvedValue({
+        email: 'b@test.local',
+        fullName: bidderB.fullName,
+      } as any);
+
+      const result = await service.place(baseAuction.id, bidderA, 1200);
+
+      const updateCall = prisma.auction.update.mock.calls[0][0] as any;
+      expect(updateCall.data.minBidIncrement.toNumber()).toBe(50);
+      expect(result.minBidIncrement).toBe('50.00');
+      expect(realtime.publishBid).toHaveBeenCalledWith(
+        baseAuction.id,
+        expect.objectContaining({ minBidIncrement: '50.00' }),
       );
     });
 
@@ -157,6 +233,7 @@ describe('BidsService', () => {
         bidId: 'bid-1',
         amount: '100.00',
         currentPrice: '100.00',
+        minBidIncrement: '10.00',
         endTime: updatedAuction.endTime,
         isHighest: true,
         depositHeld: true,

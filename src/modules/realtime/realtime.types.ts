@@ -5,6 +5,7 @@ export type BidEvent = {
   amount: string;
   bidderName: string;
   currentPrice: string;
+  minBidIncrement: string; // شريحة السعر الجديد — تتغيّر عند عبور 25/100/1000
   endTime: string | null;
   createdAt: string;
 };

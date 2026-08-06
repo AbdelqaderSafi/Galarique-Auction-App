@@ -18,6 +18,7 @@ export type PlaceBidResponse = {
   bidId: string;
   amount: string; // "250.00"
   currentPrice: string;
+  minBidIncrement: string; // tier for the new price (1 / 2 / 10 / 50)
   endTime: Date | null; // reflects any anti-snipe extension
   isHighest: true;
   depositHeld: boolean; // true if a $50 deposit was newly held on this call

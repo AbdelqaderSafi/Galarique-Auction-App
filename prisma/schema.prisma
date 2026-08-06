@@ -324,7 +324,9 @@ model Auction {
 
   // التسعير (من Set Value + ثغرات نضيفها بالباك اند)
   startingPrice   Decimal  @db.Decimal(12, 2) // سعر الافتتاح = أقل سعر للبيع
-  minBidIncrement Decimal  @default(10) @db.Decimal(12, 2) // الحد الأدنى للزيادة — ثابت، لا يُدخله البائع
+  // الحد الأدنى للزيادة — لا يختاره البائع. نسخة للقراءة يكتبها الباك اند بعد كل
+  // تغيّر سعر من جدول الشرائح (util/bid-increment.util.ts)؛ الـ default مجرد شبكة أمان.
+  minBidIncrement Decimal  @default(10) @db.Decimal(12, 2)
   currentPrice    Decimal  @default(0) @db.Decimal(12, 2) // أعلى مزايدة حالياً
 
   currentWinner   User?   @relation("AuctionWinner", fields: [currentWinnerId], references: [id])

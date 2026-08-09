@@ -304,8 +304,11 @@ export class AuctionsService {
     if (query.category) objectFilter.category = query.category;
     if (query.q) objectFilter.title = { contains: query.q, mode: 'insensitive' };
 
+    // endTime مطلوب مع LIVE: بين انتهاء الوقت وتنفيذ السكدولر يبقى الصف LIVE للحظات،
+    // وخلالها تُرفض المزايدة عليه — فلا يجوز أن يظهر ضمن "المزادات القائمة".
     const where: Prisma.AuctionWhereInput = {
       status: AuctionStatus.LIVE,
+      endTime: { gt: new Date() },
       ...(Object.keys(objectFilter).length > 0 && { object: objectFilter }),
     };
 

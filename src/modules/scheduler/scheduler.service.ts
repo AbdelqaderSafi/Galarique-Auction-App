@@ -9,10 +9,24 @@ export class SchedulerService {
 
   constructor(private readonly settlement: SettlementService) {}
 
-  // كل دقيقة — كل مهمة "تمسح المستحقّ"، فالدورة الفائتة تُلتقط بالدورة الجاية
+  // الإغلاق على دورة سريعة: endTime لحظة عشوائية (= ثانية موافقة الأدمن)، ودورة
+  // الدقيقة كانت تترك المزاد مفتوحاً حتى 59 ثانية بعد انتهائه. الاستعلام مفهرس
+  // (@@index([status, endTime])) والإغلاق idempotent تحت قفل الصف، فالتكرار آمن.
+  @Cron(CronExpression.EVERY_5_SECONDS)
+  async closeTick(): Promise<void> {
+    await this.settlement.closeDueAuctions();
+  }
+
+  // التسوية المالية كل دقيقة — مهلة الدفع 72 ساعة، فالدقيقة أكثر من كافية.
+  // كل مهمة "تمسح المستحقّ"، فالدورة الفائتة تُلتقط بالدورة الجاية.
   @Cron(CronExpression.EVERY_MINUTE)
   async tick(): Promise<void> {
-    await this.runAll();
+    const expired = await this.settlement.expirePaymentDeadlines();
+    const retriedPaid = await this.settlement.retryWinnerPayments();
+
+    if (expired || retriedPaid) {
+      this.logger.log(`tick: expired=${expired} retriedPaid=${retriedPaid}`);
+    }
   }
 
   // نفس المنطق الذي ينادَى يدوياً عبر POST /scheduler/run
@@ -24,7 +38,7 @@ export class SchedulerService {
     // لا نُغرق اللوج بدورات فاضية
     if (closed || expired || retriedPaid) {
       this.logger.log(
-        `tick: closed=${closed} expired=${expired} retriedPaid=${retriedPaid}`,
+        `runAll: closed=${closed} expired=${expired} retriedPaid=${retriedPaid}`,
       );
     }
     return { closed, expired, retriedPaid };

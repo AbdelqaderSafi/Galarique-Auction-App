@@ -464,6 +464,7 @@ describe('AuctionsService', () => {
         expect.objectContaining({
           where: {
             status: AuctionStatus.LIVE,
+            endTime: { gt: expect.any(Date) },
             object: { category: 'ART', title: { contains: 'vase', mode: 'insensitive' } },
           },
         }),
@@ -478,10 +479,26 @@ describe('AuctionsService', () => {
 
       expect(prisma.auction.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { status: AuctionStatus.LIVE },
+          where: { status: AuctionStatus.LIVE, endTime: { gt: expect.any(Date) } },
           orderBy: [{ endTime: 'asc' }],
         }),
       );
+    });
+
+    // المزاد الذي انتهى وقته يبقى LIVE حتى ينفّذ السكدولر — وخلالها تُرفض المزايدة عليه،
+    // فلا يجوز أن يظهر في قائمة "المزادات القائمة"
+    it('excludes an auction whose endTime has already passed even though its status is still LIVE', async () => {
+      prisma.auction.findMany.mockResolvedValue([] as any);
+      prisma.auction.count.mockResolvedValue(0);
+
+      const before = Date.now();
+      await service.browse({} as any);
+      const after = Date.now();
+
+      const where = (prisma.auction.findMany.mock.calls[0][0] as any).where;
+      const cutoff = (where.endTime.gt as Date).getTime();
+      expect(cutoff).toBeGreaterThanOrEqual(before);
+      expect(cutoff).toBeLessThanOrEqual(after);
     });
   });
 

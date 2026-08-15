@@ -18,6 +18,7 @@ import { WalletService } from '../wallet/wallet.service';
 import type { SafeUser } from 'src/types/declartion-mergin';
 import type {
   AuctionDetailDTO,
+  AuctionWithSellerDTO,
   BrowseAuctionsQueryDTO,
   CreateAuctionData,
   PaginatedAuctionsDTO,
@@ -32,7 +33,8 @@ const OBJECT_INCLUDE = {
   object: { include: { images: { orderBy: { position: 'asc' as const } } } },
 } satisfies Prisma.AuctionInclude;
 
-const SELLER_AUCTIONS_INCLUDE = {
+// نفس OBJECT_INCLUDE مع المالك — للقوائم العامة التي تعرض اسم البائع
+const AUCTION_WITH_SELLER_INCLUDE = {
   object: {
     include: {
       images: { orderBy: { position: 'asc' as const } },
@@ -40,6 +42,10 @@ const SELLER_AUCTIONS_INCLUDE = {
     },
   },
 } satisfies Prisma.AuctionInclude;
+
+type AuctionWithOwner = Prisma.AuctionGetPayload<{
+  include: typeof AUCTION_WITH_SELLER_INCLUDE;
+}>;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -315,7 +321,7 @@ export class AuctionsService {
     const [items, total] = await this.prisma.$transaction([
       this.prisma.auction.findMany({
         where,
-        include: OBJECT_INCLUDE,
+        include: AUCTION_WITH_SELLER_INCLUDE,
         orderBy: this.sortToOrderBy(sort),
         skip: (page - 1) * limit,
         take: limit,
@@ -323,7 +329,7 @@ export class AuctionsService {
       this.prisma.auction.count({ where }),
     ]);
 
-    return { items, total, page, limit };
+    return { items: items.map(this.toAuctionWithSeller), total, page, limit };
   }
 
   // تفاصيل مزاد للعامة — فقط الحالات العامة، مع زيادة العدّاد وعدد المزايدات
@@ -361,7 +367,7 @@ export class AuctionsService {
     const [items, total] = await this.prisma.$transaction([
       this.prisma.auction.findMany({
         where,
-        include: SELLER_AUCTIONS_INCLUDE,
+        include: AUCTION_WITH_SELLER_INCLUDE,
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
         take: limit,
@@ -369,15 +375,7 @@ export class AuctionsService {
       this.prisma.auction.count({ where }),
     ]);
 
-    const mappedItems = items.map(
-      ({ object: { owner, ...object }, ...auction }) => ({
-        ...auction,
-        object,
-        sellerName: owner.fullName,
-      }),
-    );
-
-    return { items: mappedItems, total, page, limit };
+    return { items: items.map(this.toAuctionWithSeller), total, page, limit };
   }
 
   // ======================= Admin =======================
@@ -460,6 +458,15 @@ export class AuctionsService {
   }
 
   // ======================= Helpers =======================
+
+  // نُسطّح owner إلى sellerName فقط — لا تُسرَّب بقية بيانات المالك للعامة
+  private toAuctionWithSeller(row: AuctionWithOwner): AuctionWithSellerDTO {
+    const {
+      object: { owner, ...object },
+      ...auction
+    } = row;
+    return { ...auction, object, sellerName: owner.fullName };
+  }
 
   private sortToOrderBy(
     sort: NonNullable<BrowseAuctionsQueryDTO['sort']>,

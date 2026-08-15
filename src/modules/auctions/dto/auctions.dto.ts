@@ -183,17 +183,18 @@ export class SellerAuctionsQueryDTO {
 export type AuctionObject = ArtObject & { images: ObjectImage[] };
 export type AuctionResponseDTO = Auction & { object: AuctionObject };
 export type AuctionDetailDTO = AuctionResponseDTO & { bidCount: number };
+// اسم البائع مسطّح على المزاد — بدل تضمين owner كاملاً داخل object
+export type AuctionWithSellerDTO = AuctionResponseDTO & {
+  sellerName: string;
+};
 export type PaginatedAuctionsDTO = {
-  items: AuctionResponseDTO[];
+  items: AuctionWithSellerDTO[];
   total: number;
   page: number;
   limit: number;
 };
-export type SellerAuctionResponseDTO = AuctionResponseDTO & {
-  sellerName: string;
-};
 export type PaginatedSellerAuctionsDTO = {
-  items: SellerAuctionResponseDTO[];
+  items: AuctionWithSellerDTO[];
   total: number;
   page: number;
   limit: number;

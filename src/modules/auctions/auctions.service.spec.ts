@@ -500,6 +500,27 @@ describe('AuctionsService', () => {
       expect(cutoff).toBeGreaterThanOrEqual(before);
       expect(cutoff).toBeLessThanOrEqual(after);
     });
+
+    it('returns sellerName on every auction without exposing the nested owner', async () => {
+      prisma.auction.findMany.mockResolvedValue([
+        {
+          id: 'a1',
+          object: {
+            id: 'object-1',
+            owner: { fullName: 'Seller One' },
+            images: [],
+          },
+        },
+      ] as any);
+      prisma.auction.count.mockResolvedValue(1);
+
+      const result = await service.browse({} as any);
+
+      expect(result.items[0]).toEqual(
+        expect.objectContaining({ id: 'a1', sellerName: 'Seller One' }),
+      );
+      expect('owner' in result.items[0].object).toBe(false);
+    });
   });
 
   describe('findBySeller', () => {

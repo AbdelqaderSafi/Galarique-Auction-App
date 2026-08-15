@@ -15,6 +15,7 @@ import {
 import { DatabaseService } from '../database/database.service';
 import { MailService } from '../mail/mail.service';
 import { WalletService } from '../wallet/wallet.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
 import type { SafeUser } from 'src/types/declartion-mergin';
 import type {
   AuctionDetailDTO,
@@ -70,6 +71,7 @@ export class AuctionsService {
     private readonly prisma: DatabaseService,
     private readonly mail: MailService,
     private readonly wallet: WalletService,
+    private readonly scheduler: SchedulerService,
   ) {}
 
   // ======================= Seller =======================
@@ -238,7 +240,7 @@ export class AuctionsService {
       throw new BadRequestException('This auction cannot be cancelled');
     }
 
-    return this.prisma.$transaction(async (tx) => {
+    const result = await this.prisma.$transaction(async (tx) => {
       // قفل صف المزاد — يمنع سباق الإلغاء مع مزايدة جارية أو مع إغلاق السكدولر
       await tx.$queryRaw`SELECT id FROM "Auction" WHERE id = ${id} FOR UPDATE`;
 
@@ -288,6 +290,10 @@ export class AuctionsService {
       });
       return cancelled;
     });
+
+    // اختفى موعد إغلاق (وربما مهلة دفع) — لا داعي لاستيقاظ المؤقّت عليهما
+    this.scheduler.reschedule();
+    return result;
   }
 
   // البائع: PENDING/REJECTED فقط. الأدمن: أي مزاد غير منتهٍ نهائياً.
@@ -415,6 +421,9 @@ export class AuctionsService {
       },
       include: OBJECT_INCLUDE,
     });
+
+    // موعد إغلاق جديد قد يكون أقرب من الموعد المضبوط حالياً
+    this.scheduler.reschedule();
 
     await this.mail.sendAuctionApproved(
       auction.object.owner.email,

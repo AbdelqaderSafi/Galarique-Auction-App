@@ -22,6 +22,7 @@ import { ZodValidationPipe } from 'src/pipes/zod.validation.pipe';
 import { AuctionsService } from './auctions.service';
 import { UploadsService } from '../uploads/uploads.service';
 import { SettlementService } from '../orders/settlement.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
 import {
   AuctionDetailDTO,
   AuctionResponseDTO,
@@ -82,6 +83,7 @@ export class AuctionsController {
     private readonly auctionsService: AuctionsService,
     private readonly uploads: UploadsService,
     private readonly settlement: SettlementService,
+    private readonly scheduler: SchedulerService,
   ) {}
 
   // ---- Public browse (before :id so /admin & /mine aren't captured as ids) ----
@@ -186,8 +188,13 @@ export class AuctionsController {
   @HttpCode(200)
   @Roles([Role.ADMIN])
   @ApiForceEndAuction()
-  forceEnd(@Param('id') id: string): Promise<{ auctionId: string; closed: boolean }> {
-    return this.settlement.forceEndAuction(id);
+  async forceEnd(
+    @Param('id') id: string,
+  ): Promise<{ auctionId: string; closed: boolean }> {
+    const result = await this.settlement.forceEndAuction(id);
+    // اختفى موعد إغلاق وظهرت مهلة دفع جديدة — أعد ضبط المؤقّتين
+    this.scheduler.reschedule();
+    return result;
   }
 
   // ---- Seller (mutations on a specific auction) ----

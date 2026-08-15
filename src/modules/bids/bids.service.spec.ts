@@ -4,6 +4,7 @@ import { BidsService } from './bids.service';
 import { WalletService } from '../wallet/wallet.service';
 import { MailService } from '../mail/mail.service';
 import { RealtimeService } from '../realtime/realtime.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
 import {
   createMockDatabaseService,
   resetMockDatabaseService,
@@ -16,6 +17,7 @@ describe('BidsService', () => {
   let wallet: jest.Mocked<WalletService>;
   let mail: jest.Mocked<MailService>;
   let realtime: jest.Mocked<RealtimeService>;
+  let scheduler: jest.Mocked<SchedulerService>;
   let service: BidsService;
 
   const seller: SafeUser = { id: 'seller-1', fullName: 'Seller One' } as SafeUser;
@@ -44,7 +46,10 @@ describe('BidsService', () => {
       publishBid: jest.fn(),
       publishToUser: jest.fn(),
     } as unknown as jest.Mocked<RealtimeService>;
-    service = new BidsService(prisma, wallet, mail, realtime);
+    scheduler = {
+      reschedule: jest.fn(),
+    } as unknown as jest.Mocked<SchedulerService>;
+    service = new BidsService(prisma, wallet, mail, realtime, scheduler);
   });
 
   afterEach(() => {

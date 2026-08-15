@@ -9,6 +9,7 @@ import { DatabaseService } from '../database/database.service';
 import { WalletService } from '../wallet/wallet.service';
 import { MailService } from '../mail/mail.service';
 import { RealtimeService } from '../realtime/realtime.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
 import { PUBLIC_STATUSES } from '../auctions/auctions.service';
 import { minIncrementFor } from '../auctions/util/bid-increment.util';
 import type { SafeUser } from 'src/types/declartion-mergin';
@@ -25,6 +26,7 @@ export class BidsService {
     private readonly wallet: WalletService,
     private readonly mail: MailService,
     private readonly realtime: RealtimeService,
+    private readonly scheduler: SchedulerService,
   ) {}
 
   // وضع مزايدة — كل الخطوات داخل transaction واحد مع قفل صف المزاد
@@ -114,11 +116,15 @@ export class BidsService {
       return {
         bid,
         updated,
+        extended: extend,
         previousWinnerId,
         depositHeld,
         auctionTitle: auction.object.title,
       };
     });
+
+    // anti-snipe أزاح endTime — أعد ضبط مؤقّت الإغلاق على الموعد الجديد
+    if (result.extended) this.scheduler.reschedule();
 
     // 10) إيميل outbid بعد نجاح الـ transaction (fire-and-forget)
     if (result.previousWinnerId) {

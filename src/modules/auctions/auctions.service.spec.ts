@@ -3,6 +3,7 @@ import { AuctionStatus, ObjectStatus, OrderStatus, Role } from 'generated/prisma
 import { AuctionsService, PUBLIC_STATUSES } from './auctions.service';
 import { MailService } from '../mail/mail.service';
 import { WalletService } from '../wallet/wallet.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
 import {
   createMockDatabaseService,
   resetMockDatabaseService,
@@ -14,6 +15,7 @@ describe('AuctionsService', () => {
   let prisma: MockDatabaseService;
   let mail: jest.Mocked<MailService>;
   let wallet: jest.Mocked<WalletService>;
+  let scheduler: jest.Mocked<SchedulerService>;
   let service: AuctionsService;
 
   const owner: SafeUser = { id: 'seller-1', roles: [Role.SELLER] } as SafeUser;
@@ -29,7 +31,10 @@ describe('AuctionsService', () => {
     wallet = {
       releaseBidDeposit: jest.fn(),
     } as unknown as jest.Mocked<WalletService>;
-    service = new AuctionsService(prisma, mail, wallet);
+    scheduler = {
+      reschedule: jest.fn(),
+    } as unknown as jest.Mocked<SchedulerService>;
+    service = new AuctionsService(prisma, mail, wallet, scheduler);
   });
 
   afterEach(() => {

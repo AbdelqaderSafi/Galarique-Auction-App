@@ -8,5 +8,7 @@ import { SchedulerService } from './scheduler.service';
   imports: [ScheduleModule.forRoot(), OrdersModule],
   controllers: [SchedulerController],
   providers: [SchedulerService],
+  // auctions/bids ينادونه عند كل تغيير في endTime لإعادة ضبط المؤقّتات
+  exports: [SchedulerService],
 })
 export class SchedulerModule {}

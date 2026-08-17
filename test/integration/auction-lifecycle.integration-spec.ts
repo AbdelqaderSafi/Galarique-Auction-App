@@ -257,23 +257,23 @@ describe('Auction lifecycle (integration)', () => {
     const order = myOrders.body.items[0];
     expect(order.amount).toBe('150.00');
     expect(order.depositApplied).toBe('50.00');
-    expect(order.amountDue).toBe('100.00');
+    expect(order.amountDue).toBe('120.00'); // 150 + 20 shipping - 50 deposit
 
     // B had $450 balance + $50 locked; auto-pay should already have completed it
-    // (amountDue=100 <= balance=450), so it's COMPLETED, not AWAITING_PAYMENT.
+    // (amountDue=120 <= balance=450), so it's COMPLETED, not AWAITING_PAYMENT.
     expect(order.status).toBe('COMPLETED');
 
     const walletBFinal = await request(server())
       .get('/wallet')
       .set('Authorization', `Bearer ${buyerB.token}`);
-    // 450 - 100 (amountDue) = 350; lockedBalance 50 -> 0 (deposit applied)
-    expect(walletBFinal.body).toEqual({ balance: '350.00', lockedBalance: '0.00', currency: 'USD' });
+    // 450 - 120 (amountDue) = 330; lockedBalance 50 -> 0 (deposit applied)
+    expect(walletBFinal.body).toEqual({ balance: '330.00', lockedBalance: '0.00', currency: 'USD' });
 
     const sellerWallet = await request(server())
       .get('/wallet')
       .set('Authorization', `Bearer ${seller.token}`);
-    // Seller gets the FULL price ($150) immediately, no escrow
-    expect(sellerWallet.body.balance).toBe('150.00');
+    // Seller gets the price + the $20 shipping ($170) immediately, no escrow
+    expect(sellerWallet.body.balance).toBe('170.00');
 
     const auctionAfter = await request(server()).get(`/auctions/${auctionId}`);
     expect(auctionAfter.body.status).toBe('SOLD');
@@ -308,7 +308,7 @@ describe('Auction lifecycle (integration)', () => {
       .post(`/auctions/${auctionId}/force-end`)
       .set('Authorization', `Bearer ${admin.token}`);
 
-    // A won at $200 but only had the $50 deposit -> amountDue=$150, auto-pay fails -> AWAITING_PAYMENT
+    // A won at $200 but only had the $50 deposit -> amountDue=$170, auto-pay fails -> AWAITING_PAYMENT
     const orderRow = await prisma.order.findFirst({ where: { auctionId, offerRank: 1 } });
     expect(orderRow?.status).toBe('AWAITING_PAYMENT');
 
@@ -337,7 +337,7 @@ describe('Auction lifecycle (integration)', () => {
       offerRank: 2,
       amount: '100.00',
       depositApplied: '0.00',
-      amountDue: '100.00',
+      amountDue: '120.00', // 100 bid + 20 shipping, no deposit
       status: 'AWAITING_PAYMENT',
     });
   });

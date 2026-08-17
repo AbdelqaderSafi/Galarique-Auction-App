@@ -112,13 +112,13 @@ async function main() {
   r = await req('GET', `/auctions/${AUCTIONS.fundedWinner}`);
   check('GET /auctions/:id', 'funded-winner auction -> SOLD', r.json?.status === 'SOLD', `got ${r.json?.status}`);
   let w = await wallet(t.winner);
-  check('wallet', 'winner balance 300 (450-150) after auto-pay', w?.balance === '300.00', JSON.stringify(w));
+  check('wallet', 'winner balance 280 (450-170) after auto-pay', w?.balance === '280.00', JSON.stringify(w));
   check('wallet', 'winner lockedBalance 0 (deposit applied)', w?.lockedBalance === '0.00', JSON.stringify(w));
   r = await req('GET', '/wallet/transactions', { token: t.winner });
   const hasPurchase = r.json?.items?.some((x) => x.type === 'PURCHASE');
   check('GET /wallet/transactions', 'winner has a PURCHASE txn', hasPurchase, JSON.stringify(r.json?.items?.map((x) => x.type)));
   let sw = await wallet(t.seller);
-  check('wallet', 'seller balance includes +200 from funded-winner sale', Number(sw.balance) >= 200, JSON.stringify(sw));
+  check('wallet', 'seller balance includes +220 from funded-winner sale', Number(sw.balance) >= 220, JSON.stringify(sw));
   r = await req('GET', '/wallet/transactions', { token: t.seller });
   const hasSale = r.json?.items?.some((x) => x.type === 'SALE');
   check('GET /wallet/transactions', 'seller has a SALE txn', hasSale, JSON.stringify(r.json?.items?.map((x) => x.type)));
@@ -128,7 +128,7 @@ async function main() {
   let salesItems = r.json?.items ?? [];
   let unfundedOrder = findOrder(salesItems, (o) => o.auctionId === AUCTIONS.unfundedWinner);
   check('GET /orders/sales', 'unfunded-winner order found, AWAITING_PAYMENT', unfundedOrder?.status === 'AWAITING_PAYMENT', JSON.stringify(unfundedOrder));
-  check('GET /orders/sales', 'unfunded-winner amountDue 150.00', unfundedOrder?.amountDue === '150.00', JSON.stringify(unfundedOrder));
+  check('GET /orders/sales', 'unfunded-winner amountDue 170.00', unfundedOrder?.amountDue === '170.00', JSON.stringify(unfundedOrder));
 
   // ---- Case 3: pay with insufficient balance -> 400 ----
   r = await req('POST', `/orders/${unfundedOrder.id}/pay`, { token: t.poor });
@@ -217,7 +217,7 @@ async function main() {
   const cheapOrder = findOrder(r.json?.items ?? [], (o) => o.auctionId === AUCTIONS.cheap);
   check('GET /orders/sales', 'cheap order amountDue 0.00, COMPLETED', cheapOrder?.amountDue === '0.00' && cheapOrder?.status === 'COMPLETED', JSON.stringify(cheapOrder));
   let cw = await wallet(t.cheapWinner);
-  check('wallet', 'cheapWinner net +30 refund (450 seed -> 480)', cw?.balance === '480.00', JSON.stringify(cw));
+  check('wallet', 'cheapWinner net +10 refund (450 seed -> 460)', cw?.balance === '460.00', JSON.stringify(cw));
   r = await req('GET', '/wallet/transactions', { token: t.cheapWinner });
   const hasRefund = r.json?.items?.some((x) => x.type === 'REFUND');
   check('GET /wallet/transactions', 'cheapWinner has a REFUND txn', hasRefund, JSON.stringify(r.json?.items?.map((x) => x.type)));

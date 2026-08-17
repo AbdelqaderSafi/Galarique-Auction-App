@@ -31,7 +31,7 @@ describe('OrdersService', () => {
     auctionId: 'auction-1',
     amount: new Prisma.Decimal(200),
     depositApplied: new Prisma.Decimal(50),
-    amountDue: new Prisma.Decimal(150),
+    amountDue: new Prisma.Decimal(170), // 200 + 20 shipping - 50 deposit
     offerRank: 1,
     status: OrderStatus.AWAITING_PAYMENT,
     paymentDeadline: new Date(Date.now() + 60 * 60 * 1000),
@@ -101,12 +101,12 @@ describe('OrdersService', () => {
       prisma.wallet.findUniqueOrThrow.mockResolvedValue({ balance: new Prisma.Decimal(10) } as any);
 
       await expect(service.payOrder(orderId, buyerId)).rejects.toThrow(
-        /Insufficient balance. Needed: \$150\.00, available: \$10\.00/,
+        /Insufficient balance. Needed: \$170\.00, available: \$10\.00/,
       );
       expect(prisma.order.update).not.toHaveBeenCalled();
     });
 
-    it('happy path: debits amountDue, applies the deposit, credits the seller the FULL price, marks COMPLETED/SOLD', async () => {
+    it('happy path: debits amountDue, applies the deposit, credits the seller price + shipping, marks COMPLETED/SOLD', async () => {
       prisma.order.findUnique.mockResolvedValue(baseOrder as any);
       prisma.wallet.upsert.mockImplementation((args: any) =>
         Promise.resolve({ id: args.where.userId === buyerId ? 'buyer-wallet' : 'seller-wallet' } as any),
@@ -130,20 +130,20 @@ describe('OrdersService', () => {
         where: { auctionId: baseOrder.auctionId, userId: buyerId, status: DepositStatus.HELD },
         data: { status: DepositStatus.APPLIED },
       });
-      // buyer ledger: full amount as PURCHASE
+      // buyer ledger: everything that left the wallet (170 due + 50 deposit)
       expect(prisma.walletTransaction.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          data: expect.objectContaining({ walletId: 'buyer-wallet', type: WalletTxnType.PURCHASE, amount: baseOrder.amount }),
+          data: expect.objectContaining({ walletId: 'buyer-wallet', type: WalletTxnType.PURCHASE, amount: new Prisma.Decimal(220) }),
         }),
       );
-      // seller credited full price immediately, no escrow
+      // seller credited price + shipping immediately, no escrow
       expect(prisma.wallet.update).toHaveBeenCalledWith({
         where: { id: 'seller-wallet' },
-        data: { balance: { increment: baseOrder.amount } },
+        data: { balance: { increment: new Prisma.Decimal(220) } },
       });
       expect(prisma.walletTransaction.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          data: expect.objectContaining({ walletId: 'seller-wallet', type: WalletTxnType.SALE, amount: baseOrder.amount }),
+          data: expect.objectContaining({ walletId: 'seller-wallet', type: WalletTxnType.SALE, amount: new Prisma.Decimal(220) }),
         }),
       );
       // auction SOLD, object SOLD
@@ -158,10 +158,10 @@ describe('OrdersService', () => {
       expect(result.status).toBe(OrderStatus.COMPLETED);
     });
 
-    it('refunds the excess to the buyer when depositApplied > amount (cheap item, price < $50)', async () => {
+    it('refunds the excess when the deposit exceeds price + shipping (price $25)', async () => {
       const cheapOrder = {
         ...baseOrder,
-        amount: new Prisma.Decimal(30),
+        amount: new Prisma.Decimal(25),
         depositApplied: new Prisma.Decimal(50),
         amountDue: new Prisma.Decimal(0),
       };
@@ -174,15 +174,21 @@ describe('OrdersService', () => {
 
       await service.payOrder(orderId, buyerId);
 
+      // 50 deposit - (25 + 20) = 5 back to the buyer
       expect(prisma.wallet.update).toHaveBeenCalledWith({
         where: { id: 'buyer-wallet' },
-        data: { balance: { increment: new Prisma.Decimal(20) } }, // 50 - 30
+        data: { balance: { increment: new Prisma.Decimal(5) } },
       });
       expect(prisma.walletTransaction.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          data: expect.objectContaining({ type: WalletTxnType.REFUND, amount: new Prisma.Decimal(20) }),
+          data: expect.objectContaining({ type: WalletTxnType.REFUND, amount: new Prisma.Decimal(5) }),
         }),
       );
+      // seller nets 0 + 50 - 5 = 45 = 25 + 20 shipping
+      expect(prisma.wallet.update).toHaveBeenCalledWith({
+        where: { id: 'seller-wallet' },
+        data: { balance: { increment: new Prisma.Decimal(45) } },
+      });
     });
 
     it('does not touch auctionDeposit or lockedBalance for a second-chance order (depositApplied = 0)', async () => {
@@ -190,7 +196,7 @@ describe('OrdersService', () => {
         ...baseOrder,
         offerRank: 2,
         depositApplied: new Prisma.Decimal(0),
-        amountDue: new Prisma.Decimal(200),
+        amountDue: new Prisma.Decimal(220), // 200 + 20 shipping, no deposit
       };
       prisma.order.findUnique.mockResolvedValue(secondChanceOrder as any);
       prisma.wallet.upsert.mockImplementation((args: any) =>
@@ -206,6 +212,63 @@ describe('OrdersService', () => {
         data: { balance: { decrement: secondChanceOrder.amountDue } }, // no lockedBalance key
       });
       expect(prisma.auctionDeposit.updateMany).not.toHaveBeenCalled();
+    });
+
+    it('credits the seller the money that actually moved, not a recomputed price', async () => {
+      // A row whose amountDue + depositApplied deliberately does NOT equal `amount`,
+      // proving the credit is derived from the row and not from `order.amount`.
+      const oddOrder = {
+        ...baseOrder,
+        amount: new Prisma.Decimal(999),
+        depositApplied: new Prisma.Decimal(50),
+        amountDue: new Prisma.Decimal(150),
+      };
+      prisma.order.findUnique.mockResolvedValue(oddOrder as any);
+      prisma.wallet.upsert.mockImplementation((args: any) =>
+        Promise.resolve({ id: args.where.userId === buyerId ? 'buyer-wallet' : 'seller-wallet' } as any),
+      );
+      prisma.wallet.updateMany.mockResolvedValue({ count: 1 } as any);
+      prisma.order.update.mockResolvedValue({ ...oddOrder, status: OrderStatus.COMPLETED } as any);
+
+      await service.payOrder(orderId, buyerId);
+
+      expect(prisma.wallet.update).toHaveBeenCalledWith({
+        where: { id: 'seller-wallet' },
+        data: { balance: { increment: new Prisma.Decimal(200) } }, // 150 + 50, not 999
+      });
+      expect(prisma.walletTransaction.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            walletId: 'seller-wallet',
+            type: WalletTxnType.SALE,
+            amount: new Prisma.Decimal(200),
+          }),
+        }),
+      );
+    });
+
+    it('settles a pre-fee legacy row at its original numbers (no invented $20)', async () => {
+      // Created before the shipping fee existed: amountDue = amount - deposit, no fee inside.
+      const legacyOrder = {
+        ...baseOrder,
+        amount: new Prisma.Decimal(200),
+        depositApplied: new Prisma.Decimal(50),
+        amountDue: new Prisma.Decimal(150),
+      };
+      prisma.order.findUnique.mockResolvedValue(legacyOrder as any);
+      prisma.wallet.upsert.mockImplementation((args: any) =>
+        Promise.resolve({ id: args.where.userId === buyerId ? 'buyer-wallet' : 'seller-wallet' } as any),
+      );
+      prisma.wallet.updateMany.mockResolvedValue({ count: 1 } as any);
+      prisma.order.update.mockResolvedValue({ ...legacyOrder, status: OrderStatus.COMPLETED } as any);
+
+      await service.payOrder(orderId, buyerId);
+
+      // 150 + 50 = 200 — exactly what the buyer paid, no fee conjured out of nowhere
+      expect(prisma.wallet.update).toHaveBeenCalledWith({
+        where: { id: 'seller-wallet' },
+        data: { balance: { increment: new Prisma.Decimal(200) } },
+      });
     });
   });
 

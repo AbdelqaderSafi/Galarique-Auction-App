@@ -15,7 +15,12 @@ import {
 import { DatabaseService } from '../database/database.service';
 import { MailService } from '../mail/mail.service';
 import { RealtimeService } from '../realtime/realtime.service';
-import { DEPOSIT_AMOUNT, PAYMENT_WINDOW_MS, OrdersService } from './orders.service';
+import {
+  DEPOSIT_AMOUNT,
+  PAYMENT_WINDOW_MS,
+  SHIPPING_FEE,
+  OrdersService,
+} from './orders.service';
 
 const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
@@ -110,8 +115,9 @@ export class SettlementService {
 
       // في فائز → ENDED + Order برتبة 1
       const amount = auction.currentPrice;
-      const amountDue = amount.greaterThan(DEPOSIT_AMOUNT)
-        ? amount.minus(DEPOSIT_AMOUNT)
+      const totalDue = amount.plus(SHIPPING_FEE);
+      const amountDue = totalDue.greaterThan(DEPOSIT_AMOUNT)
+        ? totalDue.minus(DEPOSIT_AMOUNT)
         : new Prisma.Decimal(0);
 
       await tx.auction.update({
@@ -331,7 +337,7 @@ export class SettlementService {
           sellerId: order.sellerId,
           amount: second.amount,
           depositApplied: new Prisma.Decimal(0),
-          amountDue: second.amount,
+          amountDue: second.amount.plus(SHIPPING_FEE), // ما في عربون، فالشحن بينضاف كامل
           offerRank: 2,
           status: OrderStatus.AWAITING_PAYMENT,
           paymentDeadline: new Date(Date.now() + PAYMENT_WINDOW_MS),

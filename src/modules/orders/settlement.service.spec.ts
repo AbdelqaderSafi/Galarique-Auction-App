@@ -112,7 +112,7 @@ describe('SettlementService', () => {
           sellerId,
           amount: new Prisma.Decimal(200),
           depositApplied: new Prisma.Decimal(50),
-          amountDue: new Prisma.Decimal(150), // 200 - 50
+          amountDue: new Prisma.Decimal(170), // 200 + 20 shipping - 50 deposit
           offerRank: 1,
           status: OrderStatus.AWAITING_PAYMENT,
         }),
@@ -124,7 +124,7 @@ describe('SettlementService', () => {
       );
     });
 
-    it('clamps amountDue to 0 when currentPrice <= the $50 deposit', async () => {
+    it('clamps amountDue to 0 when price + shipping <= the $50 deposit', async () => {
       prisma.auction.findMany.mockResolvedValue([{ id: auctionId }] as any);
       prisma.auction.findUnique.mockResolvedValue(
         auctionRow({ currentPrice: new Prisma.Decimal(30) }) as any,
@@ -137,8 +137,28 @@ describe('SettlementService', () => {
 
       await service.closeDueAuctions();
 
+      // 30 + 20 = 50, exactly the deposit → nothing left to pay
       expect(prisma.order.create).toHaveBeenCalledWith({
         data: expect.objectContaining({ amountDue: new Prisma.Decimal(0) }),
+      });
+    });
+
+    it('charges the shipping shortfall when the deposit only partly covers price + shipping', async () => {
+      prisma.auction.findMany.mockResolvedValue([{ id: auctionId }] as any);
+      prisma.auction.findUnique.mockResolvedValue(
+        auctionRow({ currentPrice: new Prisma.Decimal(40) }) as any,
+      );
+      prisma.order.create.mockResolvedValue({
+        id: 'order-1',
+        paymentDeadline: new Date(),
+      } as any);
+      orders.payOrder.mockResolvedValue({} as any);
+
+      await service.closeDueAuctions();
+
+      // 40 + 20 - 50 = 10
+      expect(prisma.order.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ amountDue: new Prisma.Decimal(10) }),
       });
     });
 
@@ -280,7 +300,7 @@ describe('SettlementService', () => {
           buyerId: 'buyer-2',
           amount: new Prisma.Decimal(180),
           depositApplied: new Prisma.Decimal(0),
-          amountDue: new Prisma.Decimal(180),
+          amountDue: new Prisma.Decimal(200), // 180 + 20 shipping, no deposit to offset
           offerRank: 2,
         }),
       });

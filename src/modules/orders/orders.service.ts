@@ -20,6 +20,9 @@ import type { OrderDetail, OrderListItem, OrdersResponse } from './dto/orders.dt
 export const DEPOSIT_AMOUNT = new Prisma.Decimal(50);
 export const PAYMENT_WINDOW_MS = 72 * 60 * 60 * 1000;
 
+// رسوم شحن ثابتة على المشتري، بتروح للبائع (هو الي بشحن)
+export const SHIPPING_FEE = new Prisma.Decimal(20);
+
 // كل قراءة/كتابة للطلب تحتاج عنوان القطعة وصورتها
 const ORDER_INCLUDE = {
   auction: {
@@ -94,9 +97,13 @@ export class OrdersService {
         );
       }
 
-      // العربون أكبر من الثمن → رُدّ الفرق للمشتري
-      if (usesDeposit && order.depositApplied.greaterThan(order.amount)) {
-        const excess = order.depositApplied.minus(order.amount);
+      // إجمالي ما على المشتري = ثمن القطعة + الشحن
+      const totalDue = order.amount.plus(SHIPPING_FEE);
+
+      // العربون أكبر من الإجمالي → رُدّ الفرق للمشتري
+      let excess = new Prisma.Decimal(0);
+      if (usesDeposit && order.depositApplied.greaterThan(totalDue)) {
+        excess = order.depositApplied.minus(totalDue);
         await tx.wallet.update({
           where: { id: buyerWallet.id },
           data: { balance: { increment: excess } },
@@ -107,10 +114,13 @@ export class OrdersService {
             type: WalletTxnType.REFUND,
             amount: excess,
             refId: order.id,
-            note: 'Deposit exceeded the final price',
+            note: 'Deposit exceeded the total due',
           },
         });
       }
+
+      // ما خرج فعلياً من جيب المشتري — مشتق من الصف نفسه، مش من إعادة حساب السعر
+      const netPaid = order.amountDue.plus(order.depositApplied).minus(excess);
 
       if (usesDeposit) {
         await tx.auctionDeposit.updateMany({
@@ -128,7 +138,7 @@ export class OrdersService {
         data: {
           walletId: buyerWallet.id,
           type: WalletTxnType.PURCHASE,
-          amount: order.amount,
+          amount: netPaid,
           refId: order.id,
           note: usesDeposit
             ? `Auction purchase ($${order.depositApplied.toFixed(2)} from deposit)`
@@ -144,13 +154,13 @@ export class OrdersService {
       });
       await tx.wallet.update({
         where: { id: sellerWallet.id },
-        data: { balance: { increment: order.amount } },
+        data: { balance: { increment: netPaid } },
       });
       await tx.walletTransaction.create({
         data: {
           walletId: sellerWallet.id,
           type: WalletTxnType.SALE,
-          amount: order.amount,
+          amount: netPaid,
           refId: order.id,
           note: 'Auction sale',
         },
